@@ -1,0 +1,41 @@
+/* Styles généraux pour les cases à cocher */
+.checkbox-label {
+    position: relative;
+    display: inline-block;
+    padding-left: 30px; /* Espacement pour le cercle */
+    cursor: pointer;
+    font-size: 1em;
+    color: #333;
+}
+
+/* Cacher la case à cocher par défaut */
+.custom-checkbox {
+    position: absolute;
+    opacity: 0; /* Cacher l'original */
+}
+
+/* Créer le cercle */
+.checkbox-label:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 20px; /* Taille du cercle */
+    height: 20px; /* Taille du cercle */
+    border-radius: 50%; /* Circulaire */
+    border: 2px solid #007BFF; /* Bord bleu ciel */
+    background: white; /* Fond blanc */
+    transform: translateY(-50%); /* Centrer verticalement */
+    transition: background 0.2s, border-color 0.2s; /* Transition douce */
+}
+
+/* Styles lors du clic */
+.custom-checkbox:checked + .checkbox-label:before {
+    background: #007BFF; /* Fond bleu ciel */
+    border-color: #0056b3; /* Bord plus foncé au clic */
+}
+
+/* Styles pour le texte de la case à cocher */
+.checkbox-label:hover:before {
+    border-color: #0056b3; /* Bord plus foncé au hover */
+}

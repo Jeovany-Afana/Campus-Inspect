@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Ajouter une Classe</title>
+</head>
+<body>
+
+    <div class="logo">
+        <h1>CAMPUS <span>INSPECT</span></h1>
+    </div>
+    
+
+    <div class="form-container">
+        <form class="add-class-form">
+            <h1>Ajouter une Classe</h1>
+            <div class="input-group">
+                <label for="class-name" class="label">Nom de la classe</label>
+                <input type="text" id="class-name" name="class-name" required>
+            </div>
+            <div class="input-group">
+                <label for="capacity" class="label">Capacité (Nombre de Places)</label><br>
+            </div>
+
+                <div class="input-group">
+                <label for="capacity">10 - 20</label>
+                <input type="radio" name="capacity" id="capacity1">
+                 </div>
+                <div class="input-group">
+                    <label for="capacity">20 - 40</label>
+                    <input type="radio" name="capacity" id="capacity2">
+               </div>
+
+                <div class="input-group">
+                    <label for="capacity">40 - 60</label>
+                    <input type="radio" name="capacity" id="capacity3">
+                </div>
+
+                <div class="input-group">
+                    <label for="capacity">60 - 80</label>
+                    <input type="radio" name="capacity" id="capacity4">
+                </div>
+
+                <div class="input-group">
+                    <label for="capacity">80 - 100</label>
+                    <input type="radio" name="capacity" id="capacity5">
+                </div>
+
+            
+            <div class="input-group">
+                <label for="equipment" class="label">Équipements disponibles: </label><br><br>
+              
+                <label for="equipement">Projecteur</label>
+                <input type="checkbox" name="equipement" id="equipement" class="custom-checkbox">
+
+                <label for="equipement">Ecran Plasma</label>
+                <input type="checkbox" name="equipement" id="equipement" class="custom-checkbox">
+
+                <label for="equipement">Tableau</label>
+                <input type="checkbox" name="equipement" id="equipement" class="custom-checkbox">
+
+                <label for="equipement">Autre</label>
+                <input type="checkbox" name="equipement" id="equipement" class="custom-checkbox">
+            </div>
+            <div class="input-group">
+                <label for="localisation" class="label">Localisation</label>
+                <select id="localisation" name="localisation" required>
+                    <option value="chaussee">Rez-de-chaussée</option>
+                    <option value="premierEtage">Premier Etage</option>
+                    <option value="deuxiemeEtage">Deuxième Etage</option>
+                </select>
+            </div>
+            <button type="submit">Ajouter la Classe</button>
+        </form>
+    </div>
+</body>
+</html>

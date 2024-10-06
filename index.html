@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Inspect</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   
+    <div class="class-card">
+        <img src="classe.jpg" alt="Image de la classe" class="class-image">
+        <div class="class-info">
+            <h2>Salle 4</h2>
+            <p><strong>Capacité :</strong> 30 étudiants</p>
+            <p><strong>Équipements Disponibles :</strong> Projecteur, Tableau Blanc, Ordinateur</p>
+            <p><strong>Statut d'Occupation :</strong> Occupée</p>
+            <p><strong>Horaires d'Occupation :</strong> 8h - 16h</p>
+            <p><strong>Localisation :</strong> 2ème étage, Bâtiment A</p>
+            <p><strong>Responsable :</strong> Professeur Dupont</p>
+            <p><strong>Prochaines Réservations :</strong> 10h - 12h, 14h - 16h</p>
+        </div>
+    </div>
+
+   
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-analytics.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Import Firestore
+      
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA",
+          authDomain: "inspecteur-de-classes.firebaseapp.com",
+          projectId: "inspecteur-de-classes",
+          storageBucket: "inspecteur-de-classes.appspot.com",
+          messagingSenderId: "572661846292",
+          appId: "1:572661846292:web:aeb0374db2d414fef9f201",
+          measurementId: "G-NVN5GERDV6"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+      
+        // Initialize Firestore
+        const db = getFirestore(app); // Now Firestore is initialized and ready to use
+      </script>
+      <!-- <script type="module" src="index.js"></script> -->
+</body>
+</html>

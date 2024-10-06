@@ -1,0 +1,64 @@
+body {
+    background-color: #f0f8ff; /* Couleur de fond douce */
+    font-family: 'Arial', sans-serif; /* Police de caractères */
+}
+
+.form-container {
+    max-width: 400px; /* Largeur maximale */
+    margin: 50px auto; /* Centrage */
+    padding: 20px; /* Espacement intérieur */
+    background-color: #ffffff; /* Fond blanc pour le formulaire */
+    border-radius: 10px; /* Bords arrondis */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Ombre douce */
+}
+
+
+
+
+
+h2 {
+    text-align: center; /* Centrer le titre */
+    color: #007BFF; /* Couleur du titre */
+}
+
+.input-group {
+    margin-bottom: 15px; /* Espacement entre les champs */
+}
+
+label {
+    display: block; /* Affichage en bloc */
+    margin-bottom: 5px; /* Espacement sous le label */
+    color: #333; /* Couleur du texte du label */
+}
+
+input[type="email"], input[type="password"] {
+    width: 100%; /* Largeur pleine */
+    padding: 10px; /* Espacement intérieur */
+    border: 1px solid #007BFF; /* Bord bleu */
+    border-radius: 5px; /* Bords arrondis */
+    box-sizing: border-box; /* Inclure padding et border dans la largeur totale */
+    transition: border-color 0.3s ease; /* Transition douce pour la bordure */
+}
+
+/* Effet au focus sur les champs */
+input[type="email"]:focus, input[type="password"]:focus {
+    border-color: #00CFFF; /* Bordure cyan au focus */
+    outline: none; /* Retirer l'outline par défaut */
+}
+
+button {
+    width: 100%; /* Largeur pleine */
+    padding: 10px; /* Espacement intérieur */
+    background-color: #007BFF; /* Fond bleu */
+    color: white; /* Couleur du texte */
+    border: none; /* Retirer la bordure */
+    border-radius: 5px; /* Bords arrondis */
+    font-size: 16px; /* Taille de la police */
+    cursor: pointer; /* Curseur pointer */
+    transition: background-color 0.3s ease; /* Transition douce pour le fond */
+}
+
+/* Effet au survol sur le bouton */
+button:hover {
+    background-color: #00CFFF; /* Changer la couleur au survol */
+}
