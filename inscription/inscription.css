@@ -2,6 +2,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #eaf6ff; /* Fond bleu clair */
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -69,3 +70,53 @@ button {
 button:hover {
     background-color: #0056b3; /* Couleur plus foncée au hover */
 }
+
+
+.error input {
+    color: red;
+    border: 1px solid rgb(255, 0, 0);
+  }
+  .error span {
+    visibility: visible;
+    opacity: 1;
+    color: red;
+  }
+  .progressRed {
+    background: red;
+    width: 33%;
+    visibility: visible;
+  }
+  .progressBlue {
+    background: #16d9e7;
+    width: 67%;
+    visibility: visible;
+  }
+  .progressGreen {
+    width: 100%;
+    background: #5ef9a4;
+    visibility: visible;
+  }
+
+
+  input[type="password"] span, input[type="email"] span{
+    margin-bottom: 20px;
+    display: block;
+    font-size: 0.8rem;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.3s;
+    color: red;
+  }
+
+  p {
+    background: red;
+    width: 33%;
+    height: 6px;
+    margin: -2px 0 2px;
+    border-radius: 50px;
+    visibility: hidden;
+    transition: 0.3s;
+  }
+
+
+
