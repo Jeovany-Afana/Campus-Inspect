@@ -3,6 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/fireba
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js"; // Pour utiliser Storage
 
+
 // Configuration de votre application Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA", // Clé API de votre projet
@@ -53,7 +54,7 @@ export async function registerUser(userInfo,file){
      // Redirection après un court délai
      setTimeout(() => {
         window.location.href = '/login/index.html'; // Change la destination
-      }, 2000); // 3 secondes avant redirection
+      }, 2000); // 2 secondes avant redirection
     
    } catch (error) {
 

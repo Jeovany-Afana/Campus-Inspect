@@ -25,9 +25,6 @@
         </div>
     </div>
 
-    <input type="file" id="fileInput" />
-    <button id="uploadButton">Upload</button>
-
     <div id="footer"></div>
     <script src="/assets/loadHTML.js"></script>
     <script type="module">
@@ -54,45 +51,13 @@ const analytics = getAnalytics(app); // Initialiser les analyses
 
 // Initialiser Firestore (base de données de Firebase)
 const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilisé
-
 // Initialiser Firebase Storage (pour stocker des fichiers)
 const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
 
-// Fonction pour télécharger un fichier
-async function uploadFile(file) {
-  // Créer une référence au lieu où le fichier sera stocké
-  const fileRef = ref(storage, 'uploads/' + file.name); // Référence au fichier avec son nom
-
-  try {
-    // Télécharger le fichier à l'emplacement spécifié
-    const snapshot = await uploadBytes(fileRef, file); // Mettre le fichier dans le stockage
-    console.log('Uploaded a file!', snapshot); // Afficher un message de succès
-    
-    // Obtenir l'URL du fichier téléchargé
-    const downloadURL = await getDownloadURL(fileRef); // Récupérer l'URL pour accéder au fichier
-    console.log('File available at', downloadURL); // Afficher l'URL dans la console
-  } catch (error) {
-    console.error('Upload failed:', error); // Afficher une erreur si le téléchargement échoue
-  }
-}
-
-// Ajouter un écouteur d'événements pour le bouton de téléchargement
-document.getElementById('uploadButton').addEventListener('click', () => {
-  // Obtenir l'élément d'entrée de fichier
-  const fileInput = document.getElementById('fileInput'); 
-  const file = fileInput.files[0]; // Récupérer le premier fichier sélectionné
-
-  // Vérifier si un fichier a été sélectionné
-  if (file) {
-    uploadFile(file); // Appeler la fonction pour télécharger le fichier
-  } else {
-    console.error('No file selected!'); // Afficher un message d'erreur si aucun fichier n'est sélectionné
-  }
-});
 
       </script>
-
       <script src="/assets/humbergerButton.js"></script>
+     
       <!-- <script type="module" src="index.js"></script> -->
 </body>
 </html>
