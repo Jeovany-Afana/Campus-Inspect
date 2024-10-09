@@ -1,22 +1,22 @@
+/* Réinitialisation des marges et paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corps de la page */
 body {
     font-family: Arial, sans-serif;
     background-color: #eaf6ff; /* Fond bleu clair */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    justify-content: space-between;
+    min-height: 100vh;
     margin: 0;
 }
 
-.class-card h2
-{
-    color: white;
-    text-align: center;
-    background-color: #007BFF;
-    width: 100%;
-    border-radius: 10px;
-}
+/* Contenu des cartes */
 .class-card {
     background: white;
     border-radius: 10px;
@@ -24,6 +24,8 @@ body {
     overflow: hidden;
     max-width: 400px;
     transition: transform 0.2s, box-shadow 0.2s;
+    width: 100%; /* S'étend horizontalement */
+    margin: 20px auto;
 }
 
 .class-card:hover {
@@ -39,26 +41,37 @@ body {
 
 .class-info {
     padding: 20px;
+    text-align: left;
 }
 
-h2 {
-    margin: 0 0 10px 0;
-    font-size: 1.6em;
-    color: #007BFF; /* Bleu ciel */
+.class-info h2 {
+    color: white;
+    background-color: #007BFF;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
 }
 
-p {
-    margin: 5px 0;
+.class-info p {
+    margin: 10px 0;
     font-size: 1em;
     color: #333;
 }
 
-strong {
+.class-info strong {
     color: #007BFF; /* Bleu ciel */
 }
 
 .class-info p:nth-child(odd) {
     background-color: #f0f8ff; /* Fond bleu très clair */
-    padding: 5px;
+    padding: 10px;
     border-radius: 5px;
+}
+
+/* Adaptabilité */
+@media (max-width: 768px) {
+
+    .class-card {
+        max-width: 60%;
+    }
 }

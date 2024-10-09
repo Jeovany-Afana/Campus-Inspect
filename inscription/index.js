@@ -1,9 +1,12 @@
+import { registerUser } from './sendDataToFirebase.js';
+
+
 const form = document.querySelector("form");
 const inputs = document.querySelectorAll(
-  'input[type="email"], input[type="password"]'
+  'input[type="email"], input[type="password"], input[type="text"]'
 );
 const progressBar = document.getElementById("progress-bar");
-let email, password, confirmPass;
+let email, password, confirmPass, pseudo;
 
 const errorDisplay = (tag, message, valid) => {
   const container = document.querySelector("." + tag + "-container");
@@ -17,6 +20,25 @@ const errorDisplay = (tag, message, valid) => {
     span.textContent = message;
   }
 };
+
+
+
+const pseudoChecker = (value) => {
+  if (value.length > 0 && (value.length < 3 || value.length > 20)) {
+    errorDisplay("pseudo", "Le pseudo doit faire entre 3 et 20 caractères");
+    pseudo = null;
+  } else if (!value.match(/^[a-zA-Z0-9_ .-]*$/)) {
+    errorDisplay(
+      "pseudo",
+      "Le pseudo ne doit pas contenir de caractères spéciaux"
+    );
+    pseudo = null;
+  } else {
+    errorDisplay("pseudo", "", true);
+    pseudo = value;
+  }
+};
+
 
 
 const emailChecker = (value) => {
@@ -69,6 +91,11 @@ const confirmChecker = (value) => {
 inputs.forEach((input) => {
   input.addEventListener("input", (e) => {
     switch (e.target.id) {
+
+      case "pseudo":
+        pseudoChecker(e.target.value);
+        break;
+
       case "email":
         emailChecker(e.target.value);
         break;
@@ -87,27 +114,49 @@ inputs.forEach((input) => {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  if (email && password && confirmPass) {
+  if (email && password && confirmPass && pseudo) {
     const data = {
+      pseudo,
       email,
       password,
     };
     console.log(data);
 
+
+    
+    const pseudoOk = document.getElementById('pseudo').value;
+    const emailOk = document.getElementById('email').value;
+    const passwordOk = document.getElementById('password').value;
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0]; //On récupère la photo
+
+    const userInfo = {pseudoOk, emailOk, passwordOk} //On créer l'objet des infos de l'utilisateur
+
+    if (file) {
+      registerUser(userInfo, file); //On appelle la fonction d'inscription
+    }
+
+    else
+    {
+      alert('Aucune photo sélectionnée !');
+    }
+    
+
+
     inputs.forEach((input) => (input.value = ""));
     progressBar.classList = "";
 
+    pseudo = null;
     email = null;
     password = null;
     confirmPass = null;
-    alert("Inscription validée !");
+
+    
   } 
   else {
     alert("veuillez remplir correctement les champs");
   }
 });
-
-
 
 
 

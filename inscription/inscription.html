@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="inscription.css">
-    <link rel="stylesheet" href="../logo.css">
+    <link rel="stylesheet" href="/assets/logo.css">
     <title>Inscription</title>
 
 </head>
@@ -12,10 +12,23 @@
     <div class="logo">
         <h1>CAMPUS <span>INSPECT</span></h1>
     </div>
+
+    <!-- Message de statut pour l'inscription -->
+<div id="statusMessage" style="display: none; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+    <!-- Le texte du message apparaîtra ici -->
+</div>
+
     
     <div class="form-container">
         <form class="registration-form">
-            <h1>Inscription Responsable</h1>
+            <h1>Inscription</h1>
+
+            <div class="input-group pseudo-container">
+                <label for="pseudo">Pseudo</label>
+                <input type="text" autocomplete="off" name="pseudo" id="pseudo"placeholder="Entrez votre pseudo" >
+                <span></span>
+              </div>
+
             <div class="input-group email-container">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Entre votre email" required>
@@ -33,10 +46,49 @@
                 <input type="password" id="confirm" autocomplete="off" name="password" placeholder="Repéter le mot de passe" required>
                 <span></span>
             </div>
-            <button type="submit">S'inscrire</button>
+
+            <div class="file-input-container">
+                <input type="file" id="fileInput" class="file-input" accept="image/*">
+                <label for="fileInput" class="file-label">
+                  <span class="file-icon">📷</span>
+                  <span class="file-text">Sélectionner une photo</span>
+                </label>
+              </div>
+              
+            <button type="submit" id="registerButton">S'inscrire</button>
         </form>
     </div>
 
-    <script src="./index.js"></script>
+    <script type="module">
+       // Importer les fonctions nécessaires depuis les SDK de Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-analytics.js"; // Pour les analyses
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js"; // Pour utiliser Storage
+
+// Configuration de votre application Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA", // Clé API de votre projet
+  authDomain: "inspecteur-de-classes.firebaseapp.com", // Domaine d'authentification
+  projectId: "inspecteur-de-classes", // ID de votre projet
+  storageBucket: "inspecteur-de-classes.appspot.com", // Bucket de stockage pour les fichiers
+  messagingSenderId: "572661846292", // ID de l'expéditeur de messages
+  appId: "1:572661846292:web:aeb0374db2d414fef9f201", // ID de votre application
+  measurementId: "G-NVN5GERDV6" // ID de mesure pour les analyses
+};
+
+// Initialiser Firebase avec la configuration fournie
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app); // Initialiser les analyses
+
+// Initialiser Firestore (base de données de Firebase)
+const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilisé
+
+// Initialiser Firebase Storage (pour stocker des fichiers)
+const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
+</script>
+<script type="module" src="./sendDataToFirebase.js"></script>
+    <script type="module" src="./index.js"></script> <!--Fichier CSS pour le control du formulaire-->
+
 </body>
 </html>

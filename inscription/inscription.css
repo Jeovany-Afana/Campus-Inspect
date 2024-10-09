@@ -40,17 +40,19 @@ label {
 }
 
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="text"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #007BFF; /* Bord bleu ciel */
+    border: 2px groove #007BFF; /* Bord bleu ciel */
     border-radius: 5px;
     font-size: 1em;
     transition: border-color 0.2s;
 }
 
 input[type="email"]:focus,
-input[type="password"]:focus {
+input[type="password"]:focus,
+input[type="text"]:focus {
     border-color: #0056b3; /* Couleur plus foncée au focus */
     outline: none;
 }
@@ -98,7 +100,7 @@ button:hover {
   }
 
 
-  input[type="password"] span, input[type="email"] span{
+  input[type="password"] span, input[type="email"] span, input[type="text"] span{
     margin-bottom: 20px;
     display: block;
     font-size: 0.8rem;
@@ -117,6 +119,67 @@ button:hover {
     visibility: hidden;
     transition: 0.3s;
   }
+
+  .file-input-container {
+    position: relative;
+    width: 250px;
+    margin: 20px 0;
+  }
+  
+  .file-input {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+  }
+  
+  .file-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+  }
+  
+  .file-label:hover {
+    background-color: #0056b3;
+  }
+  
+  .file-icon {
+    margin-right: 10px;
+  }
+  
+  .file-input:focus + .file-label {
+    outline: 2px solid #0056b3;
+    outline-offset: 4px;
+  }
+
+  
+  /* Style par défaut pour le message (caché) */
+#statusMessage {
+  font-size: 16px;
+  text-align: center;
+}
+
+/* Couleur verte pour le succès */
+.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+/* Couleur rouge pour l'erreur */
+.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
 
 
 
