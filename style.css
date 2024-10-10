@@ -75,3 +75,52 @@ body {
         max-width: 60%;
     }
 }
+
+
+
+
+/* Conteneur pour les boutons */
+.home-button-container {
+    margin: 10px 0; /* Espacement vertical entre les boutons */
+  }
+  
+  /* Style des boutons */
+  .home-button {
+    background-color:#52a0f4; /* Couleur de fond bleu */
+    color: white; /* Texte en blanc */
+    padding: 12px 20px; /* Espace intérieur du bouton */
+    text-decoration: none; /* Retire la décoration par défaut des liens */
+    border-radius: 10px; /* Bordures arrondies pour un look moderne */
+    font-size: 16px; /* Taille du texte */
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Animation au survol */
+    display: inline-block;
+    text-align: center;
+    margin-left: 1%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Effet d'ombre */
+    width: fit-content%; /* Le bouton prend tout l'espace horizontal disponible */
+    max-width: 250px; /* Taille maximale du bouton */
+  }
+  
+  /* Style au survol */
+  .home-button:hover {
+    background-color: #0056b3; /* Couleur légèrement plus foncée au survol */
+    transform: scale(1.05); /* Légère agrandissement pour un effet visuel */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .home-button {
+      font-size: 14px; /* Réduction de la taille de texte pour les petits écrans */
+      padding: 10px 15px; /* Réduction de l'espacement intérieur */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .home-button {
+      font-size: 12px; /* Réduction supplémentaire pour les très petits écrans */
+      padding: 8px 12px; /* Espacement encore plus réduit */
+      max-width: 100%; /* Le bouton occupe toute la largeur disponible sur les petits écrans */
+    }
+  }
+  

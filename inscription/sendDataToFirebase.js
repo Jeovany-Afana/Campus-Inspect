@@ -44,7 +44,7 @@ export async function registerUser(userInfo,file){
     //Ajouter l'utilisateur dans la collection "users" de Firestore
 
     await addDoc(collection(db, "users"), userData);
-    console.log('Utilisateur enregistré avec succès');
+    alert('Utilisateur enregistré avec succès');
 
     statusMessage.textContent = "Inscription réussie ! Redirection en cours...";
     statusMessage.classList.remove('error');
@@ -58,8 +58,8 @@ export async function registerUser(userInfo,file){
     
    } catch (error) {
 
-    console.error('Erreur lors de l’ajout des données dans Firebase:', error);
-
+    alert('Erreur lors de l’ajout des données de l\'utilisateur:', error);
+      window.location.href = "/index.html";
     // Afficher un message d'erreur
     statusMessage.textContent = "Échec de l'inscription. Veuillez réessayer.";
     statusMessage.classList.remove('success');

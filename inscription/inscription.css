@@ -120,6 +120,7 @@ button:hover {
     transition: 0.3s;
   }
 
+  
   .file-input-container {
     position: relative;
     width: 250px;
@@ -179,6 +180,64 @@ button:hover {
   color: #721c24;
   border: 1px solid #f5c6cb;
 }
+
+
+
+/*CSS POUR LE BOUTON D'ACCEUIL-------------------------*/
+  /* Conteneur pour le bouton */
+  .home-button-container {
+    position: absolute; /* Le bouton est placé de façon absolue en haut à droite */
+    top: 20px;
+    right: 20px;
+    z-index: 1000; /* Assure que le bouton soit toujours visible au-dessus des autres éléments */
+  }
+  
+  /* Style du bouton */
+  .home-button {
+    background-color: #0056b3; /* Couleur de fond verte */
+    color: white; /* Texte en blanc */
+    padding: 10px 20px; /* Espace intérieur */
+    text-decoration: none; /* Retire la décoration par défaut des liens */
+    border-radius: 25px; /* Bordures arrondies pour un look moderne */
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Animation au survol */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Effet d'ombre */
+  }
+  
+  /* Style au survol */
+  .home-button:hover {
+    background-color: #0056b3; /* Couleur légèrement plus foncée au survol */
+    transform: scale(1.05); /* Légère agrandissement pour un effet visuel */
+  }
+  
+  /* Responsive Design: le bouton s'adapte aux écrans plus petits */
+  @media (max-width: 768px) {
+    .home-button-container {
+      top: 10px; /* Ajustement de la position pour petits écrans */
+      right: 10px;
+    }
+  
+    .home-button {
+      font-size: 14px; /* Taille de texte réduite sur mobile */
+      padding: 8px 15px; /* Espacement intérieur réduit pour s'adapter à l'écran */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .home-button-container {
+      top: 8px; /* Position encore plus ajustée pour les petits écrans */
+      right: 8px;
+    }
+  
+    .home-button {
+      font-size: 12px; /* Taille de texte plus petite pour les très petits écrans */
+      padding: 6px 12px; /* Réduction supplémentaire de l'espacement intérieur */
+    }
+  }
+  
+
+
 
 
 

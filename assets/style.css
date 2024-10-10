@@ -9,6 +9,11 @@
     width: 100%;
   }
   
+  ul
+  {
+    text-align: center;
+  }
+
   .container-fluid {
     display: flex;
     justify-content: space-between;
@@ -81,6 +86,7 @@
 
     .navbar-collapse.active {
       display: flex;
+      text-align: center;
     }
 
     .navbar-toggler {
