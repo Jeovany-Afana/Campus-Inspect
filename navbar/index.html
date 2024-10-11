@@ -7,35 +7,47 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <label class="switch">
+    <input type="checkbox" class="status-toggle" />
+    <span class="slider round"></span>
+  </label>
 
-<nav class="navbar">
-  <div class="container-fluid">
-    <div class="logo">
-      <h3>CAMPUS <span>INSPECT</span></h3>
-    </div>
-    <button class="navbar-toggler" id="navbar-toggler" type="button">
-      <span class="navbar-toggler-icon">&#9776;</span>
-    </button>
-    <div class="navbar-collapse" id="navbar-collapse">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="/index.html">Accueil</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/classes/index.html">Classes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/bureaux/index.html">Bureaux</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/evenements/index.html">Evènements</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
 
-<script src="index.js"></script>
+
+
+  <table class="class-table">
+    <tr class="class-card" data-class-id="class1">
+      <td>Classe A101</td>
+      <td>Capacité: 30 élèves</td>
+      <td>
+        État: <span class="status">Libre</span>
+      </td>
+      <td>
+        <label class="switch">
+          <input type="checkbox" class="status-toggle" data-class-id="class1"/>
+          <span class="slider round"></span>
+        </label>
+      </td>
+    </tr>
+  
+    <tr class="class-card" data-class-id="class2">
+      <td>Classe B202</td>
+      <td>Capacité: 25 élèves</td>
+      <td>
+        État: <span class="status">Libre</span>
+      </td>
+      <td>
+        <label class="switch">
+          <input type="checkbox" class="status-toggle" data-class-id="class2"/>
+          <span class="slider round"></span>
+        </label>
+      </td>
+    </tr>
+    <!-- Ajoute plus de cartes selon le nombre de classes -->
+  </table>
+  
+  
+<script src="/index.js"></script>
 
 </body>
 </html>
