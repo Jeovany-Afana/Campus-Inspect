@@ -15,6 +15,6 @@ function loadHTML(filePath, elementID) {
 }
 
 window.onload = () => {
-  loadHTML('../assets/navbar.html', 'navbar'); // Chemin relatif à navbar.html
-  loadHTML('../assets/footer.html', 'footer');
+  loadHTML('Campus-Inspect/assets/navbar.html', 'navbar'); // Chemin relatif à navbar.html
+  loadHTML('Campus-Inspect/assets/footer.html', 'footer');
 };
