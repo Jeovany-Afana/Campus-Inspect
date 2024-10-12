@@ -32,7 +32,7 @@ body {
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
   width: 100%; /* S'étend horizontalement */
-  height: max-content;
+  height: fit-content;
 }
 
 .class-card:hover {
