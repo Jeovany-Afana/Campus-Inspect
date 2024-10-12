@@ -98,12 +98,12 @@ function addToggleListeners() {
 
 
             if (e.target.checked) {
-                statusText.innerHTML = '<strong>Statut d\'Occupation :</strong> Occupée';
+                statusText.innerHTML = 'Occupée';
                 statusText.style.color = 'red';
                 // Appeler la fonction pour mettre à jour le statut dans Firestore
                 await updateClassStatus(classId, "Occupée"); // true = occupée
             } else {
-                statusText.innerHTML = '<strong>Statut d\'Occupation :</strong> Libre';
+                statusText.innerHTML = 'Libre';
                 statusText.style.color = 'green';
                 // Appeler la fonction pour mettre à jour le statut dans Firestore
                 await updateClassStatus(classId, 'Libre'); // false = libre
