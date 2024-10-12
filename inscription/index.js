@@ -111,52 +111,45 @@ inputs.forEach((input) => {
   });
 });
 
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  if (email && password && confirmPass && pseudo) {
-    const data = {
-      pseudo,
-      email,
-      password,
+  // Récupérer les valeurs des champs du formulaire
+  const pseudoOk = document.getElementById('pseudo').value;
+  const emailOk = document.getElementById('email').value;
+  const passwordOk = document.getElementById('password').value;
+  const confirmPassOk = document.getElementById('confirm').value;
+  const fileInput = document.getElementById('fileInput');
+  const file = fileInput.files[0]; // On récupère la photo
+
+  // Vérifier que tous les champs sont correctement remplis et que le mot de passe est confirmé
+  if (emailOk && passwordOk && confirmPassOk && pseudoOk && passwordOk === confirmPassOk) {
+    const userInfo = {
+      pseudoOk: pseudoOk,
+      emailOk: emailOk,
+      passwordOk: passwordOk
     };
-    console.log(data);
 
-
-    
-    const pseudoOk = document.getElementById('pseudo').value;
-    const emailOk = document.getElementById('email').value;
-    const passwordOk = document.getElementById('password').value;
-    const fileInput = document.getElementById('fileInput');
-    const file = fileInput.files[0]; //On récupère la photo
-
-    const userInfo = {pseudoOk, emailOk, passwordOk} //On créer l'objet des infos de l'utilisateur
-
+    // Vérifier si un fichier a été sélectionné
     if (file) {
-      registerUser(userInfo, file); //On appelle la fonction d'inscription
-    }
-
-    else
-    {
+      // Appeler la fonction d'inscription avec les infos utilisateur et la photo
+      registerUser(emailOk, passwordOk, userInfo, file);
+    } else {
       alert('Aucune photo sélectionnée !');
     }
-    
 
-
+    // Réinitialiser les champs du formulaire après l'inscription
     inputs.forEach((input) => (input.value = ""));
     progressBar.classList = "";
 
+    // Réinitialiser les variables
     pseudo = null;
     email = null;
     password = null;
     confirmPass = null;
 
-    
-  } 
-  else {
-    alert("veuillez remplir correctement les champs");
+  } else {
+    alert("Veuillez remplir correctement tous les champs et vérifier que les mots de passe correspondent.");
   }
 });
-
-
-

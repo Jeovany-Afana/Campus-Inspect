@@ -210,159 +210,157 @@ input:checked + .slider:before {
 }
 
 
-  /* Styles de la navbar */
-  .navbar {
-    background-color: #66b2ff; /* Bleu ciel */
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-  
-  ul
-  {
-    text-align: center;
-  }
-
-  .container-fluid {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  .navbar-brand {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-  }
-  
-  .navbar-brand span {
-    color: #002f6c; /* Partie sombre */
-  }
-  
-  .navbar-nav {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-  }
-  
-  .nav-item {
-    list-style: none;
-  }
-  
-  .nav-link {
-    text-decoration: none;
-    font-size: 18px;
-    color: white;
-    position: relative;
-    transition: color 0.3s ease;
-  }
-  
-  .nav-link:hover {
-    color: #002f6c;
-  }
-  
-  .nav-link.disabled {
-    pointer-events: none;
-    opacity: 0.6;
-  }
-  
-  .navbar-toggler {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
-  /* Icône du bouton hamburger */
-  .navbar-toggler-icon {
-    font-size: 28px;
-  }
-  
-  /* Responsive pour les écrans de taille inférieure */
-  @media (max-width: 768px) {
-    .navbar-collapse {
-      display: none;
-      flex-direction: column;
-      width: 100%;
-      background-color: #66b2ff;
-      position: absolute;
-      top: 50px;
-      left: 0;
-    }
-
-    .navbar-collapse.active {
-      display: flex;
-      text-align: center;
-    }
-
-    .navbar-toggler {
-      display: block;
-    }
-
-    .nav-link {
-      padding: 10px 20px;
-      text-align: center;
-    }
+ /* Styles de la navbar */
+.navbar {
+  background-color: #66b2ff; /* Bleu ciel */
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative; /* Pour la gestion de la navbar responsive */
+  z-index: 1000; /* Pour que la navbar soit toujours au-dessus */
 }
-/*-----------------------------------LOGO---------------------------------------------*/
 
+.container-fluid {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center; /* Centrer les éléments verticalement */
+}
 
 .logo {
-    text-align: center; /* Centrer le texte */
-    /* margin: 100px 0; Marges autour du logo */
+  text-align: center; /* Centrer le texte */
 }
 
 .logo h3 {
-    font-size: 2em; /* Taille de la police */
-    font-weight: bold; /* Gras */
-    color: #007BFF; /* Couleur principale */
-    text-transform: uppercase; /* Mettre en majuscules */
-    letter-spacing: 5px; /* Espacement entre les lettres */
-    position: relative; /* Position pour les effets */
-    display: inline-block; /* Pour le positionnement */
-    background: linear-gradient(90deg, #007BFF, #00CFFF); /* Dégradé bleu */
-    -webkit-background-clip: text; /* Clipping pour dégradé de texte */
-    -webkit-text-fill-color: transparent; /* Remplissage transparent */
-    transition: all 0.3s ease; /* Transition douce pour tous les effets */
+  font-size: 2em; /* Taille de la police */
+  font-weight: bold; /* Gras */
+  color: #007BFF; /* Couleur principale */
+  text-transform: uppercase; /* Mettre en majuscules */
+  letter-spacing: 5px; /* Espacement entre les lettres */
+  position: relative; /* Position pour les effets */
+  display: inline-block; /* Pour le positionnement */
+  background: linear-gradient(90deg, #007BFF, #00CFFF); /* Dégradé bleu */
+  -webkit-background-clip: text; /* Clipping pour dégradé de texte */
+  -webkit-text-fill-color: transparent; /* Remplissage transparent */
+  transition: all 0.3s ease; /* Transition douce pour tous les effets */
 }
 
-/* Effet de survol */
-.logo h3:hover {
-    transform: scale(1.1); /* Agrandissement au survol */
-    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); /* Ombre au survol */
+/* Styles pour le menu de navigation */
+.navbar-nav {
+  list-style: none;
+  display: flex;
+  gap: 20px;
 }
 
-/* Style pour le mot "INSPECT" */
-.logo h3 span {
-    color: #FF6347; /* Couleur différente pour INSPECT */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre pour effet 3D */
-    position: relative; /* Pour l'effet de soulignement */
+.nav-item {
+  list-style: none;
 }
 
-/* Effet de soulignement sur "INSPECT" */
-.logo h3 span::after {
-    content: ""; /* Contenu vide pour créer l'effet */
-    display: block; /* Affichage en bloc */
-    width: 100%; /* Largeur pleine */
-    height: 5px; /* Hauteur de la ligne */
-    background: #FF6347; /* Couleur de la ligne */
-    position: absolute; /* Position absolue */
-    bottom: -10px; /* Position en dessous du texte */
-    left: 0; /* À gauche */
-    transform: scaleX(0); /* Réduire à 0 pour commencer */
-    transition: transform 0.3s ease; /* Transition douce */
+.nav-link {
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  position: relative;
+  transition: color 0.3s ease;
 }
 
-/* Révéler le soulignement au survol */
-.logo h3 span:hover::after {
-    transform: scaleX(1); /* Agrandir à 100% */
+.nav-link:hover {
+  color: #002f6c;
 }
 
+/* Bouton hamburger */
+.navbar-toggler {
+  display: none; /* Masqué par défaut */
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Icône du bouton hamburger */
+.navbar-toggler-icon {
+  font-size: 28px;
+}
+
+/* Bloc de profil utilisateur */
+.user-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 20px; /* Espacement à gauche du profil */
+  text-align: center;
+}
+
+.profile-picture {
+  position: relative;
+  width: 40px; /* Largeur de l'image */
+  height: 40px; /* Hauteur de l'image */
+  border-radius: 50%; /* Rendre la div circulaire */
+  overflow: hidden; /* Pour que l'image reste dans le cercle */
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Adapter l'image à la taille */
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 2px; /* Ajustez la position selon vos besoins */
+  right: 2px; /* Ajustez la position selon vos besoins */
+  width: 8px; /* Taille du point */
+  height: 8px; /* Taille du point */
+  border-radius: 50%; /* Rendre le point circulaire */
+  background-color: green; /* Couleur du point vert */
+  border: 2px solid white; /* Optionnel : ajouter un bord blanc */
+}
+
+.user-name {
+  margin-top: 5px; /* Espacement entre l'image et le nom */
+  font-size: 12px; /* Taille de la police */
+  color: white; /* Couleur du texte */
+}
+
+/* Styles de responsive pour le profil utilisateur */
+@media (max-width: 768px) {
+  .navbar-collapse {
+      display: none; /* Masquer par défaut */
+      flex-direction: column; /* Aligner les éléments verticalement */
+      width: 100%;
+      background-color: #66b2ff; /* Fond pour le menu */
+      position: absolute; /* Position absolue sous la navbar */
+      top: 60px; /* Ajuster pour qu'il soit sous la navbar */
+      left: 0;
+      z-index: 1000; /* Assurer que le menu soit au-dessus */
+  }
+
+  .navbar-collapse.active {
+      display: flex; /* Afficher quand actif */
+  }
+
+  .navbar-toggler {
+      display: block; /* Afficher le bouton hamburger */
+  }
+
+  .nav-item {
+      padding: 10px 0; /* Espacement vertical pour les éléments du menu */
+      width: 100%; /* Prendre toute la largeur */
+      text-align: center; /* Centrer le texte */
+  }
+
+  .user-profile {
+      display: none; /* Masquer le profil sur les petits écrans */
+  }
+}
+
+/* Styles de transition pour le bouton hamburger */
+.navbar-toggler.active + .navbar-collapse {
+  display: flex; /* Afficher le menu quand le bouton est actif */
+}
 
 .footer {
     background-color: #1a1a2e;
@@ -494,6 +492,52 @@ input:checked + .slider:before {
 /* Révéler le soulignement au survol */
 .logo h1 span:hover::after {
     transform: scaleX(1); /* Agrandir à 100% */
+}
+
+
+
+
+/* Bouton de déconnexion */
+/* Styles pour le bouton de déconnexion */
+.logout-button {
+  background-color: #ff4d4d; /* Couleur de fond rouge */
+  color: white; /* Couleur du texte */
+  border: none; /* Pas de bordure */
+  border-radius: 5px; /* Coins arrondis */
+  padding: 10px 20px; /* Espacement intérieur */
+  font-size: 16px; /* Taille de la police */
+  cursor: pointer; /* Curseur en forme de main */
+  transition: background-color 0.3s, transform 0.2s; /* Transitions pour les effets */
+}
+
+.logout-button:hover {
+  background-color: #ff1a1a; /* Couleur de fond lors du survol */
+  transform: scale(1.05); /* Effet d'agrandissement */
+}
+
+.logout-button:active {
+  transform: scale(0.95); /* Effet d'enfoncement */
+}
+
+
+
+
+/* Bouton LOGIN */
+
+.login-button {
+  display: inline-block; /* Pour que le lien soit comme un bouton */
+  padding: 10px 20px; /* Espacement à l'intérieur */
+  background-color: #007BFF; /* Couleur du fond du bouton */
+  color: white; /* Couleur du texte */
+  text-align: center; /* Centrer le texte */
+  text-decoration: none; /* Enlever le soulignement */
+  border-radius: 5px; /* Coins arrondis */
+  transition: background-color 0.3s ease; /* Transition douce pour l'effet de survol */
+  cursor: pointer; /* Curseur de pointeur */
+}
+
+.login-button:hover {
+  background-color: #0056b3; /* Couleur de fond au survol */
 }
 
 

@@ -42,7 +42,7 @@ export async function registerClass(classInfo) {
         console.log("Classe enregistrée avec succès");
         
         setTimeout(()=>{
-            window.location.href = '/index.html';//On change la estination après avoir ajouter une classe (On redirige l'utilisateur vers la page d'acceuil)
+            window.location.href = '../index.html';//On change la estination après avoir ajouter une classe (On redirige l'utilisateur vers la page d'acceuil)
         }, 2000);
         
     } 

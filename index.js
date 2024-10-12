@@ -2,11 +2,15 @@
 
 
 // Importez les fonctions nécessaires depuis Firebase
-import { getFirestore, collection, doc, addDoc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
-
+import { getFirestore, collection, query, where, getDoc, doc , addDoc, getDocs, updateDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
 // Assurez-vous que Firebase est déjà initialisé dans votre fichier HTML
 const db = getFirestore(); // Assurez-vous que cela soit défini après l'initialisation de Firebase
-
+const auth = getAuth();
+const buttonsActions = document.querySelectorAll('.home-button-container');
+const userProfil = document.querySelector('.user-profile');//Photo de profile de l'utilisateur(Qui va s'afficher si l'utilisateur est connecté)
+const logoutButton = document.getElementById('logoutButton');//On sélectionne le bouton de déconnexion
+const loginButton = document.getElementById('loginButton');
 async function addUser() {
     try {
         const docRef = await addDoc(collection(db, "users"), {
@@ -111,3 +115,63 @@ async function updateClassStatus(classId, newStatus) {
 
 // Appeler la fonction pour afficher les éléments
 getElements();
+
+
+
+
+logoutButton.addEventListener('click', () => {
+    signOut(auth).then(() => {
+        // Déconnexion réussie
+        console.log('Déconnexion réussie');
+        window.location.href = '../login/index.html'; // Redirige vers la page de connexion
+    }).catch((error) => {
+        // Une erreur est survenue lors de la déconnexion
+        console.error('Erreur lors de la déconnexion:', error);
+    });
+});
+
+
+
+async function getUserData(uid) {
+    // Crée une requête pour rechercher l'utilisateur par son uid
+    const q = query(collection(db, "users"), where("uid", "==", uid));
+    
+    const querySnapshot = await getDocs(q);
+    
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((doc) => {
+        const userData = doc.data();
+       document.getElementById('userName').innerHTML = userData.pseudoOk;
+       document.getElementById('userPhoto').setAttribute('src', userData.photoURLOk);
+       userProfil.style.display = "block";//Si l'utilisateur est connecté on affiche sa photo de profile
+       logoutButton.style.display="block";//Si l'utilisateur est connecté on affiche le bouton de déconnexion
+       loginButton.style.display = "none"; //On éfface le bouton connection si l'utilisateur est déjà connecté
+
+       buttonsActions.forEach(function (element){
+        element.style.display="block";
+      })
+        // Utilise les données de l'utilisateur selon tes besoins
+      });
+    } else {
+      console.log('Aucune donnée trouvée pour cet utilisateur');
+     
+    }
+  }
+  
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const uid = user.uid; // Obtenir le uid de l'utilisateur connecté
+      getUserData(uid); // Appeler la fonction pour obtenir les données
+    } else {
+      console.log("L'utilisateur n'est pas connecté");
+      buttonsActions.forEach(function (element){
+        element.style.display="none";
+      });
+      userProfil.style.display = "none";//On cache la photo si l'utilisateur n'est pas connecté
+      logoutButton.style.display="none";//Si l'utilisateur est pas connecté on éfface le bouton de déconnexion
+      loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
+
+    }
+  });
+  
