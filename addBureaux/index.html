@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="/assets/logo.css">
+    <link rel="stylesheet" href="../style.css">
     <title>Ajouter un Bureau</title>
 </head>
 <body>
     <div class="home-button-container">
-        <a href="/index.html" class="home-button">Accueil</a>
+        <a href="../index.html" class="home-button">Accueil</a>
       </div>
       
 
@@ -22,7 +22,7 @@
         <form class="add-class-form">
             <h1>Ajouter un Bureau</h1>
             <div class="input-group proprio-container">
-                <label for="class-name" class="label">Propriotère du Bureau</label>
+                <label for="class-name" class="label">Propriétaire du Bureau</label>
                 <input type="text" id="proprio" name="proprio" placeholder="Entrez le nom de l'occupant" required>
                 <span></span>
             </div>
@@ -30,16 +30,16 @@
             <div class="input-group">
                 <label for="localisation" class="label">Localisation</label>
                 <select id="localisation" name="localisation" required>
-                    <option value="chaussee">Rez-de-chaussée</option>
-                    <option value="premierEtage">Premier Etage</option>
-                    <option value="deuxiemeEtage">Deuxième Etage</option>
+                    <option value="Rez-de-chaussée">Rez-de-chaussée</option>
+                    <option value="Premier Etage">Premier Etage</option>
+                    <option value="Deuxième Etage">Deuxième Etage</option>
                 </select>
             </div>
             <div class="file-input-container">
                 <input type="file" id="fileInput" class="file-input" accept="image/*">
                 <label for="fileInput" class="file-label">
                   <span class="file-icon">📷</span>
-                  <span class="file-text">Image du bureau / propriotère</span>
+                  <span class="file-text">Image du bureau / Propriétaire</span>
                 </label>
               </div>
 
