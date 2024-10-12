@@ -123,7 +123,7 @@ logoutButton.addEventListener('click', () => {
     signOut(auth).then(() => {
         // Déconnexion réussie
         console.log('Déconnexion réussie');
-        window.location.href = '../login/index.html'; // Redirige vers la page de connexion
+        window.location.href = './login/index.html'; // Redirige vers la page de connexion
     }).catch((error) => {
         // Une erreur est survenue lors de la déconnexion
         console.error('Erreur lors de la déconnexion:', error);
