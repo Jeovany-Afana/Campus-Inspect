@@ -32,6 +32,7 @@ body {
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
   width: 100%; /* S'étend horizontalement */
+  height: max-content;
 }
 
 .class-card:hover {
@@ -46,9 +47,12 @@ body {
 }
 
 .class-info {
-  padding: 20px;
+  display: block;
+  padding-left: 20px;
   text-align: left;
+  margin-left: 1%;
 }
+
 
 .class-info h2 {
   color: white;
@@ -62,6 +66,8 @@ body {
   margin: 10px 0;
   font-size: 1em;
   color: #333;
+  font-weight: 300;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .class-info strong {

@@ -11,6 +11,12 @@ const buttonsActions = document.querySelectorAll('.home-button-container');
 const userProfil = document.querySelector('.user-profile');//Photo de profile de l'utilisateur(Qui va s'afficher si l'utilisateur est connecté)
 const logoutButton = document.getElementById('logoutButton');//On sélectionne le bouton de déconnexion
 const loginButton = document.getElementById('loginButton');
+
+
+
+
+
+
 async function addUser() {
     try {
         const docRef = await addDoc(collection(db, "users"), {
@@ -42,15 +48,18 @@ async function getElements() {
         <div class="class-card">
           <img src="classe.jpg" alt="Image de la classe" class="class-image">
           <div class="class-info">
-              <h2>${classeData.name}</h2>
-              <p><strong>Capacité :</strong> ${classeData.capacity}</p>
+          <h2>${classeData.name}</h2>
+            <h3 class="status" style="text-align: center; font-size: 1.5rem; font-weight: bold; color: ${classeData.status_occupation === 'Occupée' ? 'red' : 'green'} !important;">
+            ${classeData.status_occupation}
+            </h3>
+            <p><strong>Capacité :</strong> ${classeData.capacity}</p>
               <p><strong>Équipements Disponibles :</strong>
               ${classeData.equipements.length === 0 
                   ? "Aucun équipement disponible" 
                   : classeData.equipements.map(equipement => `<span>${equipement}</span>`).join(', ')
               }
               </p>
-              <p class="status"><strong>Statut d'Occupation :</strong> ${classeData.status_occupation}</p>
+              
               <p><strong>Horaires d'Occupation :</strong> 8h - 16h</p>
               <p><strong>Localisation :</strong> ${classeData.localisation}</p>
               <p><strong>Occupants :</strong> ${classeData.occupants === "" ? "Aucun occupant" 
@@ -86,6 +95,7 @@ function addToggleListeners() {
 
             // On récupère l'élément qui affiche le statut
             const statusText = e.target.closest('.class-card').querySelector('.status');
+
 
             if (e.target.checked) {
                 statusText.innerHTML = '<strong>Statut d\'Occupation :</strong> Occupée';
@@ -146,6 +156,32 @@ async function getUserData(uid) {
        userProfil.style.display = "block";//Si l'utilisateur est connecté on affiche sa photo de profile
        logoutButton.style.display="block";//Si l'utilisateur est connecté on affiche le bouton de déconnexion
        loginButton.style.display = "none"; //On éfface le bouton connection si l'utilisateur est déjà connecté
+       
+       
+       
+       if (userData.role === "responsable" || userData.role === "directeur" || userData.role === "administration") 
+        {
+            getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
+                
+                    const switchButtons = document.querySelectorAll('.switch-container');
+                    switchButtons.forEach((switchButton) => {
+                       switchButton.style.display = "block";
+                        
+                    }, 1000);
+            });
+    
+        
+       } else {
+        getElements().then(() => {
+           
+                const switchButtons = document.querySelectorAll('.switch-container');
+                switchButtons.forEach((switchButton) => {
+                   switchButton.style.display = "none";
+                 
+                }, 1000);
+        });
+       }
+      
 
        buttonsActions.forEach(function (element){
         element.style.display="block";
@@ -171,7 +207,13 @@ async function getUserData(uid) {
       userProfil.style.display = "none";//On cache la photo si l'utilisateur n'est pas connecté
       logoutButton.style.display="none";//Si l'utilisateur est pas connecté on éfface le bouton de déconnexion
       loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
-
-    }
+      getElements().then(() => {
+       
+            const switchButtons = document.querySelectorAll('.switch-container');
+            switchButtons.forEach((switchButton) => {
+               switchButton.style.display = "none";
+            
+            }, 1000);
+    }); }
   });
   
