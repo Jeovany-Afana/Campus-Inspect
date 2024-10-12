@@ -10,7 +10,7 @@
   });
  }
 
-setTimeout(loadtoggler,2000);
+setTimeout(loadtoggler,3000);
 
 
 

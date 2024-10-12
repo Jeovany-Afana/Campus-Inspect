@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Inspect</title>
     <link rel="stylesheet" href="./style.css">
+<<<<<<< HEAD
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+=======
+>>>>>>> 080f141e6e259cb5cf52b4cb920f77c17571525b
 </head>
 <body>
    
@@ -45,11 +48,11 @@
         </div>
       
         <div class="home-button-container">
-          <a href="/addBureaux/index.html" class="home-button">Ajouter un bureau</a>
+          <a href="./addBureaux/index.html" class="home-button">Ajouter un bureau</a>
         </div>
 
         <div class="home-button-container">
-            <a href="/inscription/inscription.html" class="home-button">Ajouter un utilisateur</a>
+            <a href="./inscription/inscription.html" class="home-button">Ajouter un utilisateur</a>
           </div>
       </div>
         <!-- Contenu du fichier principal -->
@@ -120,11 +123,9 @@ const analytics = getAnalytics(app); // Initialiser les analyses
 const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilisé
 // Initialiser Firebase Storage (pour stocker des fichiers)
 const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
-
-
       </script>
-      <script src="./assets/humbergerButton.js"></script>
+      <script src="./humbergerButton.js"></script>
      
-      <script type="module" src="index.js"></script>
+      <script type="module" src="./index.js"></script>
 </body>
 </html>
