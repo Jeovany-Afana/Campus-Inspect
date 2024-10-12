@@ -208,3 +208,294 @@ input:checked + .slider {
 input:checked + .slider:before {
   transform: translateX(40px); /* Translation plus longue car le switch est plus grand */
 }
+
+
+  /* Styles de la navbar */
+  .navbar {
+    background-color: #66b2ff; /* Bleu ciel */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  ul
+  {
+    text-align: center;
+  }
+
+  .container-fluid {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .navbar-brand span {
+    color: #002f6c; /* Partie sombre */
+  }
+  
+  .navbar-nav {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-item {
+    list-style: none;
+  }
+  
+  .nav-link {
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #002f6c;
+  }
+  
+  .nav-link.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  
+  .navbar-toggler {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  /* Icône du bouton hamburger */
+  .navbar-toggler-icon {
+    font-size: 28px;
+  }
+  
+  /* Responsive pour les écrans de taille inférieure */
+  @media (max-width: 768px) {
+    .navbar-collapse {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      background-color: #66b2ff;
+      position: absolute;
+      top: 50px;
+      left: 0;
+    }
+
+    .navbar-collapse.active {
+      display: flex;
+      text-align: center;
+    }
+
+    .navbar-toggler {
+      display: block;
+    }
+
+    .nav-link {
+      padding: 10px 20px;
+      text-align: center;
+    }
+}
+/*-----------------------------------LOGO---------------------------------------------*/
+
+
+.logo {
+    text-align: center; /* Centrer le texte */
+    /* margin: 100px 0; Marges autour du logo */
+}
+
+.logo h3 {
+    font-size: 2em; /* Taille de la police */
+    font-weight: bold; /* Gras */
+    color: #007BFF; /* Couleur principale */
+    text-transform: uppercase; /* Mettre en majuscules */
+    letter-spacing: 5px; /* Espacement entre les lettres */
+    position: relative; /* Position pour les effets */
+    display: inline-block; /* Pour le positionnement */
+    background: linear-gradient(90deg, #007BFF, #00CFFF); /* Dégradé bleu */
+    -webkit-background-clip: text; /* Clipping pour dégradé de texte */
+    -webkit-text-fill-color: transparent; /* Remplissage transparent */
+    transition: all 0.3s ease; /* Transition douce pour tous les effets */
+}
+
+/* Effet de survol */
+.logo h3:hover {
+    transform: scale(1.1); /* Agrandissement au survol */
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); /* Ombre au survol */
+}
+
+/* Style pour le mot "INSPECT" */
+.logo h3 span {
+    color: #FF6347; /* Couleur différente pour INSPECT */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre pour effet 3D */
+    position: relative; /* Pour l'effet de soulignement */
+}
+
+/* Effet de soulignement sur "INSPECT" */
+.logo h3 span::after {
+    content: ""; /* Contenu vide pour créer l'effet */
+    display: block; /* Affichage en bloc */
+    width: 100%; /* Largeur pleine */
+    height: 5px; /* Hauteur de la ligne */
+    background: #FF6347; /* Couleur de la ligne */
+    position: absolute; /* Position absolue */
+    bottom: -10px; /* Position en dessous du texte */
+    left: 0; /* À gauche */
+    transform: scaleX(0); /* Réduire à 0 pour commencer */
+    transition: transform 0.3s ease; /* Transition douce */
+}
+
+/* Révéler le soulignement au survol */
+.logo h3 span:hover::after {
+    transform: scaleX(1); /* Agrandir à 100% */
+}
+
+
+.footer {
+    background-color: #1a1a2e;
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  
+  .footer-section {
+    width: 300px;
+  }
+  
+  .footer-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #00aaff;
+  }
+  
+  .footer-section.about p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .footer-section ul {
+    list-style-type: none;
+  }
+  
+  .footer-section ul li {
+    margin-bottom: 10px;
+  }
+  
+  .footer-section ul li a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .footer-section ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  .footer-bottom {
+    border-top: 1px solid #00aaff;
+    padding-top: 10px;
+    font-size: 14px;
+  }
+  
+  .social-icons {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .social-icons a {
+    color: white;
+    margin: 0 10px;
+    font-size: 20px;
+  }
+  
+  .social-icons a:hover {
+    color: #00aaff;
+  }
+  
+  .contact p {
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  
+  .contact i {
+    margin-right: 10px;
+  }
+  
+
+  /* --------------------------Code du logo----------------------------- */
+  
+  .logo {
+    text-align: center; /* Centrer le texte */
+    /* margin: 100px 0; Marges autour du logo */
+}
+
+.logo h1 {
+    font-size: 4em; /* Taille de la police */
+    font-weight: bold; /* Gras */
+    color: #007BFF; /* Couleur principale */
+    text-transform: uppercase; /* Mettre en majuscules */
+    letter-spacing: 5px; /* Espacement entre les lettres */
+    position: relative; /* Position pour les effets */
+    display: inline-block; /* Pour le positionnement */
+    background: linear-gradient(90deg, #007BFF, #00CFFF); /* Dégradé bleu */
+    -webkit-background-clip: text; /* Clipping pour dégradé de texte */
+    -webkit-text-fill-color: transparent; /* Remplissage transparent */
+    transition: all 0.3s ease; /* Transition douce pour tous les effets */
+}
+
+/* Effet de survol */
+.logo h1:hover {
+    transform: scale(1.1); /* Agrandissement au survol */
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); /* Ombre au survol */
+}
+
+/* Style pour le mot "INSPECT" */
+.logo h1 span {
+    color: #FF6347; /* Couleur différente pour INSPECT */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre pour effet 3D */
+    position: relative; /* Pour l'effet de soulignement */
+}
+
+/* Effet de soulignement sur "INSPECT" */
+.logo h1 span::after {
+    content: ""; /* Contenu vide pour créer l'effet */
+    display: block; /* Affichage en bloc */
+    width: 100%; /* Largeur pleine */
+    height: 5px; /* Hauteur de la ligne */
+    background: #FF6347; /* Couleur de la ligne */
+    position: absolute; /* Position absolue */
+    bottom: -10px; /* Position en dessous du texte */
+    left: 0; /* À gauche */
+    transform: scaleX(0); /* Réduire à 0 pour commencer */
+    transition: transform 0.3s ease; /* Transition douce */
+}
+
+/* Révéler le soulignement au survol */
+.logo h1 span:hover::after {
+    transform: scaleX(1); /* Agrandir à 100% */
+}
+
+
+
+
