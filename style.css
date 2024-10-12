@@ -47,10 +47,9 @@ body {
 }
 
 .class-info {
-  display: block;
-  padding-left: 20px;
+
+  padding: 20px;
   text-align: left;
-  margin-left: 1%;
 }
 
 
