@@ -27,7 +27,7 @@ export async function registerBureau(bureauInfo, file) {
 
     try {
         //Upload la photo du bureau
-        const storageRef = ref(storage, 'photosBureaux' + file.name);
+        const storageRef = ref(storage, 'bureaux/' + file.name);
 
         const snapshot = await uploadBytes(storageRef, file);
         const downloadURL = await getDownloadURL(storageRef);
@@ -39,6 +39,7 @@ export async function registerBureau(bureauInfo, file) {
             localisation: bureauInfo.localisation,
             presence: "Absent",
             status: "Libre",
+            poste: "",
             photoURL: downloadURL
         };
 
@@ -48,7 +49,7 @@ export async function registerBureau(bureauInfo, file) {
 
         setTimeout(() => {
             alert('Bureau ajouter avec succès');
-            window.location.href = '/index.html'; // Change la destination
+            window.location.href = '../bureaux/index.html'; // Change la destination
           }, 2000); // 2 secondes avant redirection
 
 

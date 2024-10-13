@@ -12,107 +12,132 @@ const userProfil = document.querySelector('.user-profile');//Photo de profile de
 const logoutButton = document.getElementById('logoutButton');//On sélectionne le bouton de déconnexion
 const loginButton = document.getElementById('loginButton');
 
+const modal = document.getElementById('myModal');
+const closeModalSpan = document.querySelector('.close');
+const saveTimeBtn = document.getElementById('saveTime');
 
+// Fermer la modale
+closeModalSpan.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+
+// Fermer la modale si on clique en dehors du contenu
+window.addEventListener('click', (event) => {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+});
 
 
 async function getElements() {
-    // Récupérer tous les documents dans la collection "classes"
-    const querySnapshot = await getDocs(collection(db, "classes"));
+  const querySnapshot = await getDocs(collection(db, "classes"));
+  const classListContainer = document.getElementById('class-list');
+  classListContainer.innerHTML = '';
 
-    // Sélectionner le conteneur où les cartes vont être ajoutées
-    const classListContainer = document.getElementById('class-list');
-    
-    classListContainer.innerHTML = '';
+  querySnapshot.forEach((doc) => {
+    const classeData = doc.data();
 
-    // Parcourir chaque document récupéré
-    querySnapshot.forEach((doc) => {
-        // Les données de chaque classe
-        const classeData = doc.data();
-
-        // Créer la carte pour chaque classe
-        const classCard = `
-        <div class="class-card">
-          <img src="../classe.jpg" alt="Image de la classe" class="class-image">
-          <div class="class-info">
+    const classCard = `
+      <div class="class-card">
+        <img src="../classe.jpg" alt="Image de la classe" class="class-image">
+        <div class="class-info">
           <h2>${classeData.name}</h2>
-            <h3 class="status" style="text-align: center; font-size: 1.5rem; font-weight: bold; color: ${classeData.status_occupation === 'Occupée' ? 'red' : 'green'} !important;">
+          <h3 class="status" style="text-align: center; font-size: 1.5rem; font-weight: bold; color: ${classeData.status_occupation === 'Occupée' ? 'red' : 'green'};">
             ${classeData.status_occupation}
-            </h3>
-            <p><strong>Capacité :</strong> ${classeData.capacity}</p>
-              <p><strong>Équipements Disponibles :</strong>
-              ${classeData.equipements.length === 0 
-                  ? "Aucun équipement disponible" 
-                  : classeData.equipements.map(equipement => `<span>${equipement}</span>`).join(', ')
-              }
-              </p>
-              
-              <p><strong>Horaires d'Occupation :</strong> 8h - 16h</p>
-              <p><strong>Localisation :</strong> ${classeData.localisation}</p>
-              <p><strong>Occupants :</strong> ${classeData.occupants === "" ? "Aucun occupant" 
-                  : classeData.occupants
-              }</p>
-          </div>
-          <br>
-          <!-- Switch pour changer le statut de la classe -->
-          <div class="switch-container">
-            <label class="switch">
-              <input type="checkbox" class="status-toggle" data-class-id="${doc.id}" ${classeData.status_occupation === 'Occupée' ? 'checked' : ''}/>
-              <span class="slider round"></span>
-            </label>
-          </div>
+          </h3>
+          <p><strong>Capacité :</strong> ${classeData.capacity}</p>
+          <p><strong>Équipements Disponibles :</strong>
+            ${classeData.equipements.length === 0 
+              ? "Aucun équipement disponible" 
+              : classeData.equipements.map(equipement => `<span>${equipement}</span>`).join(', ')
+            }
+          </p>
+          <p class="occupee_jusqua"><strong>Occupée jusqu'à :</strong> ${classeData.occupee_jusqua ? classeData.occupee_jusqua : "Non spécifié"}</p>
+          <p><strong>Localisation :</strong> ${classeData.localisation}</p>
+          <p class="occupants"><strong>Occupants :</strong> ${classeData.occupants || "Aucun occupant"}</p>
         </div>
-      `;
+        <br>
+        <div class="switch-container">
+          <label class="switch">
+            <input type="checkbox" class="status-toggle" data-class-id="${doc.id}" ${classeData.status_occupation === 'Occupée' ? 'checked' : ''}/>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+    `;
 
-        // Insérer la carte dans le conteneur
-        classListContainer.innerHTML += classCard;
-    });
+    classListContainer.innerHTML += classCard;
+  });
 
-    // Ajoute les écouteurs d'événements après avoir ajouté les cartes
-    addToggleListeners();
+  addToggleListeners();
 }
 
 function addToggleListeners() {
-    const statusToggles = document.querySelectorAll('.status-toggle');
+  const statusToggles = document.querySelectorAll('.status-toggle');
 
-    statusToggles.forEach((toggle) => {
-        toggle.addEventListener('change', async (e) => {
-            // On récupère l'id de la classe correspondante
-            const classId = e.target.getAttribute('data-class-id');
+  statusToggles.forEach((toggle) => {
+    toggle.addEventListener('change', async (e) => {
+      const classId = e.target.getAttribute('data-class-id');
+      const statusText = e.target.closest('.class-card').querySelector('.status');
+      const occupantsText = e.target.closest('.class-card').querySelector('.occupants');
+      const occupeeJusquaText = e.target.closest('.class-card').querySelector('.occupee_jusqua');
 
-            // On récupère l'élément qui affiche le statut
-            const statusText = e.target.closest('.class-card').querySelector('.status');
+      if (e.target.checked) {
+        let nomOccupants = '';
 
+        while (!nomOccupants) {
+          nomOccupants = prompt("Qui occupe la salle ? (Votre classe) !");
 
-            if (e.target.checked) {
+          if (nomOccupants === null) {
+            break;
+          } else if (nomOccupants.trim() !== '') {
+            modal.style.display = 'block'; // Afficher le modal pour la sélection du temps
+            
+            // Ecouteur d'événement pour la sélection de l'heure dans le modal
+            saveTimeBtn.onclick = async () => {
+              const selectedTime = document.getElementById('end-time').value;
+              if (selectedTime) {
                 statusText.innerHTML = 'Occupée';
                 statusText.style.color = 'red';
-                // Appeler la fonction pour mettre à jour le statut dans Firestore
-                await updateClassStatus(classId, "Occupée"); // true = occupée
-            } else {
-                statusText.innerHTML = 'Libre';
-                statusText.style.color = 'green';
-                // Appeler la fonction pour mettre à jour le statut dans Firestore
-                await updateClassStatus(classId, 'Libre'); // false = libre
-            }
-        });
+                occupantsText.innerHTML = `<strong>Occupants:</strong> ${nomOccupants}`;
+                occupeeJusquaText.innerHTML = `<strong>Occupée jusqu'à:</strong> ${selectedTime}`;
+
+                // Mettre à jour dans Firestore
+                await updateClassStatus(classId, "Occupée", nomOccupants, selectedTime);
+                modal.style.display = 'none'; // Fermer le modal après sélection
+              } else {
+                alert('Veuillez sélectionner une heure de libération.');
+              }
+            };
+          } else {
+            alert('Le champ ne peut pas être vide. Veuillez entrer une valeur.');
+          }
+        }
+      } else {
+        statusText.innerHTML = 'Libre';
+        statusText.style.color = 'green';
+        occupantsText.innerHTML = `<strong>Occupants:</strong> Aucun occupant`;
+        occupeeJusquaText.innerHTML = `<strong>Occupée jusqu'à:</strong> Aucune horaire d'occupation`;
+
+        // Mettre à jour dans Firestore
+        await updateClassStatus(classId, 'Libre', "Aucun occupant", "");
+      }
     });
+  });
 }
 
-// Fonction pour modifier le statut de la classe
-async function updateClassStatus(classId, newStatus) {
-    // Référence au document de la classe dans Firestore
-    const classRef = doc(db, "classes", classId); // Remplace "classes" par le nom de ta collection
-
-    // Mettre à jour l'attribut `status_occupation` avec le nouveau statut
-    await updateDoc(classRef, {
-        status_occupation: newStatus
-    });
+// Fonction pour mettre à jour Firestore
+async function updateClassStatus(classId, newStatus, newOccupants, newOccupeeJusqua) {
+  const classRef = doc(db, "classes", classId);
+  await updateDoc(classRef, {
+    status_occupation: newStatus,
+    occupants: newOccupants,
+    occupee_jusqua: newOccupeeJusqua,
+  });
 }
 
-// Appeler la fonction pour afficher les éléments
+// Charger les éléments
 getElements();
-
-
 
 
 logoutButton.addEventListener('click', () => {

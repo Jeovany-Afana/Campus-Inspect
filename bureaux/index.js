@@ -35,7 +35,7 @@ async function getElements() {
             <img src="${classeData.photoURL}" alt="Image du bureau" class="class-image">
             <div class="class-info">
                 <h2>${classeData.proprio}</h2>
-    
+                <p style="text-align: center; color: #007BFF;">${classeData.poste}</p>
                 <h3 class="status1" style="color: ${classeData.presence === 'Absent' ? 'red' : 'green'};">
                     ${classeData.presence}
                 </h3>
