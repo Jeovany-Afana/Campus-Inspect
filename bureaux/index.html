@@ -3,16 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
     <title>Bureaux</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../logo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+ 
 </head>
 <body>
- <div id="navbar"></div>
-
-    <div id="footer"></div>
+   
     
-    <script src="./index.js"></script>
-    <script src="/assets/loadHTML.js"></script>
-    <script src="/assets/humbergerButton.js"></script>
+  <nav class="navbar">
+    <div class="container-fluid">
+      <div class="logo">
+        <h3>CAMPUS <span>INSPECT</span></h3>
+      </div>
+      <button class="navbar-toggler" id="navbar-toggler" type="button">
+        <span class="navbar-toggler-icon">&#9776;</span>
+      </button>
+      <div class="navbar-collapse" id="navbar-collapse">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="../index.html">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../classes/index.html">Classes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./index.html">Bureaux</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="../evenements/index.html">Evènements</a>
+          </li>
+        </ul>
+      </div>
+      <!-- Bloc de profil utilisateur -->
+      <div class="user-profile">
+        <div class="profile-picture">
+          <img src="path/to/default-image.png" alt="Photo de profil" id="userPhoto">
+          <span class="status-indicator"></span>
+        </div>
+        <div class="user-name" id="userName"></div>
+      </div>
+    </div>
+  </nav>
+  
+<!-- Bouton de déconnexion -->
+<button id="logoutButton" class="logout-button">Déconnexion</button>
+
+<a id="loginButton" class="login-button" href="../login/index.html">Se connecter</a>
+
+
+
+<!-- Fin de la navbar -->
+
+<div class="home-button-container">
+    <a href="../addBureaux/index.html" class="home-button">Ajouter un bureau</a>
+  </div>
+
+      <div id="class-list"></div>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section about">
+      <h2 class="footer-title">Jeovany Afana</h2>
+      <p>Développeur passionné et créateur d'applications web modernes. N'hésitez pas à me contacter pour vos projets digitaux.</p>
+      <div class="contact">
+        <br>
+        <p><i class="fas fa-envelope"></i> wilfrieddylan451@gmail.com</p><br><br>
+        <p><i class="fas fa-phone"></i> +221 77 493 1623</p>
+      </div>
+    </div>
+    <div class="footer-section links">
+      <h2 class="footer-title">Liens utiles</h2>
+      <ul>
+        <li><a href="../index.html">Accueil</a></li>
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Mentions légales</a></li>
+      </ul>
+    </div>
+    <div class="footer-section social">
+      <h2 class="footer-title">Suivez-moi</h2>
+      <div class="social-icons">
+        <a href="https://www.facebook.com/jeovany.afana.7" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/joe.afana/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/Jeovany_damso5" target="_blank"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024 Jeovany Afana. Tous droits réservés.</p>
+  </div>
+</footer>
+
+
+    <script type="module">
+// Importer les fonctions nécessaires depuis les SDK de Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-analytics.js"; // Pour les analyses
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
+import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js"; // Pour utiliser Storage
+
+// Configuration de votre application Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA", // Clé API de votre projet
+  authDomain: "inspecteur-de-classes.firebaseapp.com", // Domaine d'authentification
+  projectId: "inspecteur-de-classes", // ID de votre projet
+  storageBucket: "inspecteur-de-classes.appspot.com", // Bucket de stockage pour les fichiers
+  messagingSenderId: "572661846292", // ID de l'expéditeur de messages
+  appId: "1:572661846292:web:aeb0374db2d414fef9f201", // ID de votre application
+  measurementId: "G-NVN5GERDV6" // ID de mesure pour les analyses
+};
+
+// Initialiser Firebase avec la configuration fournie
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app); // Initialiser les analyses
+
+// Initialiser Firestore (base de données de Firebase)
+const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilisé
+// Initialiser Firebase Storage (pour stocker des fichiers)
+const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
+      </script>
+      <script src="./humbergerButton.js"></script>
+     
+      <script type="module" src="./index.js"></script>
 </body>
 </html>

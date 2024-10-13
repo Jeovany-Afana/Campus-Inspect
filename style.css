@@ -26,14 +26,44 @@ body {
 
 /* Contenu des cartes */
 .class-card {
-  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
-  transition: transform 0.2s, box-shadow 0.2s;
-  width: 100%; /* S'étend horizontalement */
-  height: fit-content;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px; /* Limiter la largeur pour garder une belle présentation */
+  height: auto; /* S'assurer que la hauteur s'adapte au contenu */
 }
+
+.class-image {
+  width: 100%;
+  height: auto; /* S'adapte à la taille de l'image */
+  border-radius: 10px;
+}
+
+.class-info {
+  margin-top: 15px;
+  flex-grow: 1; /* Permet à cette section de s'étendre si besoin */
+}
+
+.status1, .status2 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.switch-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  align-items: center;
+}
+
 
 .class-card:hover {
   transform: scale(1.05);
@@ -41,10 +71,12 @@ body {
 }
 
 .class-image {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
+  width: 100%; /* S'assure que l'image prend toute la largeur du conteneur */
+  height: 250px; /* Ajuste la hauteur à une valeur qui convient mieux */
+  object-fit: contain; /* L'image s'adapte sans être coupée */
+  border-radius: 8px; /* Si tu veux des coins arrondis pour l'image */
 }
+
 
 .class-info {
 
@@ -115,7 +147,7 @@ body {
   text-align: center;
   margin-left: 1%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Effet d'ombre */
-  width: fit-content%; /* Le bouton prend tout l'espace horizontal disponible */
+  width: fit-content; /* Le bouton prend tout l'espace horizontal disponible */
   max-width: 250px; /* Taille maximale du bouton */
 }
 
@@ -158,13 +190,13 @@ body {
 
 /* Conteneur du switch */
 .switch-container {
-  position: absolute;
-  bottom: 10px; /* Espace du bas */
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
+  flex-direction: column; /* Aligner les switchs verticalement */
   justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 }
+
 
 /* Stylisation du switch */
 .switch {

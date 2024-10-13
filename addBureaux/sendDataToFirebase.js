@@ -37,6 +37,8 @@ export async function registerBureau(bureauInfo, file) {
         const bureauData = {
             proprio: bureauInfo.proprioOk,
             localisation: bureauInfo.localisation,
+            presence: "Absent",
+            status: "Libre",
             photoURL: downloadURL
         };
 

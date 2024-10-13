@@ -38,6 +38,8 @@ async function getElements() {
     // Sélectionner le conteneur où les cartes vont être ajoutées
     const classListContainer = document.getElementById('class-list');
 
+    classListContainer.innerHTML = '';
+
     // Parcourir chaque document récupéré
     querySnapshot.forEach((doc) => {
         // Les données de chaque classe
@@ -46,7 +48,7 @@ async function getElements() {
         // Créer la carte pour chaque classe
         const classCard = `
         <div class="class-card">
-          <img src="classe.jpg" alt="Image de la classe" class="class-image">
+          <img src="./classe.jpg" alt="Image de la classe" class="class-image">
           <div class="class-info">
           <h2>${classeData.name}</h2>
             <h3 class="status" style="text-align: center; font-size: 1.5rem; font-weight: bold; color: ${classeData.status_occupation === 'Occupée' ? 'red' : 'green'} !important;">
