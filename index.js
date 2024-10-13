@@ -64,7 +64,7 @@ async function getElements() {
               
               <p><strong>Horaires d'Occupation :</strong> 8h - 16h</p>
               <p><strong>Localisation :</strong> ${classeData.localisation}</p>
-              <p><strong>Occupants :</strong> ${classeData.occupants === "" ? "Aucun occupant" 
+              <p class="occupants"><strong>Occupants :</strong> ${classeData.occupants === "" ? "Aucun occupant" 
                   : classeData.occupants
               }</p>
           </div>
@@ -97,31 +97,58 @@ function addToggleListeners() {
 
             // On récupère l'élément qui affiche le statut
             const statusText = e.target.closest('.class-card').querySelector('.status');
-
+            const occupantsText = e.target.closest('.class-card').querySelector('.occupants');
 
             if (e.target.checked) {
-                statusText.innerHTML = 'Occupée';
-                statusText.style.color = 'red';
-                // Appeler la fonction pour mettre à jour le statut dans Firestore
-                await updateClassStatus(classId, "Occupée"); // true = occupée
+               
+                
+                let nomOccupants = ''; //Variable qui va permettre de récupérer le nom de/Des occupants
+
+                while (!nomOccupants) {
+                  
+                  nomOccupants = prompt("Qui occupe la salle ? (Votre classe) !");
+
+                  if (nomOccupants === null) {
+                    //Si l'utilisateur clique sur annuler on sort de la boucle
+                    break; 
+                  }else if (nomOccupants.trim() !== '') {
+                        //Si l'utilisateur a entré une valeur non vide
+                    statusText.innerHTML = 'Occupée';
+                    statusText.style.color = 'red';
+                    occupantsText.innerHTML = `<strong>Occupants:</strong> ${nomOccupants}`;
+
+                      // Appeler la fonction pour mettre à jour le statut dans Firestore
+                await updateClassStatus(classId, "Occupée", nomOccupants); // true = occupée
+                  }
+
+                  else {
+                    alert('Le champ ne peut pas être vide. Veuillez entrer une valeur.');
+                  }
+                }
+
+
+              
             } else {
                 statusText.innerHTML = 'Libre';
+
                 statusText.style.color = 'green';
+                occupantsText.innerHTML = `<strong>Occupants:</strong> Aucun occupant`;
                 // Appeler la fonction pour mettre à jour le statut dans Firestore
-                await updateClassStatus(classId, 'Libre'); // false = libre
+                await updateClassStatus(classId, 'Libre', "Aucun occupant"); // false = libre
             }
         });
     });
 }
 
 // Fonction pour modifier le statut de la classe
-async function updateClassStatus(classId, newStatus) {
+async function updateClassStatus(classId, newStatus, newOccupants) {
     // Référence au document de la classe dans Firestore
     const classRef = doc(db, "classes", classId); // Remplace "classes" par le nom de ta collection
 
     // Mettre à jour l'attribut `status_occupation` avec le nouveau statut
     await updateDoc(classRef, {
-        status_occupation: newStatus
+        status_occupation: newStatus,
+        occupants: newOccupants,
     });
 }
 
