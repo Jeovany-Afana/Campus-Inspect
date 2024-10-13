@@ -172,17 +172,29 @@ async function getUserData(uid) {
        if (userData.role === "directeur" || userData.role === "administration") 
         {
             getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
-                
+              
+                    buttonsActions.forEach(function (element){ //On
+                      element.style.display="block";
+                    });
+
+
                     const switchButtons = document.querySelectorAll('.switch-container');
                     switchButtons.forEach((switchButton) => {
                        switchButton.style.display = "block";
                         
                     }, 1000);
+
+                   
             });
     
         
        } else {
         getElements().then(() => {
+
+
+          buttonsActions.forEach(function (element){
+            element.style.display="none";
+          });
            
                 const switchButtons = document.querySelectorAll('.switch-container');
                 switchButtons.forEach((switchButton) => {
@@ -193,9 +205,7 @@ async function getUserData(uid) {
        }
       
 
-       buttonsActions.forEach(function (element){
-        element.style.display="block";
-      })
+
         // Utilise les données de l'utilisateur selon tes besoins
       });
     } else {

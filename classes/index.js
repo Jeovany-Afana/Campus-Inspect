@@ -145,19 +145,42 @@ async function getUserData(uid) {
        
        
        
-       if (userData.role === "responsable" || userData.role === "directeur" || userData.role === "administration") 
+       if (userData.role === "responsable") 
         {
+
+          buttonsActions.forEach(function (element){
+            element.style.display="none";
+          });
             getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
-                
                     const switchButtons = document.querySelectorAll('.switch-container');
                     switchButtons.forEach((switchButton) => {
                        switchButton.style.display = "block";
                         
                     }, 1000);
             });
-    
+       } 
+
+       else if (userData.role === "directeur" || userData.role === "administration") {
+        buttonsActions.forEach(function (element){
+          element.style.display="block";
+        });
+
+        getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
+          
+          buttonsActions.forEach(function (element){
+            element.style.display="none";
+          });
+          
+          const switchButtons = document.querySelectorAll('.switch-container');
+          switchButtons.forEach((switchButton) => {
+             switchButton.style.display = "block";
+              
+          }, 1000);
+        });
         
-       } else {
+       }
+       
+       else {
         getElements().then(() => {
            
                 const switchButtons = document.querySelectorAll('.switch-container');
@@ -167,11 +190,6 @@ async function getUserData(uid) {
                 }, 1000);
         });
        }
-      
-
-       buttonsActions.forEach(function (element){
-        element.style.display="block";
-      })
         // Utilise les données de l'utilisateur selon tes besoins
       });
     } else {
