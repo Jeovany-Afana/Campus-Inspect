@@ -16,62 +16,69 @@ const loginButton = document.getElementById('loginButton');
 
 
 async function getElements() {
-    // Récupérer tous les documents dans la collection "classes"
-    const querySnapshot = await getDocs(collection(db, "bureaux"));
+  // Récupérer tous les documents dans la collection "bureaux"
+  const querySnapshot = await getDocs(collection(db, "bureaux"));
 
-    // Sélectionner le conteneur où les cartes vont être ajoutées
-    const classListContainer = document.getElementById('class-list');
+  // Sélectionner le conteneur où les cartes vont être ajoutées
+  const classListContainer = document.getElementById('class-list');
 
-    classListContainer.innerHTML = '';
+  classListContainer.innerHTML = '';
 
-    // Parcourir chaque document récupéré
-    querySnapshot.forEach((doc) => {
-        // Les données de chaque classe
-        const classeData = doc.data();
+  // Parcourir chaque document récupéré
+  querySnapshot.forEach((doc) => {
+      // Les données de chaque classe
+      const classeData = doc.data();
 
-        // Créer la carte pour chaque classe
-        const classCard = `
-        <div class="class-card">
-            <img src="${classeData.photoURL}" alt="Image du bureau" class="class-image">
-            <div class="class-info">
-                <h2>${classeData.proprio}</h2>
-                <p style="text-align: center; color: #007BFF;">${classeData.poste}</p>
-                <h3 class="status1" style="color: ${classeData.presence === 'Absent' ? 'red' : 'green'};">
-                    ${classeData.presence}
-                </h3>
-    
-                <h3 class="status2" style="color: ${classeData.status === 'Occupé' ? 'red' : 'green'};">
-                    ${classeData.status}
-                </h3>
-    
-                <p><strong>Localisation :</strong> ${classeData.localisation}</p>
-    
-                <div class="switch-container">
-                    <p><strong>Présence :</strong></p>
-                    
-                    <label class="switch">
-                        <input type="checkbox" class="presence-toggle" data-class-id="${doc.id}" ${classeData.presence === 'Présent' ? 'checked' : ''}/>
-                        <span class="slider round"></span>
-                    </label>
-    
-                    <p><strong>Disponibilité :</strong></p>
-                    
-                    <label class="switch">
-                        <input type="checkbox" class="status-toggle" data-class-id="${doc.id}" ${classeData.status === 'Occupé' ? 'checked' : ''}/>
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
-    `;
+      // Créer la carte pour chaque classe
+      const classCard = `
+      <div class="class-card">
+          <img src="${classeData.photoURL}" alt="Image du bureau" class="class-image">
+          <div class="class-info">
+              <h2>${classeData.proprio}</h2>
+              <p style="text-align: center; color: #007BFF;">${classeData.poste}</p>
+              <p><strong>Présence :</strong></p>
+              <h3 class="status1" style="color: ${classeData.presence === 'Absent' ? 'red' : 'green'};">
+                  ${classeData.presence}
+              </h3>
+  
+              <div class="availability-container" style="${classeData.presence === 'Absent' ? 'display: none;' : ''}">
+                  <p><strong>Disponibilité :</strong></p>
+                  <h3 class="status2" style="color: ${classeData.status === 'Occupé' ? 'red' : 'green'};">
+                      ${classeData.status}
+                  </h3>
+              </div>
 
-        // Insérer la carte dans le conteneur
-        classListContainer.innerHTML += classCard;
-    });
+              <p><strong>Localisation :</strong> ${classeData.localisation}</p>
+  
+              <div class="switch-container">
+                  <p><strong>Présence :</strong></p>
+                  
+                  <label class="switch">
+                      <input type="checkbox" class="presence-toggle" data-class-id="${doc.id}" ${classeData.presence === 'Présent' ? 'checked' : ''}/>
+                      <span class="slider round"></span>
+                  </label>
+  
+                  <div class="availability-switch" style="${classeData.presence === 'Absent' ? 'display: none;' : ''}">
+                      <p><strong>Disponibilité :</strong></p>
+                      
+                      <label class="switch">
+                          <input type="checkbox" class="status-toggle" data-class-id="${doc.id}" ${classeData.status === 'Occupé' ? 'checked' : ''}/>
+                          <span class="slider round"></span>
+                      </label>
+                  </div>
+              </div>
+          </div>
+      </div>
+  `;
 
-    // Ajoute les écouteurs d'événements après avoir ajouté les cartes
-    addToggleListeners();
+      // Insérer la carte dans le conteneur
+      classListContainer.innerHTML += classCard;
+  });
+
+  // Ajoute les écouteurs d'événements après avoir ajouté les cartes
+  addToggleListeners();
 }
+
 
 function addToggleListeners() {
   // Listener pour la présence
@@ -79,15 +86,22 @@ function addToggleListeners() {
   presenceToggles.forEach((toggle) => {
       toggle.addEventListener('change', async (e) => {
           const classId = e.target.getAttribute('data-class-id');
-          const presenceText = e.target.closest('.class-card').querySelector('.status1');
+          const classCard = e.target.closest('.class-card');
+          const presenceText = classCard.querySelector('.status1');
+          const availabilityContainer = classCard.querySelector('.availability-container');
+          const availabilitySwitch = classCard.querySelector('.availability-switch');
 
           if (e.target.checked) {
               presenceText.innerHTML = 'Présent';
               presenceText.style.color = 'green';
+              availabilityContainer.style.display = 'block';
+              availabilitySwitch.style.display = 'block';
               await updatePresenceStatus(classId, "Présent");
           } else {
               presenceText.innerHTML = 'Absent';
               presenceText.style.color = 'red';
+              availabilityContainer.style.display = 'none';
+              availabilitySwitch.style.display = 'none';
               await updatePresenceStatus(classId, 'Absent');
           }
       });
@@ -112,6 +126,7 @@ function addToggleListeners() {
       });
   });
 }
+
 
 
 // Fonction pour modifier la disponibilité de la classe

@@ -720,5 +720,44 @@ input:checked + .slider:before {
 
 
 
+/* Styles pour le bouton flottant */
+.floating-button {
+  position: fixed;
+  top: 45%; /* Distance depuis le haut */
+  right: 20px; /* Distance depuis la droite */
+  z-index: 1000; /* S'assurer que le bouton est toujours au-dessus */
+}
+
+.btn-floating {
+  background-color: #007BFF; /* Couleur principale */
+  color: white; /* Couleur du texte */
+  font-size: 18px; /* Taille du texte */
+  padding: 12px 20px; /* Espacement intérieur pour le texte */
+  border-radius: 30px; /* Bordure arrondie pour donner un effet de pillule */
+  display: inline-block;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Effet d'ombre */
+  transition: all 0.3s ease; /* Transition douce sur le hover */
+  text-decoration: none; /* Retirer la décoration du lien */
+  font-weight: bold; /* Mettre en gras */
+}
+
+.btn-floating:hover {
+  background-color: #0056b3; /* Couleur survolée */
+  transform: scale(1.05); /* Agrandissement léger sur hover */
+}
+
+/* Responsive : Ajustement sur petits écrans */
+@media (max-width: 768px) {
+  .floating-button {
+    top: 10px; /* Réduire la marge en haut */
+    right: 10px; /* Réduire la marge à droite */
+  }
+
+  .btn-floating {
+    font-size: 16px; /* Réduire la taille du texte */
+    padding: 10px 16px; /* Ajuster les marges intérieures */
+  }
+}
+
 
 
