@@ -108,6 +108,12 @@ form.addEventListener("submit", async (e) => {
 
     try {
       // Authentifier l'utilisateur avec Firebase Auth
+      const loadingSpinner = document.getElementById('loadingSpinner');//On récupère le loading spinner
+      loadingSpinner.style.display = 'block';
+
+
+
+
       const userCredential = await signInWithEmailAndPassword(auth, emailOk, passwordOk);
       const user = userCredential.user;
   
@@ -120,6 +126,9 @@ form.addEventListener("submit", async (e) => {
     } catch (error) {
       console.error("Erreur lors de la connexion :", error);
       alert("Échec de la connexion. Veuillez vérifier vos informations.");
+    } finally {
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      loadingSpinner.style.display = 'none';
     }
 
 
@@ -129,7 +138,6 @@ form.addEventListener("submit", async (e) => {
 
     email = null;
     password = null;
-    alert("Connexion réussie !");
   } 
   else {
     alert("Veuillez remplir correctement les champs");

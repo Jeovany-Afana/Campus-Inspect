@@ -14,7 +14,14 @@
     <div class="logo">
         <h1>CAMPUS <span>INSPECT</span></h1>
     </div>
+
+    <!-- SPINNER -->
     
+    <div id="loadingSpinner" class="spinner" style="display: none;"></div>
+
+
+
+
 
     <div class="form-container">
         <form class="add-class-form">
@@ -41,6 +48,7 @@
                     <input type="radio" value="40 - 60" name="capacity" id="capacity3">
                 </div>
 
+
                 <div class="input-group">
                     <label for="capacity">60 - 80</label>
                     <input type="radio" value="60 - 80" name="capacity" id="capacity4">
@@ -63,12 +71,8 @@
 
                 <label for="equipement">Tableau</label>
                 <input type="checkbox" name="equipement" id="equipement" value="Tableau" class="custom-checkbox">
-<<<<<<< HEAD
-
-               </div>
-=======
-            </div>
->>>>>>> ac82986a1f5e118f909a24dc1372eaff4074efde
+           </div>
+            
             <div class="input-group">
                 <label for="localisation" class="label">Localisation</label>
                 <select id="localisation" name="localisation" required>
@@ -77,7 +81,9 @@
                     <option value="Deuxième Etage">Deuxième Etage</option>
                 </select>
             </div>
+            <div class="input-group">
             <button type="submit">Ajouter la Classe</button>
+        </div>
         </form>
     </div>
 

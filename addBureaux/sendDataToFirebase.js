@@ -26,6 +26,11 @@ const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilis
 export async function registerBureau(bureauInfo, file) {
 
     try {
+
+            //Afficher le spinner
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            loadingSpinner.style.display = 'block';
+
         //Upload la photo du bureau
         const storageRef = ref(storage, 'bureaux/' + file.name);
 
@@ -56,6 +61,12 @@ export async function registerBureau(bureauInfo, file) {
     } catch (error) {
 
         console.log("Erreur lors de l'ajout du bureau" + error);
+    }
+
+    finally
+    {
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        loadingSpinner.style.display = 'none';
     }
     
 }

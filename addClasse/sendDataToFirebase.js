@@ -26,6 +26,9 @@ export async function registerClass(classInfo) {
     try
     {
 
+        //On affiche le spinner
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        loadingSpinner.style.display = 'block';
         
         const classData = {
             name:classInfo.name,
@@ -50,6 +53,10 @@ export async function registerClass(classInfo) {
         alert('Erreur lors de l\'ajout de la classe: ', error);
         window.location.href='/index.html';
 
+    }
+    finally{
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            loadingSpinner.style.display = 'none';
     }
 } 
 

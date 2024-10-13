@@ -368,9 +368,9 @@ input:checked + .slider:before {
       display: none; /* Masquer par défaut */
       flex-direction: column; /* Aligner les éléments verticalement */
       width: 100%;
-      background-color: #66b2ff; /* Fond pour le menu */
+      background-color: #1284f6; /* Fond pour le menu */
       position: absolute; /* Position absolue sous la navbar */
-      top: 60px; /* Ajuster pour qu'il soit sous la navbar */
+      top: 100%; /* Ajuster pour qu'il soit sous la navbar */
       left: 0;
       z-index: 1000; /* Assurer que le menu soit au-dessus */
   }
@@ -493,7 +493,7 @@ input:checked + .slider:before {
     letter-spacing: 5px; /* Espacement entre les lettres */
     position: relative; /* Position pour les effets */
     display: inline-block; /* Pour le positionnement */
-    background: linear-gradient(90deg, #007BFF, #00CFFF); /* Dégradé bleu */
+    background: linear-gradient(120deg, #ffffff, #00bfff); /* Dégradé bleu */
     -webkit-background-clip: text; /* Clipping pour dégradé de texte */
     -webkit-text-fill-color: transparent; /* Remplissage transparent */
     transition: all 0.3s ease; /* Transition douce pour tous les effets */
