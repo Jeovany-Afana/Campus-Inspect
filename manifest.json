@@ -1,0 +1,21 @@
+{
+    "name": "Campus Inspect",
+    "short_name": "Camp Inspect",
+    "start_url": "/Campus-Inspect",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#007BFF",
+    "icons": [
+      {
+        "src": "/logo.PNG",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "./icons/logo2.png",
+        "sizes": "512x502",
+        "type": "image/png"
+      }
+    ]
+  }
+  

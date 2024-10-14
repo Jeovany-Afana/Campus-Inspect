@@ -1,158 +1,58 @@
-<!-- Bouton pour ouvrir la modale -->
-<button id="openModal" class="btn-primary">Marquer comme occupée</button>
-
-<!-- Modale -->
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>Salle Occupée</h2>
-    <label for="end-time" class="modal-label">Sélectionnez l'heure de libération :</label>
-    <input type="datetime-local" id="end-time" class="modal-input">
-    <button id="saveTime" class="btn-confirm">Confirmer</button>
-  </div>
-</div>
-
 <style>
-  /* Style du bouton */
-  .btn-primary {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  .btn-primary:hover {
-    background-color: #0056b3;
-  }
+  .logo {
+    font-family: Arial, sans-serif;
+    text-align: center; /* Centrer le texte */
+    /* margin: 100px 0; Marges autour du logo */
+}
 
-  /* Style de la modale */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    padding-top: 100px;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4); /* Foncé pour l'arrière-plan */
-  }
+.logo h1 {
+    font-size: 2em; /* Taille de la police */
+    font-weight: bold; /* Gras */
+    color: #007BFF; /* Couleur principale */
+    text-transform: uppercase; /* Mettre en majuscules */
+    letter-spacing: 5px; /* Espacement entre les lettres */
+    position: relative; /* Position pour les effets */
+    display: inline-block; /* Pour le positionnement */
+    background: linear-gradient(120deg, #007BFF, #b0eefc); /* Dégradé bleu */
+    -webkit-background-clip: text; /* Clipping pour dégradé de texte */
+    -webkit-text-fill-color: transparent; /* Remplissage transparent */
+    transition: all 0.3s ease; /* Transition douce pour tous les effets */
+}
 
-  .modal-content {
-    background-color: white;
-    margin: auto;
-    padding: 30px;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 500px;
-    text-align: center;
-    animation: slide-in 0.3s ease;
-  }
+/* Effet de survol */
+.logo h1:hover {
+    transform: scale(1.1); /* Agrandissement au survol */
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); /* Ombre au survol */
+}
 
-  /* Animation d'entrée de la modale */
-  @keyframes slide-in {
-    from { transform: translateY(-50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
+/* Style pour le mot "INSPECT" */
+.logo h1 span {
+    color: #FF6347; /* Couleur différente pour INSPECT */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre pour effet 3D */
+    position: relative; /* Pour l'effet de soulignement */
+}
 
-  /* Bouton de fermeture (croix) */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
+/* Effet de soulignement sur "INSPECT" */
+.logo h1 span::after {
+    content: ""; /* Contenu vide pour créer l'effet */
+    display: block; /* Affichage en bloc */
+    width: 100%; /* Largeur pleine */
+    height: 5px; /* Hauteur de la ligne */
+    background: #FF6347; /* Couleur de la ligne */
+    position: absolute; /* Position absolue */
+    bottom: -10px; /* Position en dessous du texte */
+    left: 0; /* À gauche */
+    transform: scaleX(0); /* Réduire à 0 pour commencer */
+    transition: transform 0.3s ease; /* Transition douce */
+}
 
-  .close:hover {
-    color: black;
-  }
+/* Révéler le soulignement au survol */
+.logo h1 span:hover::after {
+    transform: scaleX(1); /* Agrandir à 100% */
+}
 
-  /* Style du contenu à l'intérieur de la modale */
-  .modal-label {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-    display: block;
-    color: #333;
-  }
-
-  .modal-input {
-    width: 100%;
-    padding: 12px;
-    margin: 15px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-  }
-
-  /* Bouton pour confirmer */
-  .btn-confirm {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .btn-confirm:hover {
-    background-color: #218838;
-  }
-
-  /* Responsive pour petits écrans */
-  @media (max-width: 600px) {
-    .modal-content {
-      width: 95%;
-      padding: 20px;
-    }
-
-    .btn-primary, .btn-confirm {
-      width: 100%;
-      padding: 12px;
-    }
-  }
 </style>
-
-<script>
-  const modal = document.getElementById('myModal');
-  const openModalBtn = document.getElementById('openModal');
-  const closeModalSpan = document.querySelector('.close');
-  const saveTimeBtn = document.getElementById('saveTime');
-
-  // Ouvrir la modale
-  openModalBtn.addEventListener('click', () => {
-    modal.style.display = 'block';
-  });
-
-  // Fermer la modale
-  closeModalSpan.addEventListener('click', () => {
-    modal.style.display = 'none';
-  });
-
-  // Fermer la modale si on clique en dehors du contenu
-  window.addEventListener('click', (event) => {
-    if (event.target === modal) {
-      modal.style.display = 'none';
-    }
-  });
-
-  // Enregistrer l'heure de fin d'occupation
-  saveTimeBtn.addEventListener('click', () => {
-    const selectedTime = document.getElementById('end-time').value;
-    if (selectedTime) {
-      console.log(`Salle occupée jusqu'à: ${selectedTime}`);
-      modal.style.display = 'none'; // Fermer la modale après sélection
-    } else {
-      alert('Veuillez sélectionner une heure de libération.');
-    }
-  });
-</script>
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
+<div class="logo">
+  <h1>CAMPUS <br><span>INSPECT</span></h1>
+</div>
