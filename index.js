@@ -244,3 +244,8 @@ async function getUserData(uid) {
     }); }
   });
   
+
+  //Bouton qui permet d'actualiser la page
+  document.getElementById('refreshButton').addEventListener('click', function() {
+    location.reload();
+});

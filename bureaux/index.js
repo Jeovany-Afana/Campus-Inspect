@@ -251,4 +251,13 @@ async function getUserData(uid) {
             }, 1000);
     }); }
   });
+
+  document.getElementById('refreshButton').addEventListener('click', function() {
+    location.reload();
+});
+
+
+
+
+
   
