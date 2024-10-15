@@ -1,0 +1,153 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fa;
+    margin: 0;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 3%;
+}
+
+thead {
+    background-color: #3b82f6;
+    color: white;
+    text-align: left;
+}
+
+th, td {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+td {
+    font-size: 14px;
+}
+
+/* Style pour les images dans les cellules */
+td img {
+    width: 100%; /* L'image prend toute la largeur de la cellule */
+    height: auto; /* La hauteur est automatique pour maintenir les proportions */
+    max-height: 80px; /* Limite la hauteur maximale de l'image */
+    object-fit: contain; /* Couvre la cellule sans déformer l'image */
+}
+
+
+tr:hover {
+    background-color: #f1f5f9;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.icon-btn {
+    border: none;
+    cursor: pointer;
+    background: none;
+    font-size: 20px;
+}
+
+.icon-btn.up-to-date {
+    color: green;
+}
+
+.icon-btn.not-up-to-date {
+    color: red;
+}
+
+.icon-btn:hover {
+    opacity: 0.7;
+}
+
+.status {
+    font-weight: bold;
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.status.up-to-date {
+    color: white;
+    background-color: green;
+}
+
+.status.not-up-to-date {
+    color: white;
+    background-color: red;
+}
+
+/* Responsive */
+@media only screen and (max-width: 768px) {
+    th, td {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .icon-btn {
+        font-size: 18px;
+    }
+}
+
+
+/* Style général pour les champs */
+.form-group {
+    margin-bottom: 15px;
+    font-family: Arial, sans-serif;
+}
+
+/* Champ input stylé */
+.inputField {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+    margin-top: 0.5%;
+}
+
+.inputField:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+/* Sélecteur stylé */
+#selectField {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease;
+}
+
+#selectField:focus {
+    border-color: #4a90e2;
+    outline: none;
+}
+
+/* Ajouter un petit effet sur hover */
+#inputField:hover, #selectField:hover {
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+}
+
+
+
+
+

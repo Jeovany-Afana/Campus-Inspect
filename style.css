@@ -133,6 +133,11 @@ body {
   margin: 10px 0; /* Espacement vertical entre les boutons */
 }
 
+#boutonComptable
+{
+  margin: 10px 0;
+}
+
 /* Style des boutons */
 .home-button {
   background-color:#52a0f4; /* Couleur de fond bleu */
@@ -546,6 +551,7 @@ input:checked + .slider:before {
   font-size: 16px; /* Taille de la police */
   cursor: pointer; /* Curseur en forme de main */
   transition: background-color 0.3s, transform 0.2s; /* Transitions pour les effets */
+  margin-bottom: 0.5%;
 }
 
 .logout-button:hover {

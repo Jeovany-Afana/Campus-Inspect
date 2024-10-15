@@ -184,7 +184,7 @@ async function getUserData(uid) {
        
        
        
-       if (userData.role === "directeur" || userData.role === "administration") 
+       if (userData.role === "directeur" || userData.role === "administration" || userData.role === "comptable") 
         {
             getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
               
@@ -218,6 +218,22 @@ async function getUserData(uid) {
                 }, 1000);
         });
        }
+
+       if (userData.role === "comptable") {
+        boutonComptable.style.display = "block";
+        document.getElementById('generateQRCode').style.display = 'none';//Si c'est un membre de l'administration qui est connecté on cache le buton pour le QRCode
+         
+        getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
+                
+          buttonsActions.forEach(function (element){
+            element.style.display="none";});
+          
+                const switchButtons = document.querySelectorAll('.switch-container');
+                switchButtons.forEach((switchButton) => {
+                   switchButton.style.display = "block";
+                     }, 1000);
+        });
+      }
       
 
 

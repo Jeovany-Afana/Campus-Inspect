@@ -15,6 +15,7 @@ const loginButton = document.getElementById('loginButton');
 const modal = document.getElementById('myModal');
 const closeModalSpan = document.querySelector('.close');
 const saveTimeBtn = document.getElementById('saveTime');
+const boutonComptable = document.getElementById('boutonComptable');
 export let donneeUtilisateur;//Données de l'utilisateur connecté
 // Fermer la modale
 closeModalSpan.addEventListener('click', () => {
@@ -193,7 +194,7 @@ async function getUserData(uid) {
        else if (userData.role === "etudiant") { //Si l'utilisateur connecté est un étudiant
         
         document.getElementById('generateQRCode').style.display = 'block';//On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
-               
+        boutonComptable.style.display = "none";
         getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
                 
           buttonsActions.forEach(function (element){
@@ -207,10 +208,10 @@ async function getUserData(uid) {
         
        }
        
-       else if ( userData.role === "directeur" || userData.role === "administration") {
+       else if ( userData.role === "directeur" || userData.role === "administration" || userData.role === "comptable") {
 
         document.getElementById('generateQRCode').style.display = 'none';//Si c'est un membre de l'administration qui est connecté on cache le buton pour le QRCode
-                 
+        
         buttonsActions.forEach(function (element){
           element.style.display="block";
         });
@@ -232,6 +233,22 @@ async function getUserData(uid) {
                 }, 1000);
         });
        }
+
+       if (userData.role === "comptable") {
+        boutonComptable.style.display = "block";
+        document.getElementById('generateQRCode').style.display = 'none';//Si c'est un membre de l'administration qui est connecté on cache le buton pour le QRCode
+         
+        getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
+                
+          buttonsActions.forEach(function (element){
+            element.style.display="none";});
+          
+                const switchButtons = document.querySelectorAll('.switch-container');
+                switchButtons.forEach((switchButton) => {
+                   switchButton.style.display = "block";
+                     }, 1000);
+        });
+      }
       
 
       
@@ -257,6 +274,7 @@ async function getUserData(uid) {
       logoutButton.style.display="none";//Si l'utilisateur est pas connecté on éfface le bouton de déconnexion
       loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
       document.getElementById('generateQRCode').style.display = 'none';//Si aucun utilisateur n'est connecté on cache le bouton pour le QRCode
+      boutonComptable.style.display = "none";
       getElements().then(() => {
        
             const switchButtons = document.querySelectorAll('.switch-container');
