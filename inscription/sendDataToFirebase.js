@@ -47,10 +47,12 @@ export async function registerUser(email, password, userInfo, file) {
           emailOk: email,
           passwordOk: password,
           role: "etudiant",
-          photoURLOk: downloadURL
+          classe:userInfo.classe,
+          a_jour:false, //Attribut de type booleen qui va permettre de savoir si l'étudiant est à jour ou pas
+          photoURLOk: downloadURL,
       };
 
-      // 4. Ajouter l'utilisateur dans la collection "users" de Firestore
+      // 4. Ajouter l'étudiant dans la collection "users" de Firestore
       await addDoc(collection(db, "users"), userData);
 
       // 5. Afficher un message de succès et rediriger

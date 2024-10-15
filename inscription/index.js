@@ -24,8 +24,8 @@ const errorDisplay = (tag, message, valid) => {
 
 
 const pseudoChecker = (value) => {
-  if (value.length > 0 && (value.length < 3 || value.length > 20)) {
-    errorDisplay("pseudo", "Le pseudo doit faire entre 3 et 20 caractères");
+  if (value.length > 0 && (value.length < 3 || value.length > 50)) {
+    errorDisplay("pseudo", "Le nom doit faire entre 3 et 50 caractères");
     pseudo = null;
   } else if (!value.match(/^[a-zA-Z0-9_ .-]*$/)) {
     errorDisplay(
@@ -122,13 +122,15 @@ form.addEventListener("submit", (e) => {
   const confirmPassOk = document.getElementById('confirm').value;
   const fileInput = document.getElementById('fileInput');
   const file = fileInput.files[0]; // On récupère la photo
+  const classe = document.getElementById('classe');
 
   // Vérifier que tous les champs sont correctement remplis et que le mot de passe est confirmé
-  if (emailOk && passwordOk && confirmPassOk && pseudoOk && passwordOk === confirmPassOk) {
+  if (emailOk && passwordOk && confirmPassOk && pseudoOk && passwordOk === confirmPassOk && classe.value != "") {
     const userInfo = {
       pseudoOk: pseudoOk,
       emailOk: emailOk,
-      passwordOk: passwordOk
+      passwordOk: passwordOk,
+      classe:classe.value,
     };
 
     // Vérifier si un fichier a été sélectionné

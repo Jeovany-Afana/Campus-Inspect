@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
- 
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+   
 </head>
 <body>
    
@@ -58,6 +59,16 @@
 
 
 <!-- Fin de la navbar -->
+
+<!-- QR Code -->
+<i class="fas fa-qrcode home-button" id="generateQRCode" style="font-size: 40px; cursor: pointer;"></i>
+<div class="overlay" id="overlay"></div>
+<div id="qrcode-container">
+  <h2>QR Code de l'étudiant</h2>
+  <div id="qrcode"></div>
+  <button class="button close-button" id="closeQRCode">Fermer</button> <!-- Bouton pour fermer -->
+</div>
+
 
     <div style="display: block;">
         <div class="home-button-container">
@@ -124,11 +135,9 @@
   </div>
 </footer>
 
-
     <script type="module">
 // Importer les fonctions nécessaires depuis les SDK de Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-analytics.js"; // Pour les analyses
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js"; // Pour utiliser Storage
 
@@ -145,7 +154,6 @@ const firebaseConfig = {
 
 // Initialiser Firebase avec la configuration fournie
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app); // Initialiser les analyses
 
 // Initialiser Firestore (base de données de Firebase)
 const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilisé
@@ -153,7 +161,7 @@ const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilis
 const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
       </script>
       <script src="./humbergerButton.js"></script>
-     
       <script type="module" src="./index.js"></script>
+      <script type="module" src="./qrCode.js"></script>
 </body>
 </html>

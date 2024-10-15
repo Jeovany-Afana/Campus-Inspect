@@ -1,58 +1,103 @@
-<style>
-  .logo {
-    font-family: Arial, sans-serif;
-    text-align: center; /* Centrer le texte */
-    /* margin: 100px 0; Marges autour du logo */
-}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code avec Dégradé</title>
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        #qrcode-container {
+            display: none; /* Cacher par défaut */
+            position: fixed; /* Positionnement fixe */
+            top: 50%; /* Centrer verticalement */
+            left: 50%; /* Centrer horizontalement */
+            transform: translate(-50%, -50%); /* Ajuster pour centrer correctement */
+            z-index: 1000; /* Au-dessus d'autres éléments */
+            background-color: white; /* Fond blanc */
+            padding: 20px; /* Espacement interne */
+            border-radius: 10px; /* Coins arrondis */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Ombre */
+        }
 
-.logo h1 {
-    font-size: 2em; /* Taille de la police */
-    font-weight: bold; /* Gras */
-    color: #007BFF; /* Couleur principale */
-    text-transform: uppercase; /* Mettre en majuscules */
-    letter-spacing: 5px; /* Espacement entre les lettres */
-    position: relative; /* Position pour les effets */
-    display: inline-block; /* Pour le positionnement */
-    background: linear-gradient(120deg, #007BFF, #b0eefc); /* Dégradé bleu */
-    -webkit-background-clip: text; /* Clipping pour dégradé de texte */
-    -webkit-text-fill-color: transparent; /* Remplissage transparent */
-    transition: all 0.3s ease; /* Transition douce pour tous les effets */
-}
+        #qrcode {
+            width: 300px; 
+            height: 300px; 
+            background: linear-gradient(120deg, blue, white);
+            padding: 10px;
+        }
 
-/* Effet de survol */
-.logo h1:hover {
-    transform: scale(1.1); /* Agrandissement au survol */
-    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); /* Ombre au survol */
-}
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px; /* Espacement au-dessus du bouton */
+        }
 
-/* Style pour le mot "INSPECT" */
-.logo h1 span {
-    color: #FF6347; /* Couleur différente pour INSPECT */
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre pour effet 3D */
-    position: relative; /* Pour l'effet de soulignement */
-}
+        .close-button {
+            background-color: red; /* Couleur rouge pour le bouton de fermeture */
+        }
 
-/* Effet de soulignement sur "INSPECT" */
-.logo h1 span::after {
-    content: ""; /* Contenu vide pour créer l'effet */
-    display: block; /* Affichage en bloc */
-    width: 100%; /* Largeur pleine */
-    height: 5px; /* Hauteur de la ligne */
-    background: #FF6347; /* Couleur de la ligne */
-    position: absolute; /* Position absolue */
-    bottom: -10px; /* Position en dessous du texte */
-    left: 0; /* À gauche */
-    transform: scaleX(0); /* Réduire à 0 pour commencer */
-    transition: transform 0.3s ease; /* Transition douce */
-}
+        .overlay {
+            display: none; /* Cacher l'overlay par défaut */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+            z-index: 500; /* Au-dessus d'autres éléments */
+        }
 
-/* Révéler le soulignement au survol */
-.logo h1 span:hover::after {
-    transform: scaleX(1); /* Agrandir à 100% */
-}
+        h2 {
+            margin: 0; /* Enlever le marges par défaut */
+        }
+    </style>
+</head>
+<body>
 
-</style>
-<br><br><br><br><br><br><br><br><br><br><br><br><br>
-<div class="logo">
-  <h1>CAMPUS <br><span>INSPECT</span></h1>
-</div>
+    <button class="button" id="generateQRCode">Générer QR Code</button>
+    <div class="overlay" id="overlay"></div>
+    
+    <div id="qrcode-container">
+        <h2>QR Code de l'étudiant</h2>
+        <div id="qrcode"></div>
+        <button class="button close-button" id="closeQRCode">Fermer</button> <!-- Bouton pour fermer -->
+    </div>
+
+    <script type="text/javascript">
+        document.getElementById('generateQRCode').addEventListener('click', function() {
+            // Afficher le QR code et l'overlay
+            document.getElementById("qrcode-container").style.display = 'block';
+            document.getElementById("overlay").style.display = 'block';
+            
+            // Générer le QR code avec des informations
+            var qrcode = new QRCode(document.getElementById("qrcode"), {
+                text: "Joe Wilfred\njohndoe@example.com\nA jour",
+                width: 300,
+                height: 300,
+                colorDark : "#000000",  // Couleur unie (noir)
+                colorLight : "#ffffff",  // Fond blanc
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+
+        // Événement pour fermer le QR code
+        document.getElementById('closeQRCode').addEventListener('click', function() {
+            // Masquer le QR code, l'overlay et le bouton Fermer
+            document.getElementById("qrcode-container").style.display = 'none';
+            document.getElementById("overlay").style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>

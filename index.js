@@ -15,7 +15,7 @@ const loginButton = document.getElementById('loginButton');
 const modal = document.getElementById('myModal');
 const closeModalSpan = document.querySelector('.close');
 const saveTimeBtn = document.getElementById('saveTime');
-
+export let donneeUtilisateur;//Données de l'utilisateur connecté
 // Fermer la modale
 closeModalSpan.addEventListener('click', () => {
   modal.style.display = 'none';
@@ -164,6 +164,8 @@ async function getUserData(uid) {
     if (!querySnapshot.empty) {
       querySnapshot.forEach((doc) => {
         const userData = doc.data();
+        donneeUtilisateur = userData;//On récupère les données de l'utilisateur connecté actuellement(L'étudiant)
+        
        document.getElementById('userName').innerHTML = userData.pseudoOk;
        document.getElementById('userPhoto').setAttribute('src', userData.photoURLOk);
        userProfil.style.display = "block";//Si l'utilisateur est connecté on affiche sa photo de profile
@@ -174,6 +176,8 @@ async function getUserData(uid) {
        
        if (userData.role === "responsable") //
         {
+          document.getElementById('generateQRCode').style.display = 'block';//On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
+                 
             getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
                 
               buttonsActions.forEach(function (element){
@@ -182,13 +186,31 @@ async function getUserData(uid) {
                     const switchButtons = document.querySelectorAll('.switch-container');
                     switchButtons.forEach((switchButton) => {
                        switchButton.style.display = "block";
-                        
-                    }, 1000);
+                         }, 1000);
             });
        } 
+
+       else if (userData.role === "etudiant") { //Si l'utilisateur connecté est un étudiant
+        
+        document.getElementById('generateQRCode').style.display = 'block';//On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
+               
+        getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
+                
+          buttonsActions.forEach(function (element){
+            element.style.display="none";});//On cache les boutons d'action
+          
+                const switchButtons = document.querySelectorAll('.switch-container');
+                switchButtons.forEach((switchButton) => {
+                   switchButton.style.display = "none";//On cache les switchs pour changer l'état des classes
+                    }, 1000);
+        });
+        
+       }
        
        else if ( userData.role === "directeur" || userData.role === "administration") {
 
+        document.getElementById('generateQRCode').style.display = 'none';//Si c'est un membre de l'administration qui est connecté on cache le buton pour le QRCode
+                 
         buttonsActions.forEach(function (element){
           element.style.display="block";
         });
@@ -201,8 +223,8 @@ async function getUserData(uid) {
       }
        
        else {
-        getElements().then(() => {
-           
+         
+        getElements().then(() => {      
                 const switchButtons = document.querySelectorAll('.switch-container');
                 switchButtons.forEach((switchButton) => {
                    switchButton.style.display = "none";
@@ -234,6 +256,7 @@ async function getUserData(uid) {
       userProfil.style.display = "none";//On cache la photo si l'utilisateur n'est pas connecté
       logoutButton.style.display="none";//Si l'utilisateur est pas connecté on éfface le bouton de déconnexion
       loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
+      document.getElementById('generateQRCode').style.display = 'none';//Si aucun utilisateur n'est connecté on cache le bouton pour le QRCode
       getElements().then(() => {
        
             const switchButtons = document.querySelectorAll('.switch-container');
@@ -249,3 +272,32 @@ async function getUserData(uid) {
   document.getElementById('refreshButton').addEventListener('click', function() {
     location.reload();
 });
+
+
+//Gestion du QRCODE
+
+// document.getElementById('generateQRCode').addEventListener('click', function() {
+//   // Afficher le QR code et l'overlay
+//   document.getElementById("qrcode-container").style.display = 'block';
+//   document.getElementById("overlay").style.display = 'block';
+  
+//   // Générer le QR code avec des informations
+//   var qrcode = new QRCode(document.getElementById("qrcode"), {
+//       text: "Joe Wilfred\njohndoe@example.com\nA jour",
+//       width: 300,
+//       height: 300,
+//       colorDark : "#000000",  // Couleur unie (noir)
+//       colorLight : "#ffffff",  // Fond blanc
+//       correctLevel : QRCode.CorrectLevel.H
+//   });
+// });
+
+// // Événement pour fermer le QR code
+// document.getElementById('closeQRCode').addEventListener('click', function() {
+//   // Masquer le QR code, l'overlay et le bouton Fermer
+//   document.getElementById("qrcode-container").style.display = 'none';
+//   document.getElementById("overlay").style.display = 'none';
+// });
+
+
+

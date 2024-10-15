@@ -32,10 +32,33 @@
             <h1>Inscription</h1>
 
             <div class="input-group pseudo-container">
-                <label for="pseudo">Pseudo</label>
+                <label for="pseudo">Nom complet</label>
                 <input type="text" autocomplete="off" name="pseudo" id="pseudo"placeholder="Entrez votre pseudo" >
                 <span></span>
               </div>
+
+              <div class="input-group">
+                <label for="classe" class="label">Classe</label>
+                <select id="classe" name="classe" required>
+                    <option value="" hidden disabled selected>Choisissez votre classe</option>
+                    <option value="L1 INFORMATIQUE">L1 INFORMATIQUE</option>
+                    <option value="L1 GESTION">L1 GESTION</option>
+                    <option value="L1 DROIT">l1 DROIT</option>
+                    <option value="L1 AGRO">L2 INFORMATIQUE</option>
+                    <option value="L1 AGRO">L1 AGRO</option>
+                    <option value="L2 GESTION">L2 GESTION</option>
+                    <option value="BTL1">BTL1</option>
+                    <option value="BTL3">BTL3</option>
+                    <option value="COMMERCE">COMMERCE</option>
+                    <option value="FINANCE">FINANCE</option>
+                    <option value="BTL2">BTL2</option>
+                    <option value="GENIE LOGICIEL">GENIE LOGICIEL</option>
+                    <option value="L2 DROIT">L2 DROIT</option>
+                    <option value="QHSE">QHSE</option>
+                    <option value="RSS">RSS</option>
+                    <option value="RESSOURCES HUMAINES">RESSOURCES HUMAINES</option>
+                </select>
+            </div>
 
             <div class="input-group email-container">
                 <label for="email">Email</label>
