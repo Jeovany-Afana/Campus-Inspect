@@ -188,3 +188,74 @@ function displayStudents(students) {
 
 // Appeler la fonction pour charger les étudiants quand la page est chargée
 window.onload = loadStudents;
+
+
+// Fonction pour marquer un étudiant comme "À jour"
+window.markAsUpToDate = function(button, studentId) {
+    // 1. Trouver la ligne du tableau contenant le bouton cliqué
+    const row = button.closest('tr');
+    // `button.closest('tr')` cherche le premier élément parent `<tr>` de l'élément `button`.
+    // Cela nous permet de savoir dans quelle ligne du tableau se trouve le bouton cliqué.
+
+    // 2. Trouver la cellule qui affiche le statut de l'étudiant
+    const statusCell = row.querySelector('.status');
+    // `row.querySelector('.status')` sélectionne la première cellule (élément `<td>`) 
+    // de la ligne qui a la classe `status`, où nous allons afficher le statut de l'étudiant.
+
+    // 3. Mettre à jour le texte du statut pour indiquer que l'étudiant est à jour
+    statusCell.textContent = 'À jour';
+    // `textContent` met à jour le contenu textuel de `statusCell` pour afficher "À jour".
+
+    // 4. Modifier les classes CSS pour le style
+    statusCell.classList.remove('not-up-to-date'); // Retire la classe 'not-up-to-date'
+    statusCell.classList.add('up-to-date'); // Ajoute la classe 'up-to-date'
+    // `classList.remove` et `classList.add` permettent de gérer les classes CSS de l'élément.
+    // Cela permet de changer l'apparence de la cellule en fonction du statut.
+
+    // 5. Mettre à jour Firestore pour marquer l'étudiant comme à jour
+    const docRef = doc(db, "users", studentId);
+    // `doc(db, "users", studentId)` crée une référence au document de l'étudiant dans la collection 'users'
+    // en utilisant son identifiant `studentId`.
+
+    updateDoc(docRef, { a_jour: true }) // Met à jour le champ 'a_jour' à `true`
+        .then(() => {
+            console.log("Étudiant marqué comme à jour"); // Message de confirmation dans la console
+        })
+        .catch((error) => {
+            console.error("Erreur lors de la mise à jour : ", error); // Affiche une erreur en cas de problème
+        });
+};
+
+// Fonction pour marquer un étudiant comme "Non à jour"
+window.markAsNotUpToDate = function(button, studentId) {
+    // 1. Trouver la ligne du tableau contenant le bouton cliqué
+    const row = button.closest('tr');
+    // Comme précédemment, cela nous permet de trouver la ligne du tableau.
+
+    // 2. Trouver la cellule qui affiche le statut de l'étudiant
+    const statusCell = row.querySelector('.status');
+
+    // 3. Mettre à jour le texte du statut pour indiquer que l'étudiant n'est pas à jour
+    statusCell.textContent = 'Non à jour';
+
+    // 4. Modifier les classes CSS pour le style
+    statusCell.classList.remove('up-to-date'); // Retire la classe 'up-to-date'
+    statusCell.classList.add('not-up-to-date'); // Ajoute la classe 'not-up-to-date'
+
+    // 5. Mettre à jour Firestore pour marquer l'étudiant comme non à jour
+    const docRef = doc(db, "users", studentId);
+    // Comme pour la fonction précédente, cela crée une référence au document de l'étudiant.
+
+    updateDoc(docRef, { a_jour: false }) // Met à jour le champ 'a_jour' à `false`
+        .then(() => {
+            console.log("Étudiant marqué comme non à jour"); // Message de confirmation dans la console
+        })
+        .catch((error) => {
+            console.error("Erreur lors de la mise à jour : ", error); // Affiche une erreur en cas de problème
+        });
+};
+
+
+
+
+
