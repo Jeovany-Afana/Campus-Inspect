@@ -1,6 +1,6 @@
 {
     "name": "Campus Inspect",
-    "short_name": "Camp Inspect",
+    "short_name": "Campus Inspect",
     "start_url": "/Campus-Inspect",
     "display": "standalone",
     "background_color": "#ffffff",
