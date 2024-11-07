@@ -1,0 +1,51 @@
+ /* Styles pour l'overlay (modale) qui va apparaître au-dessus des autres éléments */
+ #videoOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fond semi-transparent */
+    display: none; /* Caché au début */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Place l'overlay au-dessus de tout le contenu */
+}
+
+/* Styles pour l'élément vidéo dans l'overlay */
+#preview {
+    max-width: 80%; /* Limite la taille de la vidéo */
+    max-height: 80%;
+    border: 1px solid white;
+}
+
+/* Style pour le bouton de fermeture */
+#closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 50%;
+}
+
+/*Style du bouton de démarrage*/
+#startScanButton {
+    border: none;
+    width: 5.6%;
+    height: 6%;
+    font-size: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Styles pour le contenu du QR Code trouvé */
+#qrCodeContent {
+    font-size: 1.5em;
+    color: white;
+    text-align: center;
+}

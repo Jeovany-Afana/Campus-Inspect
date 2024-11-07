@@ -809,3 +809,16 @@ input:checked + .slider:before {
 h2 {
   margin: 0; /* Enlever le marges par défaut */
 }
+
+
+
+/*BOUTTON POUR SCANNER LE CODE QR*/
+
+#button-scan{
+
+  width: 5.4%;
+  border: none;
+}
+
+
+

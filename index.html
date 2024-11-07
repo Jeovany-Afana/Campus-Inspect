@@ -5,14 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Inspect</title>
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./scannQR.css">
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<<<<<<< HEAD
+
     <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-   
-=======
     <link rel="icon" type="image/png" href="./icons/logo.PNG">
->>>>>>> aba11c8dadc902a1e17e85f5a826ee8b9891b301
 </head>
 <body>
    
@@ -72,6 +70,40 @@
   <div id="qrcode"></div>
   <button class="button close-button" id="closeQRCode">Fermer</button> <!-- Bouton pour fermer -->
 </div>
+<br>
+
+
+<!-- Utiliser la caméra pour scanner un QR CODE -->
+
+<div title="Scanner le code QR">
+  <!-- Bouton pour démarrer le scanner avec l'icône de la caméra -->
+   
+  <button id="startScanButton" class="home-button">
+    <i class="fas fa-camera"></i> 
+</button>
+</div>
+
+<!-- L'overlay pour afficher la vidéo avec le bouton de fermeture -->
+<div id="videoOverlay">
+    <!-- Bouton de fermeture de l'overlay -->
+    <button id="closeButton">X</button>
+
+    <!-- Élément vidéo qui affiche le flux de la caméra -->
+    <video id="preview" style="display: block;"></video>
+
+    <!-- Contenu du QR Code trouvé (initialement vide) -->
+    <div id="qrCodeContent" style="display: none;"></div>
+</div>
+
+<!-- Div pour afficher le résultat du QR code scanné -->
+<div id="result" style="margin-top: 20px; font-size: 1.2em; color: green;"></div>
+
+<!-- Inclusion de la bibliothèque jsQR depuis un CDN -->
+<script src="https://unpkg.com/jsqr"></script>
+
+
+
+
 
 
     <div style="display: block;">
@@ -144,6 +176,8 @@
   </div>
 </footer>
 
+    <!-- Inclusion de la bibliothèque jsQR depuis un CDN -->
+
     <script type="module">
 // Importer les fonctions nécessaires depuis les SDK de Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
@@ -169,6 +203,8 @@ const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilis
 // Initialiser Firebase Storage (pour stocker des fichiers)
 const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
       </script>
+      <script src="https://unpkg.com/jsqr"></script>
+      <script type="module" src="./scannQR.js"></script>
       <script src="./humbergerButton.js"></script>
       <script type="module" src="./index.js"></script>
       <script type="module" src="./qrCode.js"></script>
