@@ -219,7 +219,7 @@ async function getUserData(uid) {
       if (userData.role === "responsable") {
         //
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
-
+        camera.style.display = "block";
         getElements().then(() => {
           // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
 
