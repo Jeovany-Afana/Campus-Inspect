@@ -24,6 +24,7 @@ const buttonsActions = document.querySelectorAll(".home-button-container");
 const userProfil = document.querySelector(".user-profile"); //Photo de profile de l'utilisateur(Qui va s'afficher si l'utilisateur est connecté)
 const logoutButton = document.getElementById("logoutButton"); //On sélectionne le bouton de déconnexion
 const loginButton = document.getElementById("loginButton");
+const camera = document.getElementById("scan-container");
 
 const modal = document.getElementById("myModal");
 const closeModalSpan = document.querySelector(".close");
@@ -236,6 +237,7 @@ async function getUserData(uid) {
 
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
         boutonComptable.style.display = "none";
+        camera.style.display = "block";
         document.getElementById("startScanButton").style.display = "none";
         getElements().then(() => {
           // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
@@ -310,6 +312,7 @@ onAuthStateChanged(auth, (user) => {
     userProfil.style.display = "none"; //On cache la photo si l'utilisateur n'est pas connecté
     logoutButton.style.display = "none"; //Si l'utilisateur est pas connecté on éfface le bouton de déconnexion
     loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
+    camera.style.display = "none";
     document.getElementById("generateQRCode").style.display = "none"; //Si aucun utilisateur n'est connecté on cache le bouton pour le QRCode
     boutonComptable.style.display = "none";
     getElements().then(() => {
