@@ -99,8 +99,14 @@ async function scanQRCode() {
             <br>
             <br>
             ${userData.a_jour ? "À Jour !" : "Pas à Jour !"}
+            
             <br>
+            <br>
+            <br>
+            Dernier paiement: ${userData.dernier_paiement}
           `;
+
+          showCamera(); //On lance la fonction qui permet de compter 4s avant de relancer la caméra automatiquement
         });
       } else {
         qrCodeContentDiv.innerHTML = `
@@ -108,7 +114,10 @@ async function scanQRCode() {
        Impossible d'afficher la situation de l'étudiant!
        <br>
        Veuillez Réessayer !
+     
         `;
+
+        showCamera(); //On lance la fonction qui permet de compter 4s avant de relancer la caméra automatiquement
       }
 
       //   // Affiche le contenu du QR Code dans l'overlay
@@ -122,6 +131,20 @@ async function scanQRCode() {
   }
   requestAnimationFrame(scanQRCode);
 }
+
+const showCamera = () => {
+  let compteur = 0;
+
+  let interval = setInterval(function () {
+    compteur++;
+
+    if (compteur == 4) {
+      qrCodeContentDiv.innerHTML = ""; //On supprime les informations actuellement affichées à l'écran
+      startCamera();
+      clearInterval(interval);
+    }
+  }, 1000);
+};
 
 // Événement pour démarrer le scan lorsque le bouton est cliqué
 startScanButton.addEventListener("click", () => {

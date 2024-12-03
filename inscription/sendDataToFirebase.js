@@ -48,6 +48,8 @@ export async function registerUser(email, password, userInfo, file) {
           passwordOk: password,
           role: "etudiant",
           classe:userInfo.classe,
+          dureeSolvabilite:0,
+          kairos: userInfo.kairosOk,
           a_jour:false, //Attribut de type booleen qui va permettre de savoir si l'étudiant est à jour ou pas
           photoURLOk: downloadURL,
       };

@@ -90,6 +90,11 @@ tr:hover {
     background-color: red;
 }
 
+.status.enRegle{
+    color: white;
+    background-color: #2778fa;
+}
+
 /* Responsive */
 @media only screen and (max-width: 768px) {
     th, td {

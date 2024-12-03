@@ -6,7 +6,7 @@ const inputs = document.querySelectorAll(
   'input[type="email"], input[type="password"], input[type="text"]'
 );
 const progressBar = document.getElementById("progress-bar");
-let email, password, confirmPass, pseudo;
+let email, password, confirmPass, pseudo, kairos;
 
 const errorDisplay = (tag, message, valid) => {
   const container = document.querySelector("." + tag + "-container");
@@ -38,6 +38,19 @@ const pseudoChecker = (value) => {
     pseudo = value;
   }
 };
+
+
+const kairosChecker = (value) => {
+ if (!value.match(/^[0-9]{7,10}$/)) {
+    errorDisplay("kairos", "Le numéro kairos n'est pas valide");
+    kairos = null;
+  } else {
+    errorDisplay("kairos", "", true);
+    kairos = value;
+  }
+
+}
+
 
 
 
@@ -96,6 +109,10 @@ inputs.forEach((input) => {
         pseudoChecker(e.target.value);
         break;
 
+      case "kairos":
+        kairosChecker(e.target.value);
+        break;
+
       case "email":
         emailChecker(e.target.value);
         break;
@@ -105,8 +122,7 @@ inputs.forEach((input) => {
       case "confirm":
         confirmChecker(e.target.value);
         break;
-      default:
-        nul;
+      default:null
     }
   });
 });
@@ -120,15 +136,17 @@ form.addEventListener("submit", (e) => {
   const emailOk = document.getElementById('email').value;
   const passwordOk = document.getElementById('password').value;
   const confirmPassOk = document.getElementById('confirm').value;
+  const kairosOk = document.getElementById('kairos').value;
   const fileInput = document.getElementById('fileInput');
   const file = fileInput.files[0]; // On récupère la photo
   const classe = document.getElementById('classe');
 
   // Vérifier que tous les champs sont correctement remplis et que le mot de passe est confirmé
-  if (emailOk && passwordOk && confirmPassOk && pseudoOk && passwordOk === confirmPassOk && classe.value != "") {
+  if (emailOk && passwordOk && confirmPassOk && kairosOk &&  pseudoOk && passwordOk === confirmPassOk && classe.value != "") {
     const userInfo = {
       pseudoOk: pseudoOk,
       emailOk: emailOk,
+      kairosOk: kairosOk,
       passwordOk: passwordOk,
       classe:classe.value,
     };
@@ -150,6 +168,7 @@ form.addEventListener("submit", (e) => {
     email = null;
     password = null;
     confirmPass = null;
+    kairos = null;
 
   } else {
     alert("Veuillez remplir correctement tous les champs et vérifier que les mots de passe correspondent.");
