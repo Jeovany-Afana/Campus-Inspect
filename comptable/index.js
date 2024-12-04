@@ -276,6 +276,8 @@ window.markAsUpToDate = async function (button, studentId) {
   console.log(
     `Étudiant ${studentId} marqué comme à jour pour ${solvabilite} mois`
   );
+
+  location.reload();
 };
 
 // Fonction pour marquer un étudiant comme "Non à jour"
@@ -306,4 +308,6 @@ window.markAsNotUpToDate = function (button, studentId) {
     .catch((error) => {
       console.error("Erreur lors de la mise à jour : ", error); // Affiche une erreur en cas de problème
     });
+
+    location.reload();
 };
