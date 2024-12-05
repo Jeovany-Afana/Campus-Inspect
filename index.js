@@ -312,6 +312,28 @@ onAuthStateChanged(auth, (user) => {
     userProfil.style.display = "none"; //On cache la photo si l'utilisateur n'est pas connecté
     logoutButton.style.display = "none"; //Si l'utilisateur est pas connecté on éfface le bouton de déconnexion
     loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
+    let compteur = 0;
+    
+
+    let interval = setInterval(function () {
+      compteur++;
+
+      if(compteur % 2 === 0){
+        loginButton.style.transform = "scale(1.2)";
+        loginButton.style.backgroundColor = "red";
+      }
+      else{
+        loginButton.style.transform = "scale(1)";
+        loginButton.style.backgroundColor = "#0056b3";
+      }
+      if (compteur >= 20) {
+        clearInterval(interval);
+        loginButton.style.transform = "scale(1)";
+        loginButton.style.backgroundColor = "#0056b3";
+      }
+    }, 1000);
+
+
     camera.style.display = "none";
     document.getElementById("generateQRCode").style.display = "none"; //Si aucun utilisateur n'est connecté on cache le bouton pour le QRCode
     boutonComptable.style.display = "none";

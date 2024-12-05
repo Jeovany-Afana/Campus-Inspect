@@ -185,6 +185,18 @@ async function loadStudents() {
     displayStudents(studentsArray);
   }
 
+
+const studentSearchKairos = document.getElementById("studentSearchKairos");
+studentSearchKairos.addEventListener("input", function () {
+  const searchTerm = studentSearchKairos.value.toLowerCase();
+  const filteredStudents = studentsArray.filter((student) =>
+    String(student.kairos).toLowerCase().includes(searchTerm)
+  );
+  displayStudents(filteredStudents);
+});
+
+
+
   // Ajouter l'événement de recherche
   const searchInput = document.getElementById("studentSearch");
   searchInput.addEventListener("input", function () {
@@ -206,9 +218,9 @@ function displayStudents(students) {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td style:"text-align: center;">${student.kairos}</td>
-      <td style:"text-align: center;">${student.dureeSolvabilite}</td>
-      <td>${student.pseudoOk}</td>
+      <td style="text-align: center;"><b>${student.kairos}</b></td>
+       <td style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.2rem; text-align:center;"><b>${student.pseudoOk.toUpperCase()}</b></td>
+      <td style="text-align: center; color:${student.dureeSolvabilite > 0 ? "green" : "red"};font-size: 1.5rem;"><b>${student.dureeSolvabilite}</b></td>
       <td>${student.classe}</td>
       <td class="status ${student.a_jour ? "up-to-date" : "not-up-to-date"}">
           ${student.a_jour ? "À jour" : "Pas à jour"}
