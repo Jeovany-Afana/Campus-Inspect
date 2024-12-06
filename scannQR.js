@@ -34,7 +34,7 @@ const qrCodeContentDiv = document.getElementById("qrCodeContent");
 function startCamera() {
   // Demande l'accès à la caméra de l'utilisateur (caméra avant sur les téléphones)
   navigator.mediaDevices
-    .getUserMedia({ video: { facingMode: "environment" } })
+    .getUserMedia({ video: { facingMode: "user" } })
     .then((stream) => {
       // Associe le flux vidéo à l'élément vidéo sur la page
       video.srcObject = stream;
