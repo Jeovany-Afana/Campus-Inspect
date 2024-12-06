@@ -147,7 +147,7 @@ const showCamera = () => {
       startCamera();
       clearInterval(interval);
     }
-  }, 200);
+  }, 100);
 };
 
 // Événement pour démarrer le scan lorsque le bouton est cliqué
