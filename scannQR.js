@@ -32,9 +32,9 @@ const qrCodeContentDiv = document.getElementById("qrCodeContent");
 
 // Fonction pour démarrer la caméra et afficher le flux vidéo
 function startCamera() {
-  // Demande l'accès à la caméra de l'utilisateur (caméra arrière sur les téléphones)
+  // Demande l'accès à la caméra de l'utilisateur (caméra avant sur les téléphones)
   navigator.mediaDevices
-    .getUserMedia({ video: { facingMode: "environment" } })
+    .getUserMedia({ video: { facingMode: "user" } })
     .then((stream) => {
       // Associe le flux vidéo à l'élément vidéo sur la page
       video.srcObject = stream;
@@ -53,8 +53,12 @@ function startCamera() {
 
       // Démarre la fonction scanQRCode pour analyser les frames de la vidéo
       requestAnimationFrame(scanQRCode);
+    })
+    .catch((error) => {
+      console.error("Erreur d'accès à la caméra :", error);
     });
 }
+
 
 // Fonction pour scanner le QR code dans le flux vidéo
 async function scanQRCode() {

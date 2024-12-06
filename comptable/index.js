@@ -21,7 +21,6 @@ const auth = getAuth();
 const buttonsActions = document.querySelectorAll(".home-button-container");
 const userProfil = document.querySelector(".user-profile"); //Photo de profile de l'utilisateur(Qui va s'afficher si l'utilisateur est connecté)
 const logoutButton = document.getElementById("logoutButton"); //On sélectionne le bouton de déconnexion
-const loginButton = document.getElementById("loginButton");
 const aujourdHui = new Date();
 const jourDuMois = aujourdHui.getDate();
 console.log(jourDuMois);
