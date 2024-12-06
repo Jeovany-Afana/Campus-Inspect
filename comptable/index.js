@@ -151,6 +151,8 @@ async function loadStudents() {
   const q = query(collection(db, "users"), where("role", "==", "etudiant"));
   const querySnapshot = await getDocs(q);
 
+  document.getElementById("numberOfStudent").innerHTML = `Nombre d'étudiants : ${querySnapshot.size}`;
+
   // Créer un tableau pour stocker les étudiants
   let studentsArray = [];
 

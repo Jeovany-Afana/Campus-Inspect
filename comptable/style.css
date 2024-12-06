@@ -152,6 +152,17 @@ tr:hover {
     box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
 }
 
+/* Titre responsive */
+#numberOfStudent {
+    font-size: 2rem; /* Taille de police par défaut */
+    font-weight: bold; /* Gras */
+    text-align: center; /* Centré */
+    color: #3b82f6; /* Couleur du texte */
+    margin: 20px 0; /* Marges verticales */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre pour le texte */
+    transition: transform 0.3s ease; /* Effet de transition */
+  }
+
 
 
 
