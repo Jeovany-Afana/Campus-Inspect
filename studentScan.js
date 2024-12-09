@@ -88,14 +88,38 @@ import {
       return;
     }
   
-    // Ajout des informations de l'étudiant dans la collection "scans"
     try {
-      await addDoc(collection(db, "scans"), {
+      // Récupérez la date actuelle sans l'heure
+      const aujourdHui = new Date();
+      const dateSansHeure = new Date(
+        aujourdHui.getFullYear(),
+        aujourdHui.getMonth(),
+        aujourdHui.getDate()
+      );
+  
+      // Vérifiez s'il existe déjà un scan pour cet utilisateur aujourd'hui
+      const scansCollection = collection(db, "scans");
+      const q = query(
+        scansCollection,
+        where("pseudoOk", "==", user.pseudoOk),
+        where("date", "==", dateSansHeure.toISOString())
+      );
+      const querySnapshot = await getDocs(q);
+  
+      if (!querySnapshot.empty) {
+        alert("Vous avez déjà scanné aujourd'hui !");
+        console.log("Scan déjà effectué pour aujourd'hui.");
+        return;
+      }
+  
+      // Ajout des informations de l'étudiant dans la collection "scans"
+      await addDoc(scansCollection, {
         pseudoOk: user.pseudoOk || "Inconnu",
         kairos: user.kairos || "Non défini",
         classe: user.classe || "Non spécifié",
         dureeSolvabilite: user.dureeSolvabilite || 0,
         a_jour: user.a_jour || false,
+        date: dateSansHeure.toISOString(), // Ajout de la date actuelle
       });
   
       alert("Merci pour votre scan !");
@@ -104,6 +128,7 @@ import {
       console.error("Erreur lors de l'ajout dans Firestore :", error);
     }
   }
+  
   
   // Récupérer les informations de l'utilisateur connecté
   async function getUtilisateurConnecte() {

@@ -220,6 +220,8 @@ async function getUserData(uid) {
         //
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
         camera.style.display = "block";
+        document.getElementById("secondStartScanButton").style.display = "none";
+      
         getElements().then(() => {
           // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
 
@@ -238,6 +240,7 @@ async function getUserData(uid) {
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
         boutonComptable.style.display = "none";
         camera.style.display = "block";
+        document.getElementById("secondStartScanButton").style.display = "none";
         document.getElementById("startScanButton").style.display = "block";
         getElements().then(() => {
           // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
@@ -257,6 +260,8 @@ async function getUserData(uid) {
         userData.role === "comptable"
       ) {
         document.getElementById("generateQRCode").style.display = "none"; //Si c'est un membre de l'administration qui est connecté on cache le buton pour le QRCode
+        document.getElementById("startScanButton").style.display = "none";
+        document.getElementById("secondStartScanButton").style.display = "block";
 
         buttonsActions.forEach(function (element) {
           element.style.display = "block";
