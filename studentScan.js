@@ -31,7 +31,7 @@ import {
   // Fonction pour démarrer la caméra et afficher le flux vidéo
   function startCamera() {
     navigator.mediaDevices
-      .getUserMedia({ video: { facingMode: "user" } })
+      .getUserMedia({ video: { facingMode: "environment" } })
       .then((stream) => {
         video.srcObject = stream;
         video.setAttribute("playsinline", true);
