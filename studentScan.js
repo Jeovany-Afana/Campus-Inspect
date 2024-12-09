@@ -29,21 +29,39 @@ import {
   const qrCodeContentDiv = document.getElementById("qrCodeContent");
   
   // Fonction pour démarrer la caméra et afficher le flux vidéo
-  function startCamera() {
-    navigator.mediaDevices
-      .getUserMedia({ video: { facingMode: "environment" } })
-      .then((stream) => {
-        video.srcObject = stream;
-        video.setAttribute("playsinline", true);
-        video.style.display = "block";
-        videoOverlay.style.display = "flex";
-        video.play();
-        requestAnimationFrame(scanQRCode);
-      })
-      .catch((error) => {
-        console.error("Erreur d'accès à la caméra :", error);
-      });
+  async function startCamera() {
+    try {
+      // Liste tous les périphériques multimédia
+      const devices = await navigator.mediaDevices.enumerateDevices();
+  
+      // Filtrer pour obtenir les caméras vidéo
+      const videoDevices = devices.filter((device) => device.kind === "videoinput");
+  
+      // Trouver la caméra arrière
+      const backCamera = videoDevices.find((device) =>
+        device.label.toLowerCase().includes("back")
+      );
+  
+      // Préparer les contraintes
+      const constraints = backCamera
+        ? { video: { deviceId: backCamera.deviceId } } // Utiliser le deviceId si trouvé
+        : { video: { facingMode: "environment" } };   // Sinon utiliser le facingMode
+  
+      // Démarrer le flux vidéo
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+  
+      video.srcObject = stream;
+      video.setAttribute("playsinline", true); // Nécessaire pour iOS
+      video.style.display = "block";
+      videoOverlay.style.display = "flex";
+      video.play();
+  
+      requestAnimationFrame(scanQRCode); // Lancer le scan QR
+    } catch (error) {
+      console.error("Erreur d'accès à la caméra :", error);
+    }
   }
+  
   
   // Fonction pour scanner le QR code dans le flux vidéo
   async function scanQRCode() {
