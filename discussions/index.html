@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messagerie</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../logo.css">
+  <link rel="icon" href="../icons/logo.PNG">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="logo">
+        <h1>CAMPUS <span>INSPECT</span></h1>
+    </div>
+  <div class="chat-container">
+    <header class="chat-header">
+      <h1 class="fa-regular fa-comments">💬 </h1>
+    </header>
+    <div class="chat-box" id="chat-box">
+      <!-- Les messages seront ajoutés ici -->
+    </div>
+    <div class="chat-input">
+      <button id="emoji-button" class="icon-button">😊</button>
+      <input type="text" id="message-input" placeholder="Écris un message..." />
+      <label for="file-input" class="icon-button" title="Importer un fichier">
+        <i class="fa-regular fa-file" ></i>
+        <input type="file" id="file-input" hidden />
+      </label>
+      <button id="send-button" class="send-button">Envoyer</button>
+    </div>
+    <div id="emoji-picker" class="hidden">
+      <!-- Émojis apparaîtront ici -->
+    </div>
+  </div>
+
+<script type="module" src="./databaseManage.js">
+</script>
+
+  <script type="module" src="./index.js"></script>
+</body>
+</html>

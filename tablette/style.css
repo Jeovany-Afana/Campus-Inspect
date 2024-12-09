@@ -1,0 +1,89 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 3%;
+}
+
+thead {
+    background-color: #3b82f6;
+    color: white;
+    text-align: left;
+}
+
+th, td {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    font-size: 16px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+td {
+    font-size: 14px;
+}
+
+/* Style pour les images dans les cellules */
+td img {
+    width: 100%; /* L'image prend toute la largeur de la cellule */
+    height: auto; /* La hauteur est automatique pour maintenir les proportions */
+    max-height: 80px; /* Limite la hauteur maximale de l'image */
+    object-fit: contain; /* Couvre la cellule sans déformer l'image */
+}
+
+tr:hover {
+    background-color: #f1f5f9;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.icon-btn {
+    border: none;
+    cursor: pointer;
+    background: none;
+    font-size: 20px;
+}
+
+.icon-btn.up-to-date {
+    color: green;
+}
+
+.icon-btn.not-up-to-date {
+    color: red;
+}
+
+.icon-btn:hover {
+    opacity: 0.7;
+}
+
+.status {
+    font-weight: bold;
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.status.up-to-date {
+    color: white;
+    background-color: green;
+}
+
+.status.not-up-to-date {
+    color: white;
+    background-color: red;
+}
+
+.status.enRegle{
+    color: white;
+    background-color: #2778fa;
+}
