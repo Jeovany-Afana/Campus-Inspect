@@ -28,39 +28,39 @@ import {
   const closeButton = document.getElementById("closeButton");
   const qrCodeContentDiv = document.getElementById("qrCodeContent");
   
+
   // Fonction pour démarrer la caméra et afficher le flux vidéo
-  async function startCamera() {
-    try {
-      // Liste tous les périphériques multimédia
-      const devices = await navigator.mediaDevices.enumerateDevices();
-  
-      // Filtrer pour obtenir les caméras vidéo
-      const videoDevices = devices.filter((device) => device.kind === "videoinput");
-  
-      // Trouver la caméra arrière
-      const backCamera = videoDevices.find((device) =>
-        device.label.toLowerCase().includes("back")
-      );
-  
-      // Préparer les contraintes
-      const constraints = backCamera
-        ? { video: { deviceId: backCamera.deviceId } } // Utiliser le deviceId si trouvé
-        : { video: { facingMode: "environment" } };   // Sinon utiliser le facingMode
-  
-      // Démarrer le flux vidéo
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-  
-      video.srcObject = stream;
-      video.setAttribute("playsinline", true); // Nécessaire pour iOS
-      video.style.display = "block";
-      videoOverlay.style.display = "flex";
-      video.play();
-  
-      requestAnimationFrame(scanQRCode); // Lancer le scan QR
-    } catch (error) {
-      console.error("Erreur d'accès à la caméra :", error);
-    }
+async function startCamera() {
+  try {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoDevices = devices.filter((device) => device.kind === "videoinput");
+
+    // Rechercher une caméra arrière
+    const backCamera = videoDevices.find((device) =>
+      device.label.toLowerCase().includes("back")
+    );
+
+    const constraints = {
+      video: backCamera
+        ? { deviceId: { exact: backCamera.deviceId } } // Si une caméra arrière est trouvée
+        : { facingMode: "environment" }, // Sinon, utiliser facingMode
+    };
+
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+    // Configuration du flux vidéo
+    video.srcObject = stream;
+    video.setAttribute("playsinline", true);
+    video.style.display = "block";
+    videoOverlay.style.display = "flex";
+    video.play();
+    requestAnimationFrame(scanQRCode);
+  } catch (error) {
+    console.error("Erreur d'accès à la caméra :", error);
+    alert("Impossible d'accéder à la caméra.");
   }
+}
+
   
   
   // Fonction pour scanner le QR code dans le flux vidéo
