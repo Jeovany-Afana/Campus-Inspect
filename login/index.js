@@ -1,7 +1,7 @@
 // Importer les fonctions nécessaires depuis les SDK de Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
-import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail  } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
 
 // Configuration de votre application Firebase
 const firebaseConfig = {
@@ -18,6 +18,30 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
+
+
+
+// Fonction pour réinitialiser le mot de passe
+document.getElementById("forgotPasswordButton").addEventListener("click", async () => {
+  const userEmail = prompt("Entrez votre adresse e-mail pour réinitialiser votre mot de passe:");
+
+  if (userEmail) {
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, userEmail);
+      alert("Un e-mail de réinitialisation de mot de passe a été envoyé !");
+    } catch (error) {
+      alert("Une erreur est survenue. Veuillez vérifier votre adresse e-mail.");
+      console.error(error);
+    }
+  } else {
+    alert("Veuillez entrer une adresse e-mail.");
+  }
+});
+
+
+
+
 
 const form = document.querySelector("form");
 const inputs = document.querySelectorAll(

@@ -20,6 +20,7 @@ import {
 
 import {showStudentInfo} from "./studentModal/student-modal.js";
 import { showSupportModal } from "./support/support.js";
+import { showModalSpecific } from "./updates/updateInformations.js";
 // Assurez-vous que Firebase est déjà initialisé dans votre fichier HTML
 const db = getFirestore(); // Assurez-vous que cela soit défini après l'initialisation de Firebase
 const auth = getAuth();
@@ -187,18 +188,6 @@ async function updateClassStatus(
 // Charger les éléments
 getElements();
 
-logoutButton.addEventListener("click", () => {
-  signOut(auth)
-    .then(() => {
-      // Déconnexion réussie
-      console.log("Déconnexion réussie");
-      window.location.href = "./login/index.html"; // Redirige vers la page de connexion
-    })
-    .catch((error) => {
-      // Une erreur est survenue lors de la déconnexion
-      console.error("Erreur lors de la déconnexion:", error);
-    });
-});
 
 export async function getUserData(uid) {
   // Crée une requête pour rechercher l'utilisateur par son uid
@@ -216,7 +205,6 @@ export async function getUserData(uid) {
         .getElementById("userPhoto")
         .setAttribute("src", userData.photoURLOk);
       userProfil.style.display = "block"; //Si l'utilisateur est connecté on affiche sa photo de profile
-      logoutButton.style.display = "block"; //Si l'utilisateur est connecté on affiche le bouton de déconnexion
       loginButton.style.display = "none"; //On éfface le bouton connection si l'utilisateur est déjà connecté
 
       if (userData.role === "responsable") {
@@ -243,17 +231,50 @@ export async function getUserData(uid) {
         document.querySelector(".fab-menu").innerHTML += 
         `
          <button class="fab-menu-item" id="userProfile"><i class="fa-regular fa-user"></i></button>
-    <button class="fab-menu-item"><i class="fa-solid fa-gears"></i></button>
+    <button class="fab-menu-item" id="updateInformationsModal"><i class="fa-solid fa-gears"></i></button>
      <button class="fab-menu-item" id="openSupportModal">
       <i class="fa-solid fa-headset"></i>
       <span>JOE</span>
     </button>
     <button class="fab-menu-item"><i class="fa-regular fa-message"></i></button>
     <button class="fab-menu-item"><i class="fa-regular fa-file"></i></button>
+     <button id="logoutButton" class="fab-menu-item" style="background-color: rgb(237, 56, 56);">
+      <i class="fa-solid fa-power-off"></i>
+    </button>
         
         `
+
+        document.getElementById("logoutButton").addEventListener("click", () => {
+          try{
+            
+               // Afficher le spinner
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      loadingSpinner.style.display = 'block';
+
+          signOut(auth)
+            .then(() => {
+              // Déconnexion réussie
+              console.log("Déconnexion réussie");
+              window.location.href = "./login/index.html"; // Redirige vers la page de connexion
+            })
+            .catch((error) => {
+              // Une erreur est survenue lors de la déconnexion
+              console.error("Erreur lors de la déconnexion:", error);
+            });
+          
+          }catch(error){
+            console.log(error)
+          }finally{
+            // Cacher le spinner
+             // Masquer le spinner
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      loadingSpinner.style.display = 'none';
+          }
+        });
+        
         document.getElementById('userProfile').addEventListener('click', showStudentInfo);
         document.getElementById('openSupportModal').addEventListener('click', showSupportModal);
+        document.getElementById('updateInformationsModal').addEventListener('click', showModalSpecific);
         document.querySelector("#notification > p").innerHTML = "Découvrez les nouvelles fonctionnalités : le bouton de déconnexion a été déplacé dans le menu flottant pour une meilleure navigation !"
 
         // Lorsque l'utilisateur entre dans l'appli (par exemple au chargement de la page)
@@ -354,7 +375,6 @@ onAuthStateChanged(auth, (user) => {
       element.style.display = "none";
     });
     userProfil.style.display = "none"; //On cache la photo si l'utilisateur n'est pas connecté
-    logoutButton.style.display = "none"; //Si l'utilisateur est pas connecté on éfface le bouton de déconnexion
     loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
     let compteur = 0;
     

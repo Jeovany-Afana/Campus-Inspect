@@ -1,91 +1,88 @@
-.update-modal {
+.modal-specific {
+    display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    visibility: hidden;
-    opacity: 0;
-    transition: visibility 0.3s ease, opacity 0.3s ease;
     z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6); /* Fond semi-transparent */
   }
   
-  .update-modal.active {
-    visibility: visible;
-    opacity: 1;
-  }
-  
-  .update-modal-content {
-    background: linear-gradient(135deg, #f9f9f9, #ffffff);
-    border-radius: 10px;
-    padding: 30px;
+  .modal-specific-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px;
     width: 90%;
-    max-width: 400px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-    text-align: left;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
   }
   
-  .modal-title {
-    font-size: 1.5rem;
+  .modal-specific-close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
     font-weight: bold;
-    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  
+  .modal-specific-close:hover,
+  .modal-specific-close:focus {
+    color: #000;
+    text-decoration: none;
+  }
+  
+  h2 {
     text-align: center;
+    margin-bottom: 20px;
     color: #333;
   }
   
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
+  label {
     display: block;
     font-weight: bold;
-    margin-bottom: 5px;
-    font-size: 0.9rem;
+    margin-top: 15px;
+    color: #555;
   }
   
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
+  input[type="text"],
+  input[type="email"],
+  input[type="file"] {
+    width: calc(100% - 10px);
+    padding: 8px;
+    margin: 10px 0;
     border: 1px solid #ccc;
-    font-size: 1rem;
+    border-radius: 4px;
+    font-size: 14px;
   }
   
-  .form-actions {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .action-btn {
+  button {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
     background-color: #007bff;
     color: white;
     border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 1rem;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
   }
   
-  .action-btn:hover {
+  button:hover {
     background-color: #0056b3;
   }
   
-  .save-btn {
-    flex-grow: 1;
-  }
-  
-  .close-modal {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #333;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
   

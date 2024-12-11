@@ -50,3 +50,4 @@ function showModal() {
         }
     });
 }
+showModal();

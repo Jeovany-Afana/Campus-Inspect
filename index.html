@@ -140,10 +140,6 @@
   <!-- Menu flottant -->
   <div class="fab-menu" id="fabMenu">
    
-    <button id="logoutButton" class="fab-menu-item" style="background-color: rgb(237, 56, 56);">
-      <i class="fa-solid fa-power-off"></i>
-    </button>
-
     <button id="loginButton" class="fab-menu-item" style="background-color: rgb(9, 175, 9);" onclick="window.location.href='./login/index.html'">
       <i class="fa-solid fa-power-off"></i>
     </button>
@@ -213,35 +209,32 @@
 
 
 <!-- Modal pour permettre à l'étudiant de mettre à jour son profil -->
-
-<div class="update-modal" id="updateModal">
-  <div class="update-modal-content">
-    <span class="close-modal" id="closeUpdateModal">&times;</span>
-    <h2 class="modal-title">Mettre à jour vos informations</h2>
-
-    <form id="updateForm">
-      <div class="form-group">
-        <label for="fullName">Nom complet</label>
-        <input type="text" id="fullName" placeholder="Entrez votre nom complet" required />
-      </div>
-
-      <div class="form-group">
-        <label for="email">Adresse email</label>
-        <input type="email" id="email" placeholder="Entrez votre email" required />
-      </div>
-
-      <div class="form-group">
-        <label for="profilePhoto">Photo de profil</label>
-        <input type="file" id="profilePhoto" accept="image/*" />
-      </div>
-
-      <div class="form-actions">
-        <button type="button" id="resetPassword" class="action-btn">Réinitialiser le mot de passe</button>
-        <button type="submit" class="action-btn save-btn">Enregistrer</button>
-      </div>
-    </form>
+<div id="updateUserModal" class="modal-specific">
+  <div class="modal-specific-content">
+    <span id="closeUpdateUserModal" class="modal-specific-close">&times;</span>
+    <h2>Modifier vos informations</h2>
+    <div>
+      <label for="updateUserName">Nom complet :</label>
+      <input type="text" id="updateUserName" placeholder="Votre nom complet" />
+      <button id="updateNameButton">Mettre à jour le nom</button>
+    </div>
+    <div>
+      <label for="updateUserEmail">Adresse e-mail :</label>
+      <input type="email" id="updateUserEmail" placeholder="Votre adresse e-mail" />
+      <button id="updateEmailButton">Mettre à jour l'e-mail</button>
+    </div>
+    <div>
+      <label for="updateUserPhoto">Photo de profil :</label>
+      <input type="file" id="updateUserPhoto" accept="image/*" />
+      <button id="updatePhotoButton">Mettre à jour la photo</button>
+    </div>
+    <div class="custom-actions">
+      <button type="button" id="customResetPasswordButton">Réinitialiser le mot de passe</button>
+    </div>
   </div>
 </div>
+
+
 
 
 
