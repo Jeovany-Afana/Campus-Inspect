@@ -1,0 +1,100 @@
+/* Arrière-plan semi-transparent */
+.custom-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7); /* Fond plus foncé */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+}
+
+/* Contenu de la modale */
+.custom-modal-content {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+    width: 85%;
+    max-width: 500px;
+    padding: 30px 40px;
+    text-align: left;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.3s ease-out;
+}
+
+/* Bouton de fermeture */
+.custom-close-modal {
+    background-color: transparent;
+    border: none;
+    font-size: 1.8rem;
+    color: #888;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.custom-close-modal:hover {
+    color: #ff6347; /* Changement de couleur au survol */
+}
+
+/* Titre */
+.custom-modal-content h2 {
+    font-family: "Roboto", sans-serif;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Liste des fonctionnalités */
+.custom-modal-content ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.custom-modal-content ul li {
+    font-size: 1.1rem;
+    color: #555;
+    margin: 12px 0;
+    line-height: 1.8;
+    padding-left: 25px;
+    position: relative;
+}
+
+/* Icone des puces */
+.custom-modal-content ul li:before {
+    content: "•";
+    color: #007bff;
+    font-size: 1.4rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* Paragraphe */
+.custom-modal-content p {
+    font-size: 1rem;
+    color: #666;
+    margin: 20px 0;
+    line-height: 1.6;
+}
+
+/* Animation de la modale */
+.custom-modal.active {
+    visibility: visible;
+    opacity: 1;
+}
+
+.custom-modal.active .custom-modal-content {
+    transform: scale(1);
+}

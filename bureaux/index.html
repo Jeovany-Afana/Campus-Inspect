@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bureaux</title>
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../logo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../floating-button.css">
     <link rel="icon" href="../icons/logo.PNG">
 </head>
 <body>
@@ -44,11 +44,34 @@
       </div>
     </div>
   </nav>
-  
-<!-- Bouton de déconnexion -->
-<button id="logoutButton" class="logout-button">Déconnexion</button>
+
+
 
 <a id="loginButton" class="login-button" href="../login/index.html">Se connecter</a>
+
+
+
+  <!-- Le bouton flottant -->
+     <div class="fabButton">
+      <button id="mainFab" class="fab-main"><i class="fa-solid fa-plus"></i></button>
+      
+             <!-- Menu flottant -->
+  <div class="fab-menu" id="fabMenu">
+    <button class="fab-menu-item"><i class="fa-regular fa-user"></i></button>
+    <button class="fab-menu-item"><i class="fa-solid fa-gears"></i></button>
+    <button class="fab-menu-item"><i class="fa-regular fa-message"></i></button>
+    <button class="fab-menu-item"><i class="fa-regular fa-file"></i></button>
+    <button class="fab-menu-item">
+      <i class="fa-solid fa-headset"></i>
+      <span>JOE</span>
+    </button>
+    <button id="logoutButton" class="fab-menu-item" style="background-color: rgb(237, 56, 56);">
+      <i class="fa-solid fa-power-off"></i>
+    </button>
+  </div>
+</div>
+
+
 
 
 <div class="button-container">
@@ -133,7 +156,7 @@ const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilis
 const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
       </script>
       <script src="./humbergerButton.js"></script>
-     
+      <script src="../floating-button.js"></script>
       <script type="module" src="./index.js"></script>
 </body>
 </html>

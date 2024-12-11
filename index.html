@@ -6,22 +6,17 @@
     <title>Campus Inspect</title>
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./scannQR.css">
+    <link rel="stylesheet" href="./floating-button.css">
+    <link rel="stylesheet" href="./modale.css">
+    <link rel="stylesheet" href="./studentModal/student-modal.css">
+    <link rel="stylesheet" href="./support/support.css">
+    <link rel="stylesheet" href="./updates/updateInformations.css">
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-
     <link rel="icon" type="image/png" href="./icons/logo.PNG">
     <link rel="icon" type="image/png" href="./icons/logo.PNG">
-
     <link rel="icon" type="image/png" href="./icons/logo.PNG">
-
-   
-
     <link rel="icon" type="image/png" href="./icons/logo.PNG">
-
-
-
 </head>
 <body>
    
@@ -58,11 +53,6 @@
       </div>
     </div>
   </nav>
-  
-<!-- Bouton de déconnexion -->
-<button id="logoutButton" class="logout-button">Déconnexion</button>
-
-<a id="loginButton" class="login-button" href="./login/index.html">Se connecter</a>
 
 <!-- Deux boutons -->
 <div class="button-container">
@@ -140,6 +130,155 @@
           </div>
       </div>
 
+
+      <!-- Bouton flottant -->
+
+     <!-- Le bouton flottant -->
+<div class="fabButton">
+  <button id="mainFab" class="fab-main"><i class="fa-solid fa-plus"></i></button>
+  
+  <!-- Menu flottant -->
+  <div class="fab-menu" id="fabMenu">
+   
+    <button id="logoutButton" class="fab-menu-item" style="background-color: rgb(237, 56, 56);">
+      <i class="fa-solid fa-power-off"></i>
+    </button>
+
+    <button id="loginButton" class="fab-menu-item" style="background-color: rgb(9, 175, 9);" onclick="window.location.href='./login/index.html'">
+      <i class="fa-solid fa-power-off"></i>
+    </button>
+  </div>
+</div>
+
+
+<!-- Modale pour afficher les informations de l'étudiant connecté -->
+ <!-- Modale pour afficher les informations de l'étudiant -->
+<div class="student-modal" id="studentModal">
+  <div class="student-modal-content">
+    <span class="close-modal" id="closeStudentModal">&times;</span>
+    <div class="student-info">
+      <!-- Photo de l'étudiant -->
+      <div class="student-photo-container">
+        <img src="#" alt="Photo de l'étudiant" class="student-photo" id="student-photo">
+    </div>
+    
+
+      <!-- Informations de l'étudiant -->
+      <div class="student-details">
+        <div class="verified-badge">
+          <i class="fa fa-check"></i>
+      </div>      
+        <h2 id="studentName">Nom de l'étudiant</h2><br>
+        <p><i class="fa-regular fa-id-badge"></i><span id="kairosNumber">123456789</span></p><br>
+        <p><i class="fa-regular fa-envelope"></i> <span id="studentEmail">email@exemple.com</span></p><br>
+        <p><i class="fa-regular fa-calendar"></i><span id="studentSolvabilite">0</span></p><br>
+        <p> <span id="accountStatus" class="status"></span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Loading spinner -->
+
+<div id="loadingSpinner" class="spinner" style="display: none;"></div>
+
+
+<!-- Contacter le support (Joe) -->
+<!-- Modal de support -->
+<div class="support-modal" id="supportModal">
+  <div class="support-modal-content">
+    <span class="close-support-modal" id="closeSupportModal">&times;</span>
+    <div class="support-header">
+      <i class="fa-solid fa-headset support-icon"></i>
+      <h2>Un problème ? Contactez Joe</h2>
+    </div>
+    <form id="supportForm">
+      <textarea id="supportComment" placeholder="Expliquez brièvement votre problème..." required></textarea>
+      <button type="submit" class="send-button">Envoyer le commentaire</button>
+    </form>
+    <div class="support-actions">
+      <a href="https://wa.me/221774931623" target="_blank" class="support-button whatsapp-button">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+      </a>
+      <a href="tel:+221774931623" class="support-button call-button">
+        <i class="fa fa-phone"></i> Appeler
+      </a>
+      <a href="mailto:wilfrieddylan451@gmail.com" class="support-button email-button">
+        <i class="fa fa-envelope"></i> Email
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal pour permettre à l'étudiant de mettre à jour son profil -->
+
+<div class="update-modal" id="updateModal">
+  <div class="update-modal-content">
+    <span class="close-modal" id="closeUpdateModal">&times;</span>
+    <h2 class="modal-title">Mettre à jour vos informations</h2>
+
+    <form id="updateForm">
+      <div class="form-group">
+        <label for="fullName">Nom complet</label>
+        <input type="text" id="fullName" placeholder="Entrez votre nom complet" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Adresse email</label>
+        <input type="email" id="email" placeholder="Entrez votre email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="profilePhoto">Photo de profil</label>
+        <input type="file" id="profilePhoto" accept="image/*" />
+      </div>
+
+      <div class="form-actions">
+        <button type="button" id="resetPassword" class="action-btn">Réinitialiser le mot de passe</button>
+        <button type="submit" class="action-btn save-btn">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<!-- Nouvelle Modale -->
+<div class="custom-modal" id="updateModal">
+  <div class="custom-modal-content">
+    <button class="custom-close-modal" id="closeUpdateModal">&times;</button>
+    <h2>Nouvelle mise à jour</h2>
+    <p>Bienvenue dans la nouvelle version de l'application ! Voici un aperçu des fonctionnalités des boutons ajoutés :</p>
+    <ul>
+      <li><b>Profil</b> : Accédez à vos informations personnelles et modifiez-les si nécessaire.</li>
+      <li><b>Paramètres</b> : Ajustez les préférences et paramètres de l'application selon vos besoins.</li>
+      <li><b>Messages</b> : Discutez avec les membres de votre classe via le forum.</li>
+      <li><b>Documents</b> : Consultez et téléchargez vos fichiers organisés par module.</li>
+      <li><b>Assistance</b> : Contactez notre support pour toute question ou problème.</li>
+      <li><b>Déconnexion</b> : Quittez votre compte de manière sécurisée.</li>
+    </ul>
+    <p>Nous espérons que cette mise à jour améliorera votre expérience !</p>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Notification indépendante du menu flottant -->
+<div class="notification show" id="notification">
+  <i class="fa-regular fa-circle-xmark close-notification" id="closeNotification"></i>
+  <p>De nouvelles modifications ont été effectuées.</p>
+</div>
+
+
+      
+      
         <!-- Contenu du fichier principal -->
 
         <div id="myModal" class="modal">
@@ -219,11 +358,16 @@ const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilis
 const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
       </script>
       <script src="https://unpkg.com/jsqr"></script>
+      <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
       <script type="module" src="./studentScan.js"></script>
-      <script type="module" src="./adminScan.js"></script>
-      <script src="./humbergerButton.js"></script>
-      <script type="module" src="./index.js"></script>
       <script type="module" src="./qrCode.js"></script>
+      <script src="./floating-button.js"></script>
+      <script src="./humbergerButton.js"></script>
+      <script type="module" src="./studentModal/student-modal.js"></script>
+      <script type="module" src="./index.js"></script>
+     <script  type="module" src="./modale.js"></script>
+      <script type="module" src="./updates/updateInformations.js"></script>
+     <script type="module" src="./support/support.js"></script>
 </body>
 </html>

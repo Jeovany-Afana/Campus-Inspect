@@ -197,6 +197,7 @@ async function startCamera() {
     tracks.forEach((track) => track.stop());
     videoOverlay.style.display = "none";
     startScanButton.style.display = "block";
+    document.getElementById("secondStartScanButton").style.display = "none";
     qrCodeContentDiv.style.display = "none";
     video.style.display = "block";
   });

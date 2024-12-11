@@ -1,0 +1,156 @@
+/* Arrière-plan semi-transparent */
+.student-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+  }
+  
+  /* Modale */
+  .student-modal-content {
+    background: linear-gradient(135deg, #ffffff, #f0f0f0);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 600px;
+    padding: 30px;
+    text-align: center;
+    transform: scale(0.8);
+    transition: transform 0.3s ease-out;
+    opacity: 0;
+  }
+  
+  /* Affichage de la modale */
+  .student-modal.active {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .student-modal.active .student-modal-content {
+    transform: scale(1);
+    opacity: 1;
+  }
+  
+/* Conteneur pour la photo de l'étudiant */
+.student-photo-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #007BFF;
+    overflow: hidden; /* Assure que rien ne dépasse du cercle */
+    margin: 10px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #f0f0f0; /* Couleur de fond en cas d'image manquante */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Photo de l'étudiant */
+.student-photo {
+    width: 100%; /* Prend la largeur du conteneur */
+    height: auto; /* Ajuste la hauteur en conservant les proportions */
+    min-height: 100%; /* Assure que le cercle est entièrement rempli */
+    object-fit: contain; /* S'adapte sans rogner */
+    object-position: center; /* Centre l'image */
+}
+
+  
+  /* Détails de l'étudiant */
+  .student-details {
+    font-size: 1.6rem;
+    color: #555;
+  }
+  
+  /* Titre du nom de l'étudiant */
+  #studentName {
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #007bff;
+  }
+
+  #studentEmail {
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #007bff;
+  }
+
+#studentSolvabilite{
+    font-size: 1.6rem;
+    color: #007bff;
+    font-weight: bold;
+    margin-left: 2%;
+    margin-bottom: 15px;
+    font-family: 'Arial', sans-serif;
+}
+  
+  /* Status de l'étudiant */
+  .status {
+    font-weight: bold;
+    padding: 5px 10px;
+    width: 200px;
+    border-radius: 15px;
+    color: #fff;
+  }
+  
+  .status.up-to-date {
+    background-color: #007bff;
+  }
+  
+  .status.not-up-to-date {
+    background-color: #e30000;
+  }
+  
+  /* Bouton de fermeture */
+  .close-modal {
+    background-color: transparent;
+    border: none;
+    font-size: 1.8rem;
+    color: #333;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .close-modal:hover {
+    color: #007bff;
+  }
+
+
+  /* CSS pour le badge */
+
+  .verified-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #007BFF, #00C6FF);
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: -1%;
+}
+
+.verified-badge i {
+    margin: 0; /* S'assurer que l'icône est bien centrée */
+}
+
+  

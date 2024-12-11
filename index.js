@@ -17,6 +17,9 @@ import {
   signOut,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+import {showStudentInfo} from "./studentModal/student-modal.js";
+import { showSupportModal } from "./support/support.js";
 // Assurez-vous que Firebase est déjà initialisé dans votre fichier HTML
 const db = getFirestore(); // Assurez-vous que cela soit défini après l'initialisation de Firebase
 const auth = getAuth();
@@ -197,7 +200,7 @@ logoutButton.addEventListener("click", () => {
     });
 });
 
-async function getUserData(uid) {
+export async function getUserData(uid) {
   // Crée une requête pour rechercher l'utilisateur par son uid
   const q = query(collection(db, "users"), where("uid", "==", uid));
 
@@ -208,7 +211,7 @@ async function getUserData(uid) {
       const userData = doc.data();
       donneeUtilisateur = userData; //On récupère les données de l'utilisateur connecté actuellement(L'étudiant)
 
-      document.getElementById("userName").innerHTML = userData.pseudoOk;
+      document.getElementById("userName").innerHTML = userData.pseudoOk.toUpperCase();
       document
         .getElementById("userPhoto")
         .setAttribute("src", userData.photoURLOk);
@@ -236,6 +239,42 @@ async function getUserData(uid) {
         });
       } else if (userData.role === "etudiant") {
         //Si l'utilisateur connecté est un étudiant
+
+        document.querySelector(".fab-menu").innerHTML += 
+        `
+         <button class="fab-menu-item" id="userProfile"><i class="fa-regular fa-user"></i></button>
+    <button class="fab-menu-item"><i class="fa-solid fa-gears"></i></button>
+     <button class="fab-menu-item" id="openSupportModal">
+      <i class="fa-solid fa-headset"></i>
+      <span>JOE</span>
+    </button>
+    <button class="fab-menu-item"><i class="fa-regular fa-message"></i></button>
+    <button class="fab-menu-item"><i class="fa-regular fa-file"></i></button>
+        
+        `
+        document.getElementById('userProfile').addEventListener('click', showStudentInfo);
+        document.getElementById('openSupportModal').addEventListener('click', showSupportModal);
+        document.querySelector("#notification > p").innerHTML = "Découvrez les nouvelles fonctionnalités : le bouton de déconnexion a été déplacé dans le menu flottant pour une meilleure navigation !"
+
+        // Lorsque l'utilisateur entre dans l'appli (par exemple au chargement de la page)
+window.onload = function() {
+
+  
+  // Afficher la notification après un délai de 1 seconde (simule un changement dans l'application)
+  setTimeout(() => {
+    document.getElementById('notification').classList.toggle('show');
+  }, 2000); // Ajuste le délai selon tes besoins
+
+  // Fermer la notification lorsque l'utilisateur clique sur le bouton X
+  document.getElementById('closeNotification').addEventListener('click', () => {
+    document.getElementById('notification').classList.toggle('show');
+    document.getElementById("notification").style.display = "none";
+  });
+      
+}
+
+
+
 
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
         boutonComptable.style.display = "none";
@@ -329,12 +368,12 @@ onAuthStateChanged(auth, (user) => {
       }
       else{
         loginButton.style.transform = "scale(1)";
-        loginButton.style.backgroundColor = "#0056b3";
+        loginButton.style.backgroundColor = "green";
       }
       if (compteur >= 20) {
         clearInterval(interval);
         loginButton.style.transform = "scale(1)";
-        loginButton.style.backgroundColor = "#0056b3";
+        loginButton.style.backgroundColor = "green";
       }
     }, 1000);
 
@@ -355,28 +394,3 @@ onAuthStateChanged(auth, (user) => {
 document.getElementById("refreshButton").addEventListener("click", function () {
   location.reload();
 });
-
-//Gestion du QRCODE
-
-// document.getElementById('generateQRCode').addEventListener('click', function() {
-//   // Afficher le QR code et l'overlay
-//   document.getElementById("qrcode-container").style.display = 'block';
-//   document.getElementById("overlay").style.display = 'block';
-
-//   // Générer le QR code avec des informations
-//   var qrcode = new QRCode(document.getElementById("qrcode"), {
-//       text: "Joe Wilfred\njohndoe@example.com\nA jour",
-//       width: 300,
-//       height: 300,
-//       colorDark : "#000000",  // Couleur unie (noir)
-//       colorLight : "#ffffff",  // Fond blanc
-//       correctLevel : QRCode.CorrectLevel.H
-//   });
-// });
-
-// // Événement pour fermer le QR code
-// document.getElementById('closeQRCode').addEventListener('click', function() {
-//   // Masquer le QR code, l'overlay et le bouton Fermer
-//   document.getElementById("qrcode-container").style.display = 'none';
-//   document.getElementById("overlay").style.display = 'none';
-// });

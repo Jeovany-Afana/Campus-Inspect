@@ -8,7 +8,7 @@
 /* Corps de la page */
 body {
   font-family: Arial, sans-serif;
-  background-color: #eaf6ff; /* Fond bleu clair */
+  background-color: #c9e6fb; /* Fond bleu clair */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -140,7 +140,7 @@ body {
 
 /* Style des boutons */
 .home-button {
-  background-color:#52a0f4; /* Couleur de fond bleu */
+  background-color:#007bff; /* Couleur de fond bleu */
   color: white; /* Texte en blanc */
   padding: 12px 20px; /* Espace intérieur du bouton */
   text-decoration: none; /* Retire la décoration par défaut des liens */
@@ -254,7 +254,7 @@ input:checked + .slider:before {
 
  /* Styles de la navbar */
 .navbar {
-  background-color: #66b2ff; /* Bleu ciel */
+  background-color: #007bff; /* Bleu ciel */
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -329,11 +329,10 @@ input:checked + .slider:before {
 
 /* Bloc de profil utilisateur */
 .user-profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+ display: block;
   margin-left: 20px; /* Espacement à gauche du profil */
   text-align: center;
+  max-width: 50px; /* Largeur maximale du bloc */
 }
 
 .profile-picture {
@@ -364,6 +363,7 @@ input:checked + .slider:before {
 
 .user-name {
   margin-top: 5px; /* Espacement entre l'image et le nom */
+  font-family:fantasy;
   font-size: 12px; /* Taille de la police */
   color: white; /* Couleur du texte */
 }
@@ -428,7 +428,7 @@ input:checked + .slider:before {
   .footer-title {
     font-size: 20px;
     margin-bottom: 15px;
-    color: #00aaff;
+    color: #007bff;
   }
   
   .footer-section.about p {
@@ -454,7 +454,7 @@ input:checked + .slider:before {
   }
   
   .footer-bottom {
-    border-top: 1px solid #00aaff;
+    border-top: 1px solid #007bff;
     padding-top: 10px;
     font-size: 14px;
   }
@@ -471,7 +471,7 @@ input:checked + .slider:before {
   }
   
   .social-icons a:hover {
-    color: #00aaff;
+    color: #007bff;
   }
   
   .contact p {
@@ -540,19 +540,6 @@ input:checked + .slider:before {
 
 
 
-/* Bouton de déconnexion */
-/* Styles pour le bouton de déconnexion */
-.logout-button {
-  background-color: #ff4d4d; /* Couleur de fond rouge */
-  color: white; /* Couleur du texte */
-  border: none; /* Pas de bordure */
-  border-radius: 5px; /* Coins arrondis */
-  padding: 10px 20px; /* Espacement intérieur */
-  font-size: 16px; /* Taille de la police */
-  cursor: pointer; /* Curseur en forme de main */
-  transition: background-color 0.3s, transform 0.2s; /* Transitions pour les effets */
-  margin-bottom: 0.5%;
-}
 
 .logout-button:hover {
   background-color: #ff1a1a; /* Couleur de fond lors du survol */
@@ -578,6 +565,10 @@ input:checked + .slider:before {
   border-radius: 5px; /* Coins arrondis */
   transition: background-color 0.3s ease; /* Transition douce pour l'effet de survol */
   cursor: pointer; /* Curseur de pointeur */
+  transition: 2s ease;
+}
+
+#loginButton {
   transition: 2s ease;
 }
 
@@ -752,7 +743,8 @@ input:checked + .slider:before {
 }
 
 #refreshButton {
-  background-color: #28a745; /* Couleur différente pour le bouton d'actualisation */
+  background-color: #a7a528; /* Couleur différente pour le bouton d'actualisation */
+  font-weight: bold; /* Gras */
 }
 
 #refreshButton:hover {
@@ -820,6 +812,30 @@ h2 {
   width: 5.4%;
   border: none;
 }
+
+
+/* Loading spinner */
+
+/* CSS Pour le spinner */
+.spinner {
+  border: 8px solid #f3f3f3; /* Couleur de fond */
+  border-top: 8px solid #3498db; /* Couleur de la partie supérieure */
+  border-radius: 50%;
+  width: 50px; /* Largeur du spinner */
+  height: 50px; /* Hauteur du spinner */
+  animation: spin 1s linear infinite; /* Animation de rotation */
+  position: fixed; /* Position fixe */
+  left: 50%; /* Centré horizontalement */
+  top: 50%; /* Centré verticalement */
+  transform: translate(-50%, -50%); /* Ajustement pour le centrage */
+  z-index: 1500; /* Au-dessus des autres éléments */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 
 
 

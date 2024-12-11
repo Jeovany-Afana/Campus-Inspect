@@ -17,7 +17,7 @@ table {
 }
 
 thead {
-    background-color: #3b82f6;
+    background-color: #007bff;
     color: white;
     text-align: left;
 }
@@ -89,11 +89,6 @@ tr:hover {
 .status.not-up-to-date {
     color: white;
     background-color: red;
-}
-
-.status.enRegle{
-    color: white;
-    background-color: #2778fa;
 }
 
 /* Responsive */

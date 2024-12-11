@@ -1,0 +1,160 @@
+/* Style de base */
+.fabButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.fab-main {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.fab-main:hover {
+    transform: scale(1.1);
+}
+
+.fab-menu {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    display: none; /* Menu caché par défaut */
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.fab-menu-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transform: scale(0); /* Caché avec scale */
+    opacity: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+}
+
+.fab-menu-item:hover {
+    transform: scale(1.1);
+    background-color: #1f84f1;
+}
+
+/* Quand le menu est actif */
+.fab-menu.active {
+    display: flex;
+}
+
+.fab-menu.active .fab-menu-item {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Responsive design */
+
+/* Taille des boutons pour les écrans moyens */
+@media (max-width: 768px) {
+    .fab-main {
+        width: 50px;
+        height: 50px;
+    }
+
+    .fab-menu-item {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+/* Taille des boutons pour les petits écrans */
+@media (max-width: 480px) {
+    .fab-main {
+        width: 40px;
+        height: 40px;
+    }
+
+    .fab-menu-item {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* floating notification */
+/* floating notification */
+/* Style de la notification */
+.notification {
+    visibility: hidden; /* Caché par défaut */
+    opacity: 0; /* Caché par défaut */
+    background-color: #007BFF;
+    color: #fff;
+    border: 3px groove white;
+    border-radius: 25px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    position: fixed;
+    bottom: 90px; /* Positionnée juste au-dessus du bouton flottant */
+    right: 20px;
+  display: block;
+    max-width: 300px; /* Largeur maximale */
+    width: auto; /* La largeur s'ajuste en fonction du contenu jusqu'à la largeur maximale */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    animation: slideIn 0.5s ease-out forwards; /* Animation pour l'apparition */
+    z-index: 101; /* Placer la notification au-dessus du bouton flottant */
+    word-wrap: break-word; /* Permet au texte de se couper et de passer à la ligne suivante si nécessaire */
+    text-align: center;
+}
+
+.show {
+    visibility: visible; /* Afficher quand la notification est active */
+    opacity: 1;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.notification p {
+    margin: 0;
+    font-weight: bold;
+    flex-grow: 1; /* Le texte prend toute la place restante */
+}
+
+/* Style de l'icône de fermeture */
+.close-notification {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 10px; /* Marge entre le texte et l'icône */
+}
+
+.close-notification:hover {
+    color: #007BFF;
+}
