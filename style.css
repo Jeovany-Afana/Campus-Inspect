@@ -7,6 +7,8 @@
 
 /* Corps de la page */
 body {
+  padding: 0;
+  overflow-x: hidden;
   font-family: Arial, sans-serif;
   background-color: #c9e6fb; /* Fond bleu clair */
   display: flex;
@@ -252,59 +254,46 @@ input:checked + .slider:before {
 }
 
 
- /* Styles de la navbar */
+/* Styles de la navbar */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Évite les débordements horizontaux */
+}
+
 .navbar {
-  background-color: #007bff; /* Bleu ciel */
+  background-color: #007bff;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  position: relative; /* Pour la gestion de la navbar responsive */
-  z-index: 1000; /* Pour que la navbar soit toujours au-dessus */
+  width: content;
+  position: relative;
+  z-index: 1000;
 }
 
 .container-fluid {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
-  align-items: center; /* Centrer les éléments verticalement */
 }
 
-.logo {
-  text-align: center; /* Centrer le texte */
+.logo h1 {
+  font-size: 1.2em;
+  color: #ffffff;
 }
 
-.logo h3 {
-  font-size: 2em; /* Taille de la police */
-  font-weight: bold; /* Gras */
-  color: #007BFF; /* Couleur principale */
-  text-transform: uppercase; /* Mettre en majuscules */
-  letter-spacing: 5px; /* Espacement entre les lettres */
-  position: relative; /* Position pour les effets */
-  display: inline-block; /* Pour le positionnement */
-  background: linear-gradient(90deg, #007BFF, #00CFFF); /* Dégradé bleu */
-  -webkit-background-clip: text; /* Clipping pour dégradé de texte */
-  -webkit-text-fill-color: transparent; /* Remplissage transparent */
-  transition: all 0.3s ease; /* Transition douce pour tous les effets */
-}
-
-/* Styles pour le menu de navigation */
 .navbar-nav {
   list-style: none;
   display: flex;
   gap: 20px;
 }
 
-.nav-item {
-  list-style: none;
-}
-
 .nav-link {
   text-decoration: none;
   font-size: 18px;
   color: white;
-  position: relative;
   transition: color 0.3s ease;
 }
 
@@ -312,9 +301,44 @@ input:checked + .slider:before {
   color: #002f6c;
 }
 
-/* Bouton hamburger */
+/* Profil utilisateur */
+.user-profile {
+display: block;
+}
+
+.profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: green;
+  border: 2px solid white;
+}
+
+.user-name {
+  font-size: 12px;
+  color: white;
+  margin-top: 5px;
+}
+
+/* Menu hamburger */
 .navbar-toggler {
-  display: none; /* Masqué par défaut */
+  display: none;
   background: none;
   border: none;
   color: white;
@@ -322,88 +346,50 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-/* Icône du bouton hamburger */
 .navbar-toggler-icon {
   font-size: 28px;
 }
 
-/* Bloc de profil utilisateur */
-.user-profile {
- display: block;
-  margin-left: 20px; /* Espacement à gauche du profil */
-  text-align: center;
-  max-width: 50px; /* Largeur maximale du bloc */
-}
-
-.profile-picture {
-  position: relative;
-  width: 40px; /* Largeur de l'image */
-  height: 40px; /* Hauteur de l'image */
-  border-radius: 50%; /* Rendre la div circulaire */
-  overflow: hidden; /* Pour que l'image reste dans le cercle */
-}
-
-.profile-picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Adapter l'image à la taille */
-}
-
-.status-indicator {
+/* Menu déroulant (responsive) */
+.navbar-collapse {
+  display: none;
+  flex-direction: column;
   position: absolute;
-  bottom: 2px; /* Ajustez la position selon vos besoins */
-  right: 2px; /* Ajustez la position selon vos besoins */
-  width: 8px; /* Taille du point */
-  height: 8px; /* Taille du point */
-  border-radius: 50%; /* Rendre le point circulaire */
-  background-color: green; /* Couleur du point vert */
-  border: 2px solid white; /* Optionnel : ajouter un bord blanc */
-  z-index: 1000;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #007bff;
+  padding: 10px 0;
 }
 
-.user-name {
-  margin-top: 5px; /* Espacement entre l'image et le nom */
-  font-family:fantasy;
-  font-size: 12px; /* Taille de la police */
-  color: white; /* Couleur du texte */
+.navbar-collapse.active {
+  display: flex;
 }
 
-/* Styles de responsive pour le profil utilisateur */
+.nav-item {
+  padding: 10px 0;
+  text-align: center;
+}
+
+/* Responsiveness */
 @media (max-width: 768px) {
-  .navbar-collapse {
-      display: none; /* Masquer par défaut */
-      flex-direction: column; /* Aligner les éléments verticalement */
-      width: 100%;
-      background-color: #1284f6; /* Fond pour le menu */
-      position: absolute; /* Position absolue sous la navbar */
-      top: 100%; /* Ajuster pour qu'il soit sous la navbar */
-      left: 0;
-      z-index: 1000; /* Assurer que le menu soit au-dessus */
-  }
-
-  .navbar-collapse.active {
-      display: flex; /* Afficher quand actif */
-  }
-
   .navbar-toggler {
-      display: block; /* Afficher le bouton hamburger */
+    display: block;
   }
 
-  .nav-item {
-      padding: 10px 0; /* Espacement vertical pour les éléments du menu */
-      width: 100%; /* Prendre toute la largeur */
-      text-align: center; /* Centrer le texte */
+  .navbar-nav {
+    flex-direction: column;
+  }
+
+  .navbar{
+    width: fit-content;
   }
 
   .user-profile {
-      display: none; /* Masquer le profil sur les petits écrans */
+    display: none;
   }
 }
 
-/* Styles de transition pour le bouton hamburger */
-.navbar-toggler.active + .navbar-collapse {
-  display: flex; /* Afficher le menu quand le bouton est actif */
-}
 
 .footer {
     background-color: #1a1a2e;
@@ -839,3 +825,37 @@ h2 {
 
 
 
+/* Styles pour le bouton de la caméra */
+.camera-button {
+ background: none;
+  color: #007BFF; /* Couleur du texte */
+  border: none; /* Pas de bordure */
+  border-radius: 25px; /* Coins arrondis */
+  padding: 10px 20px; /* Espacement interne */
+  font-size: 4rem; /* Taille du texte */
+  font-family: Arial, sans-serif; /* Police moderne */
+  cursor: pointer; /* Curseur en mode clic */
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Effet de transition */
+}
+
+.camera-button i {
+  font-size: 20px; /* Taille de l'icône */
+}
+
+/* Effets au survol */
+.camera-button:hover {
+  background-color: #003d80; /* Couleur plus foncée au survol */
+  transform: scale(1.05); /* Léger agrandissement */
+}
+
+/* Réduction pour les petits écrans */
+@media (max-width: 768px) {
+  .camera-button {
+    font-size: 3rem; /* Taille du texte réduite */
+    padding: 8px 16px; /* Espacement réduit */
+  }
+
+  .camera-button i {
+    font-size: 3rem; /* Taille de l'icône ajustée */
+  }
+}

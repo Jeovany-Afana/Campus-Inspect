@@ -40,20 +40,19 @@
           <li class="nav-item">
             <a class="nav-link" href="./bureaux/index.html">Bureaux</a>
           </li>
-         
         </ul>
       </div>
       <!-- Bloc de profil utilisateur -->
       <div class="user-profile">
         <div class="profile-picture">
           <img src="#" alt="Photo de profil" id="userPhoto">
-          <span class="status-indicator"></span>
+       
         </div>
         <div class="user-name" id="userName"></div>
       </div>
     </div>
   </nav>
-
+  
 <!-- Deux boutons -->
 <div class="button-container">
   <button id="refreshButton" class="btn">Actualiser</button>
@@ -64,7 +63,7 @@
 <!-- Fin de la navbar -->
 
 <!-- QR Code -->
-<i class="fas fa-qrcode home-button" id="generateQRCode" style="font-size: 40px; cursor: pointer;"></i>
+
 <div class="overlay" id="overlay"></div>
 <div id="qrcode-container">
   <h2>QR Code de l'étudiant</h2>
@@ -78,10 +77,11 @@
 
 <div title="Scanner le code QR" id="scan-container">
   <!-- Bouton pour démarrer le scanner avec l'icône de la caméra -->
-   
-  <button id="startScanButton" class="home-button">
-    <i class="fas fa-camera"></i> 
-</button>
+  <i class="fas fa-qrcode home-button" id="generateQRCode" style="font-size: 40px; cursor: pointer; margin-left: 4%;"></i>
+<a class="camera-button" id="startScanButton">
+  <i class="fas fa-camera"></i>
+</a>
+
 
 <button id="secondStartScanButton" class="home-button">
   <i class="fas fa-camera"></i> 
