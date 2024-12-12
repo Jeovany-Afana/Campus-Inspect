@@ -5,6 +5,7 @@ import {
   query,
   where,
   getDoc,
+  onSnapshot,
   doc,
   addDoc,
   getDocs,
@@ -122,9 +123,7 @@ async function updateSolvabilityForAllStudents() {
 }
 
 
-window.onload = function () {
-  updateSolvabilityForAllStudents(); // Décrémenter si c'est le 5
-};
+
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -146,6 +145,8 @@ document.getElementById("refreshButton").addEventListener("click", function () {
 
 /// Fonction pour récupérer les données et mettre à jour le tableau
 async function loadStudents() {
+
+
   // Récupérer les documents de la collection 'users'
   const q = query(collection(db, "users"), where("role", "==", "etudiant"));
   const querySnapshot = await getDocs(q);
@@ -183,6 +184,7 @@ async function loadStudents() {
     }
 
     // Une fois que le tableau est rempli, on peut afficher les étudiants
+    console.log("Liste des étudiants chargée : ", studentsArray);
     displayStudents(studentsArray);
   }
 
@@ -214,36 +216,30 @@ function displayStudents(students) {
   const tableBody = document.querySelector("tbody");
   tableBody.innerHTML = ""; // Vider le tableau avant de le remplir à nouveau
 
-  students.forEach(async (student) => {
+  students.forEach((student) => {
     // Créer une nouvelle ligne de tableau
     const row = document.createElement("tr");
 
     row.innerHTML = `
       <td style="text-align: center;"><b>${student.kairos}</b></td>
-       <td style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.2rem; text-align:center;"><b>${student.pseudoOk.toUpperCase()}</b></td>
+      <td style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.2rem; text-align:center;"><b>${student.pseudoOk.toUpperCase()}</b></td>
       <td style="text-align: center; color:${student.dureeSolvabilite > 0 ? "green" : "red"};font-size: 1.5rem;"><b>${student.dureeSolvabilite}</b></td>
       <td>${student.classe}</td>
       <td class="status ${student.a_jour ? "up-to-date" : "not-up-to-date"}">
           ${student.a_jour ? "À jour" : "Pas à jour"}
       </td>
       <td class="action-buttons">
-          <button class="icon-btn up-to-date" onclick="markAsUpToDate(this, '${
-            student.id
-          }')">
+          <button class="icon-btn up-to-date" onclick="markAsUpToDate(this, '${student.id}')">
               <i class="fas fa-check-circle"></i>
           </button>
       </td>
       <td class="action-buttons">
-          <button class="icon-btn not-up-to-date" onclick="markAsNotUpToDate(this, '${
-            student.id
-          }')">
+          <button class="icon-btn not-up-to-date" onclick="markAsNotUpToDate(this, '${student.id}')">
               <i class="fas fa-times-circle"></i>
           </button>
       </td>
       <td>
-          <img src="${
-            student.photoURLOk
-          }" style="max-width: 100%; height: auto;">
+          <img src="${student.photoURLOk}" style="max-width: 100%; height: auto;">
       </td>
     `;
 
@@ -252,8 +248,55 @@ function displayStudents(students) {
   });
 }
 
-// Appeler la fonction pour charger les étudiants quand la page est chargée
-window.onload = loadStudents;
+// Fonction pour écouter les changements en temps réel
+function listenToStudents() {
+  const studentsQuery = query(
+    collection(db, "users"),
+    where("role", "==", "etudiant")
+  );
+
+  onSnapshot(studentsQuery, (snapshot) => {
+    const studentsArray = [];
+    snapshot.forEach((doc) => {
+      const student = doc.data();
+      studentsArray.push({
+        id: doc.id,
+        pseudoOk: student.pseudoOk,
+        classe: student.classe,
+        a_jour: student.a_jour,
+        photoURLOk: student.photoURLOk,
+        dureeSolvabilite: student.dureeSolvabilite,
+        kairos: student.kairos,
+      });
+    });
+
+    // Met à jour le tableau avec les données en temps réel
+    displayStudents(studentsArray);
+  });
+}
+
+
+
+
+window.onload = async function () {
+  const loadingOverlay = document.getElementById('loadingOverlay'); // Fond sombre et spinner
+
+  try {
+    loadingOverlay.style.display = 'flex'; // Afficher le spinner et le fond sombre
+    await loadStudents(); // Attendre le chargement des étudiants
+    updateSolvabilityForAllStudents(); // Met à jour les solvabilités
+  } catch (error) {
+    alert("Une erreur est survenue lors du chargement, veuillez réessayer ultérieurement.");
+    console.error("Erreur lors du chargement :", error);
+  } finally {
+    loadingOverlay.style.display = 'none'; // Masquer le spinner et le fond sombre
+  }
+};
+
+
+
+// Appeler la fonction pour démarrer l'écoute en temps réel
+listenToStudents();
 
 // Fonction pour marquer un étudiant comme "À jour" en précisant la durée
 window.markAsUpToDate = async function (button, studentId) {
@@ -279,6 +322,7 @@ window.markAsUpToDate = async function (button, studentId) {
     dureeSolvabilite: solvabilite,
     dernier_paiement: date.toISOString(), // Enregistre la date du dernier paiement
     a_jour: true, // Marque l'étudiant comme "À jour"
+    derniereMiseAJour: date.toISOString(), // Stocke une date complète au format ISO
   });
 
   // Met à jour l'interface utilisateur
@@ -289,8 +333,6 @@ window.markAsUpToDate = async function (button, studentId) {
   console.log(
     `Étudiant ${studentId} marqué comme à jour pour ${solvabilite} mois`
   );
-
-  location.reload();
 };
 
 // Fonction pour marquer un étudiant comme "Non à jour"
@@ -321,6 +363,4 @@ window.markAsNotUpToDate = function (button, studentId) {
     .catch((error) => {
       console.error("Erreur lors de la mise à jour : ", error); // Affiche une erreur en cas de problème
     });
-
-    location.reload();
 };

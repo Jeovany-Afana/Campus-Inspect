@@ -806,7 +806,7 @@ h2 {
 /* CSS Pour le spinner */
 .spinner {
   border: 8px solid #f3f3f3; /* Couleur de fond */
-  border-top: 8px solid #3498db; /* Couleur de la partie supérieure */
+  border-top: 8px solid #007BFF; /* Couleur de la partie supérieure */
   border-radius: 50%;
   width: 50px; /* Largeur du spinner */
   height: 50px; /* Hauteur du spinner */
