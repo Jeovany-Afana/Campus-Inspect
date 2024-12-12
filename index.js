@@ -200,7 +200,7 @@ export async function getUserData(uid) {
       const userData = doc.data();
       donneeUtilisateur = userData; //On récupère les données de l'utilisateur connecté actuellement(L'étudiant)
 
-      document.getElementById("userName").innerHTML = userData.pseudoOk.toUpperCase();
+      document.getElementById("userName").innerHTML = userData.pseudoOk.split(" ")[0].toUpperCase();
       document
         .getElementById("userPhoto")
         .setAttribute("src", userData.photoURLOk);

@@ -304,6 +304,7 @@ body {
 /* Profil utilisateur */
 .user-profile {
 display: block;
+font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
 }
 
 .profile-picture {
