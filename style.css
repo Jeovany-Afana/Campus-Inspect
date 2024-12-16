@@ -824,39 +824,44 @@ h2 {
 }
 
 
-
-
-/* Styles pour le bouton de la caméra */
-.camera-button {
- background: none;
-  color: #007BFF; /* Couleur du texte */
-  border: none; /* Pas de bordure */
-  border-radius: 25px; /* Coins arrondis */
-  padding: 10px 20px; /* Espacement interne */
-  font-size: 4rem; /* Taille du texte */
-  font-family: Arial, sans-serif; /* Police moderne */
-  cursor: pointer; /* Curseur en mode clic */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* Effet de transition */
+/* Conteneur des boutons */
+.button-container {
+  display: flex;
+  flex-direction: column; /* Aligne les éléments verticalement */
+  align-items: flex-start; /* Place les éléments à gauche */
+  gap: 20px; /* Espace entre les icônes */
+  margin-left: 10px; /* Positionne légèrement à gauche de la page */
 }
 
-.camera-button i {
-  font-size: 20px; /* Taille de l'icône */
+/* Styles généraux des boutons */
+.button-container i {
+  font-size: 50px; /* Taille uniforme des icônes */
+  cursor: pointer; /* Ajoute le curseur interactif */
+  width: 60px; /* Taille carrée pour les boutons */
+  height: 60px;
+  display: flex; /* Centre l'icône dans son conteneur */
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #ccc; /* Ajoute une bordure */
+  border-radius: 10px; /* Coins arrondis */
+  transition: all 0.3s ease; /* Animation pour les interactions */
 }
 
-/* Effets au survol */
-.camera-button:hover {
-  background-color: #003d80; /* Couleur plus foncée au survol */
-  transform: scale(1.05); /* Léger agrandissement */
+/* Style au survol */
+.button-container i:hover {
+  border-color: #007bff; /* Change la couleur de la bordure au hover */
+  color: #007bff; /* Change la couleur de l'icône */
 }
 
-/* Réduction pour les petits écrans */
+/* Responsiveness - Pour les écrans plus petits */
 @media (max-width: 768px) {
-  .camera-button {
-    font-size: 3rem; /* Taille du texte réduite */
-    padding: 8px 16px; /* Espacement réduit */
+  .button-container {
+    gap: 15px; /* Réduit l'espacement entre les boutons */
   }
 
-  .camera-button i {
-    font-size: 3rem; /* Taille de l'icône ajustée */
+  .button-container i {
+    font-size: 30px; /* Réduit la taille des icônes */
+    width: 50px; /* Réduit la taille des boutons */
+    height: 50px;
   }
 }

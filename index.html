@@ -77,10 +77,11 @@
 
 <div title="Scanner le code QR" id="scan-container">
   <!-- Bouton pour démarrer le scanner avec l'icône de la caméra -->
-  <i class="fas fa-qrcode home-button" id="generateQRCode" style="font-size: 40px; cursor: pointer; margin-left: 4%;"></i>
-<a class="camera-button" id="startScanButton">
-  <i class="fas fa-camera"></i>
-</a>
+  <div class="button-container">
+    <i class="fas fa-qrcode" id="generateQRCode"></i>
+    <i class="fas fa-camera camera-button" id="startScanButton"></i>
+  </div>
+  
 
 
 <button id="secondStartScanButton" class="home-button">
@@ -260,11 +261,11 @@
 
 
 
-<!-- Notification indépendante du menu flottant -->
+<!-- Notification indépendante du menu flottant
 <div class="notification show" id="notification">
   <i class="fa-regular fa-circle-xmark close-notification" id="closeNotification"></i>
   <p>De nouvelles modifications ont été effectuées.</p>
-</div>
+</div> -->
 
 
       
@@ -284,7 +285,6 @@
         <h1 class="responsive-title">Accueil</h1>
         <div id="class-list"></div>
 
-  
 <footer class="footer">
   <div class="footer-content">
     <div class="footer-section about">
@@ -327,7 +327,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js"; // Pour utiliser Storage
-
 // Configuration de votre application Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA", // Clé API de votre projet
@@ -346,7 +345,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilisé
 // Initialiser Firebase Storage (pour stocker des fichiers)
 const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
-      </script>
+    
+     
+     </script>
       <script src="https://unpkg.com/jsqr"></script>
       <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>

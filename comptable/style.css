@@ -212,5 +212,39 @@ tr:hover {
 
 
 
+  /* Style CSS */
+.custom-select {
+    appearance: none; /* Supprime le style par défaut */
+    background-color: #f0f0f0; /* Fond clair */
+    border: 2px solid #6200ea; /* Bordure violette */
+    border-radius: 8px; /* Coins arrondis */
+    padding: 10px 20px; /* Espacement interne */
+    font-size: 16px; /* Taille de police */
+    font-family: Arial, sans-serif; /* Police */
+    color: #333; /* Couleur du texte */
+    outline: none; /* Supprime le contour bleu lors du focus */
+    cursor: pointer; /* Curseur adapté */
+    width: 100%; /* Largeur adaptative */
+    max-width: 300px; /* Largeur maximale */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre */
+    transition: all 0.3s ease; /* Animation sur le hover */
+}
+
+.custom-select:hover {
+    background-color: #e0e0e0; /* Fond plus clair */
+    border-color: #3700b3; /* Bordure plus foncée */
+}
+
+.custom-select:focus {
+    border-color: #03dac6; /* Bordure en focus (turquoise) */
+    box-shadow: 0 0 0 4px rgba(3, 218, 198, 0.4); /* Effet d'accentuation */
+}
+
+.custom-select option {
+    padding: 10px; /* Espacement des options */
+}
+
+
+
 
 

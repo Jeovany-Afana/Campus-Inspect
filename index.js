@@ -35,6 +35,8 @@ const closeModalSpan = document.querySelector(".close");
 const saveTimeBtn = document.getElementById("saveTime");
 const boutonComptable = document.getElementById("boutonComptable");
 export let donneeUtilisateur; //Données de l'utilisateur connecté
+
+
 // Fermer la modale
 closeModalSpan.addEventListener("click", () => {
   modal.style.display = "none";
@@ -209,6 +211,7 @@ export async function getUserData(uid) {
 
       if (userData.role === "responsable") {
         //
+        boutonComptable.style.display = "none";//On cache le bouton comptable si l'utilisateur est un responsable
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
         camera.style.display = "block";
         document.getElementById("secondStartScanButton").style.display = "none";
@@ -230,7 +233,7 @@ export async function getUserData(uid) {
 
         document.querySelector(".fab-menu").innerHTML += 
         `
-         <button class="fab-menu-item" id="userProfile"><i class="fa-regular fa-user"></i></button>
+         
     <button class="fab-menu-item" id="updateInformationsModal"><i class="fa-solid fa-gears"></i></button>
      <button class="fab-menu-item" id="openSupportModal">
       <i class="fa-solid fa-headset"></i>
@@ -245,8 +248,11 @@ export async function getUserData(uid) {
         `
 
         document.getElementById("logoutButton").addEventListener("click", () => {
+          let deconnexion = confirm("Voulez-vous vraiment vous déconnecter ?");
+
+          if (deconnexion) {
+          
           try{
-            
                // Afficher le spinner
       const loadingSpinner = document.getElementById('loadingSpinner');
       loadingSpinner.style.display = 'block';
@@ -270,9 +276,11 @@ export async function getUserData(uid) {
       const loadingSpinner = document.getElementById('loadingSpinner');
       loadingSpinner.style.display = 'none';
           }
+
+        }
         });
         
-        document.getElementById('userProfile').addEventListener('click', showStudentInfo);
+        document.getElementById('userPhoto').addEventListener('click', showStudentInfo);
         document.getElementById('openSupportModal').addEventListener('click', showSupportModal);
         document.getElementById('updateInformationsModal').addEventListener('click', showModalSpecific);
         document.querySelector("#notification > p").innerHTML = "Découvrez les nouvelles fonctionnalités : le bouton de déconnexion a été déplacé dans le menu flottant pour une meilleure navigation !"

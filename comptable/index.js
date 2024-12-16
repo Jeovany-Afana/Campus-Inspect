@@ -24,6 +24,9 @@ const userProfil = document.querySelector(".user-profile"); //Photo de profile d
 const logoutButton = document.getElementById("logoutButton"); //On sélectionne le bouton de déconnexion
 const aujourdHui = new Date();
 const jourDuMois = aujourdHui.getDate();
+const studentSearchKairos = document.getElementById("studentSearchKairos");
+const searchInput = document.getElementById("studentSearch");
+const classFilter = document.getElementById("classFilter");
 console.log(jourDuMois);
 
 
@@ -189,27 +192,48 @@ async function loadStudents() {
   }
 
 
-const studentSearchKairos = document.getElementById("studentSearchKairos");
-studentSearchKairos.addEventListener("input", function () {
-  const searchTerm = studentSearchKairos.value.toLowerCase();
-  const filteredStudents = studentsArray.filter((student) =>
-    String(student.kairos).toLowerCase().includes(searchTerm)
-  );
+// Remplir la liste des classes
+populateClassFilter(studentsArray);
+
+// Fonction pour filtrer et afficher les étudiants
+function filterStudents() {
+  const kairosSearch = studentSearchKairos.value.toLowerCase();
+  const nameSearch = searchInput.value.toLowerCase();
+  const selectedClass = classFilter.value;
+
+  const filteredStudents = studentsArray.filter((student) => {
+    const matchesKairos = String(student.kairos).toLowerCase().includes(kairosSearch);
+    const matchesName = student.pseudoOk.toLowerCase().includes(nameSearch);
+    const matchesClass = selectedClass ? student.classe === selectedClass : true;
+    return matchesKairos && matchesName && matchesClass;
+  });
+
   displayStudents(filteredStudents);
-});
+}
 
+// Ajouter les événements
+studentSearchKairos.addEventListener("input", filterStudents);
+searchInput.addEventListener("input", filterStudents);
+classFilter.addEventListener("change", filterStudents);
 
-
-  // Ajouter l'événement de recherche
-  const searchInput = document.getElementById("studentSearch");
-  searchInput.addEventListener("input", function () {
-    const searchTerm = searchInput.value.toLowerCase(); // Texte recherché
-    const filteredStudents = studentsArray.filter((student) =>
-      student.pseudoOk.toLowerCase().includes(searchTerm)
-    );
-    displayStudents(filteredStudents); // Mettre à jour le tableau avec les résultats filtrés
+// Générer les options de la liste déroulante
+function populateClassFilter(students) {
+  const classFilter = document.getElementById("classFilter");
+  const classes = [...new Set(students.map((student) => student.classe))];
+  classes.forEach((classe) => {
+    const option = document.createElement("option");
+    option.value = classe;
+    option.textContent = classe;
+    classFilter.appendChild(option);
   });
 }
+
+// Afficher les étudiants initiaux
+displayStudents(studentsArray);
+
+}
+
+
 
 // Fonction pour afficher les étudiants dans le tableau
 function displayStudents(students) {

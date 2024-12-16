@@ -11,20 +11,20 @@ mainFab.addEventListener("click", () => {
 
 
 
-// Lorsque l'utilisateur entre dans l'appli (par exemple au chargement de la page)
-window.onload = function() {
-    // Afficher la notification après un délai de 1 seconde (simule un changement dans l'application)
-    setTimeout(() => {
-      document.getElementById('notification').classList.toggle('show');
-    }, 2000); // Ajuste le délai selon tes besoins
+// // Lorsque l'utilisateur entre dans l'appli (par exemple au chargement de la page)
+// window.onload = function() {
+//     // Afficher la notification après un délai de 1 seconde (simule un changement dans l'application)
+//     setTimeout(() => {
+//       document.getElementById('notification').classList.toggle('show');
+//     }, 2000); // Ajuste le délai selon tes besoins
   
-    // Fermer la notification lorsque l'utilisateur clique sur le bouton X
-    document.getElementById('closeNotification').addEventListener('click', () => {
-      document.getElementById('notification').classList.toggle('show');
-      document.getElementById("notification").style.display = "none";
-    });
+//     // Fermer la notification lorsque l'utilisateur clique sur le bouton X
+//     document.getElementById('closeNotification').addEventListener('click', () => {
+//       document.getElementById('notification').classList.toggle('show');
+//       document.getElementById("notification").style.display = "none";
+//     });
         
-}
+// }
   
   
   
