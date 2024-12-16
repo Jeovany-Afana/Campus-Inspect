@@ -49,3 +49,51 @@
     color: white;
     text-align: center;
 }
+
+/* CSS */
+
+/* Conteneur principal */
+.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Espacement entre les icônes */
+    padding: 10px;
+    flex-wrap: wrap; /* Permet d'ajuster les icônes sur plusieurs lignes si l'espace est limité */
+  }
+  
+  /* Icônes */
+  .icon-container i {
+    font-size: 5rem; /* Taille par défaut des icônes */
+    color: #007BFF; /* Couleur des icônes */
+    cursor: pointer; /* Apparence de la main au survol */
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Animation au survol */
+  .icon-container i:hover {
+   
+    color: #ff5722; /* Changer la couleur */
+  }
+  
+  /* Responsiveness */
+  @media (max-width: 768px) {
+    .icon-container i {
+      font-size: 1.5rem; /* Réduire la taille des icônes sur les petits écrans */
+    }
+  
+    .icon-container {
+      gap: 10px; /* Réduire l'espacement entre les icônes */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .icon-container i {
+      font-size: 1.2rem; /* Taille encore plus petite pour les très petits écrans */
+    }
+  
+    .icon-container {
+      gap: 8px; /* Réduire davantage l'espacement */
+    }
+  }
+  

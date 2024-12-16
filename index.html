@@ -75,12 +75,17 @@
 
 <!-- Utiliser la caméra pour scanner un QR CODE -->
 
+<div class="icon-container">
+  <i class="fas fa-qrcode" id="generateQRCode" style="font-size: 3rem;"></i>
+  <i class="fas fa-camera camera-button" id="startScanButton" style="font-size: 3rem;"></i>
+</div>
+
+
 <div title="Scanner le code QR" id="scan-container">
   <!-- Bouton pour démarrer le scanner avec l'icône de la caméra -->
-  <div class="button-container">
-    <i class="fas fa-qrcode" id="generateQRCode"></i>
-    <i class="fas fa-camera camera-button" id="startScanButton"></i>
-  </div>
+ <!-- HTML -->
+
+
   
 
 
@@ -240,7 +245,7 @@
 
 
 <!-- Nouvelle Modale -->
-<div class="custom-modal" id="updateModal">
+<!-- <div class="custom-modal" id="updateModal">
   <div class="custom-modal-content">
     <button class="custom-close-modal" id="closeUpdateModal">&times;</button>
     <h2>Nouvelle mise à jour</h2>
@@ -252,7 +257,7 @@
     </ul>
     <p>Nous espérons que cette mise à jour améliorera votre expérience !</p>
   </div>
-</div>
+</div> -->
 
 
 
@@ -357,7 +362,7 @@ const storage = getStorage(app); // Utilisez getStorage pour initialiser le stoc
       <script src="./humbergerButton.js"></script>
       <script type="module" src="./studentModal/student-modal.js"></script>
       <script type="module" src="./index.js"></script>
-     <script  type="module" src="./modale.js"></script>
+     <!-- <script  type="module" src="./modale.js"></script> -->
       <script type="module" src="./updates/updateInformations.js"></script>
      <script type="module" src="./support/support.js"></script>
 </body>

@@ -283,7 +283,7 @@ export async function getUserData(uid) {
         document.getElementById('userPhoto').addEventListener('click', showStudentInfo);
         document.getElementById('openSupportModal').addEventListener('click', showSupportModal);
         document.getElementById('updateInformationsModal').addEventListener('click', showModalSpecific);
-        document.querySelector("#notification > p").innerHTML = "Découvrez les nouvelles fonctionnalités : le bouton de déconnexion a été déplacé dans le menu flottant pour une meilleure navigation !"
+        // document.querySelector("#notification > p").innerHTML = "Découvrez les nouvelles fonctionnalités : le bouton de déconnexion a été déplacé dans le menu flottant pour une meilleure navigation !"
 
         // Lorsque l'utilisateur entre dans l'appli (par exemple au chargement de la page)
 window.onload = function() {
