@@ -98,49 +98,51 @@ async function startCamera() {
   }
   
   // Ajouter les informations de l'étudiant connecté dans Firestore
-  async function ajouterScanDansFirestore() {
-    const user = await getUtilisateurConnecte();
-    if (!user) {
-        console.error("Aucun utilisateur connecté.");
-        alert("Veuillez vous connecter pour scanner.");
-        return;
-    }
+  // Ajouter les informations de l'étudiant connecté dans Firestore
+async function ajouterScanDansFirestore() {
+  const user = await getUtilisateurConnecte();
+  if (!user) {
+      console.error("Aucun utilisateur connecté.");
+      alert("Veuillez vous connecter pour scanner.");
+      return;
+  }
 
-    try {
-        // Obtenir l'heure exacte du scan
-        const maintenant = new Date();
+  try {
+      // Référence à la collection "scans"
+      const scansCollection = collection(db, "scans");
 
-        // Vérifiez s'il existe déjà un scan pour cet utilisateur aujourd'hui
-        const scansCollection = collection(db, "scans");
-        const q = query(
-            scansCollection,
-            where("pseudoOk", "==", user.pseudoOk),
-            where("date", "==", maintenant.toISOString().split("T")[0]) // Comparer uniquement la date
-        );
-        const querySnapshot = await getDocs(q);
+      // Requête pour vérifier si un document avec cet UID existe déjà
+      const q = query(
+          scansCollection,
+          where("uid", "==", user.uid) // On vérifie si cet UID existe
+      );
 
-        if (!querySnapshot.empty) {
-            alert("Vous avez déjà scanné aujourd'hui !");
-            console.log("Scan déjà effectué pour aujourd'hui.");
-            return;
-        }
+      const querySnapshot = await getDocs(q);
 
-        // Ajout des informations de l'étudiant dans la collection "scans"
-        await addDoc(scansCollection, {
-            pseudoOk: user.pseudoOk || "Inconnu",
-            kairos: user.kairos || "Non défini",
-            classe: user.classe || "Non spécifié",
-            dureeSolvabilite: user.dureeSolvabilite || 0,
-            a_jour: user.a_jour || false,
-            date: maintenant.toISOString().split("T")[0], // Ajouter uniquement la date (AAAA-MM-JJ)
-            timestamp: maintenant.toISOString(), // Ajouter l'horodatage complet (AAAA-MM-JJTHH:MM:SS.sssZ)
-        });
+      if (!querySnapshot.empty) {
+          // Si on trouve un document avec cet UID
+          alert("Vous avez déjà scanné !");
+          console.log("Scan déjà enregistré pour cet utilisateur.");
+          return;
+      }
 
-        alert("Merci pour votre scan !");
-    } catch (error) {
-        alert("Désolé, une erreur est survenue !");
-        console.error("Erreur lors de l'ajout dans Firestore :", error);
-    }
+      // Si aucun document trouvé, ajouter les informations dans Firestore
+      await addDoc(scansCollection, {
+          uid: user.uid, // Ajouter l'UID pour identification unique
+          pseudoOk: user.pseudoOk || "Inconnu",
+          kairos: user.kairos || "Non défini",
+          classe: user.classe || "Non spécifié",
+          dureeSolvabilite: user.dureeSolvabilite || 0,
+          a_jour: user.a_jour || false,
+          date: new Date().toISOString().split("T")[0], // Date (AAAA-MM-JJ)
+          timestamp: new Date().toISOString(), // Horodatage complet
+      });
+
+      alert("Merci pour votre scan !");
+  } catch (error) {
+      alert("Désolé, une erreur est survenue !");
+      console.error("Erreur lors de l'ajout dans Firestore :", error);
+  }
 }
 
   

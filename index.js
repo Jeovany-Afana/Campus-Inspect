@@ -214,7 +214,6 @@ export async function getUserData(uid) {
         boutonComptable.style.display = "none";//On cache le bouton comptable si l'utilisateur est un responsable
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
         camera.style.display = "block";
-        document.getElementById("secondStartScanButton").style.display = "none";
       
         getElements().then(() => {
           // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
@@ -286,21 +285,21 @@ export async function getUserData(uid) {
         // document.querySelector("#notification > p").innerHTML = "Découvrez les nouvelles fonctionnalités : le bouton de déconnexion a été déplacé dans le menu flottant pour une meilleure navigation !"
 
         // Lorsque l'utilisateur entre dans l'appli (par exemple au chargement de la page)
-window.onload = function() {
+// window.onload = function() {
 
   
-  // Afficher la notification après un délai de 1 seconde (simule un changement dans l'application)
-  setTimeout(() => {
-    document.getElementById('notification').classList.toggle('show');
-  }, 2000); // Ajuste le délai selon tes besoins
+//   // Afficher la notification après un délai de 1 seconde (simule un changement dans l'application)
+//   // setTimeout(() => {
+//   //   document.getElementById('notification').classList.toggle('show');
+//   // }, 2000); // Ajuste le délai selon tes besoins
 
-  // Fermer la notification lorsque l'utilisateur clique sur le bouton X
-  document.getElementById('closeNotification').addEventListener('click', () => {
-    document.getElementById('notification').classList.toggle('show');
-    document.getElementById("notification").style.display = "none";
-  });
+//   // Fermer la notification lorsque l'utilisateur clique sur le bouton X
+//   document.getElementById('closeNotification').addEventListener('click', () => {
+//     document.getElementById('notification').classList.toggle('show');
+//     document.getElementById("notification").style.display = "none";
+//   });
       
-}
+// }
 
 
 
@@ -308,7 +307,6 @@ window.onload = function() {
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
         boutonComptable.style.display = "none";
         camera.style.display = "block";
-        document.getElementById("secondStartScanButton").style.display = "none";
         document.getElementById("startScanButton").style.display = "block";
         getElements().then(() => {
           // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
@@ -329,7 +327,6 @@ window.onload = function() {
       ) {
         document.getElementById("generateQRCode").style.display = "none"; //Si c'est un membre de l'administration qui est connecté on cache le buton pour le QRCode
         document.getElementById("startScanButton").style.display = "none";
-        document.getElementById("secondStartScanButton").style.display = "block";
 
         buttonsActions.forEach(function (element) {
           element.style.display = "block";
@@ -384,6 +381,8 @@ onAuthStateChanged(auth, (user) => {
     });
     userProfil.style.display = "none"; //On cache la photo si l'utilisateur n'est pas connecté
     loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
+    camera.style.display = "none";
+    document.getElementById("startScanButton").style.display = "none";
     let compteur = 0;
     
 
