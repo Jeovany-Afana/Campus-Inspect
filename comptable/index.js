@@ -183,6 +183,9 @@ async function loadStudents() {
         kairos: student.kairos,
         classe: student.classe,
         dureeSolvabiliteJour: student.dureeSolvabiliteJour,
+        trancheRegle: student.trancheRegle,
+        nombreTotalTranches: student.nombreTotalTranches,
+
       });
     }
 
@@ -354,8 +357,12 @@ window.markAsUpToDate = async function (button, studentId) {
   statusCell.classList.remove("not-up-to-date"); // Supprime la classe "non à jour"
   statusCell.classList.add("up-to-date"); // Ajoute la classe "à jour"
 
+  loadStudents()
   console.log(
     `Étudiant ${studentId} marqué comme à jour pour ${solvabilite} mois`
+  );
+  alert(
+    `Étudiant marqué comme à jour pour ${solvabilite} mois`
   );
 };
 
@@ -382,9 +389,43 @@ window.markAsNotUpToDate = function (button, studentId) {
 
   updateDoc(docRef, { a_jour: false, dureeSolvabilite: 0 }) // Met à jour le champ 'a_jour' à `false`
     .then(() => {
+      loadStudents();
       console.log("Étudiant marqué comme non à jour"); // Message de confirmation dans la console
+      alert("Étudiant marqué comme non à jour"); // Message d'alerte pour l'utilisateur
     })
     .catch((error) => {
       console.error("Erreur lors de la mise à jour : ", error); // Affiche une erreur en cas de problème
     });
 };
+
+
+
+// // Fonction pour ajouter les champs à tous les étudiants
+// async function addFieldsToAllStudents() {
+//   const db = getFirestore();
+  
+//   // Crée une requête pour obtenir tous les étudiants (role == "etudiant")
+//   const q = query(collection(db, "users"), where("role", "==", "etudiant"));
+  
+//   // Récupère les documents des étudiants
+//   const querySnapshot = await getDocs(q);
+
+//   // Parcourt chaque document (étudiant) et ajoute les nouveaux champs
+//   for (const docSnap of querySnapshot.docs) {
+//     const studentRef = doc(db, "users", docSnap.id);
+    
+//     try {
+//       // Met à jour chaque étudiant pour ajouter les nouveaux champs avec les valeurs par défaut
+//       await updateDoc(studentRef, {
+//         nombreTotalTranches: 0,   // Valeur par défaut pour nombreTotalTranches
+//         trancheRegle: 0           // Valeur par défaut pour trancheRegle
+//       });
+//       console.log(`Champs ajoutés pour l'étudiant ${docSnap.id}`);
+//     } catch (error) {
+//       console.error(`Erreur lors de l'ajout des champs pour l'étudiant ${docSnap.id}:`, error);
+//     }
+//   }
+// }
+
+// // Appel de la fonction
+// addFieldsToAllStudents();
