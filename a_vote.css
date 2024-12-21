@@ -1,0 +1,248 @@
+/* Styles globaux */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Conteneur des cartes */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Styles pour les cartes */
+.card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* Photo du candidat */
+.candidate-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    object-fit: cover;
+    border: 3px solid #007bff;
+}
+
+/* Nom du candidat */
+.candidate-name {
+    font-size: 1.5em;
+    margin: 10px 0;
+    color: #333333;
+}
+
+/* Nombre de votes */
+.candidate-votes {
+    font-size: 1.2em;
+    color: #555555;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    .card {
+        width: 90%; /* Prend presque toute la largeur sur petits écrans */
+    }
+}
+
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 3%;
+}
+
+thead {
+    background-color: #3b82f6;
+    color: white;
+    text-align: left;
+}
+
+th, td {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    font-size: 16px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+td {
+    font-size: 14px;
+}
+
+/* Style pour les images dans les cellules */
+td img {
+    width: 100%; /* L'image prend toute la largeur de la cellule */
+    height: auto; /* La hauteur est automatique pour maintenir les proportions */
+    max-height: 80px; /* Limite la hauteur maximale de l'image */
+    object-fit: contain; /* Couvre la cellule sans déformer l'image */
+}
+
+tr:hover {
+    background-color: #f1f5f9;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.icon-btn {
+    border: none;
+    cursor: pointer;
+    background: none;
+    font-size: 20px;
+}
+
+.icon-btn.up-to-date {
+    color: green;
+}
+
+.icon-btn.not-up-to-date {
+    color: red;
+}
+
+.icon-btn:hover {
+    opacity: 0.7;
+}
+
+.status {
+    font-weight: bold;
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 5px;
+}
+
+.status.up-to-date {
+    color: white;
+    background-color: green;
+}
+
+.status.not-up-to-date {
+    color: white;
+    background-color: red;
+}
+
+.status.enRegle{
+    color: white;
+    background-color: #2778fa;
+}
+
+
+
+.logo {
+    text-align: center; /* Centrer le texte */
+    /* margin: 100px 0; Marges autour du logo */
+}
+
+.logo h1 {
+    font-size: 4em; /* Taille de la police */
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: bold; /* Gras */
+    color: #007BFF; /* Couleur principale */
+    text-transform: uppercase; /* Mettre en majuscules */
+    letter-spacing: 5px; /* Espacement entre les lettres */
+    position: relative; /* Position pour les effets */
+    display: inline-block; /* Pour le positionnement */
+    background: linear-gradient(90deg, #007BFF, #00CFFF); /* Dégradé bleu */
+    -webkit-background-clip: text; /* Clipping pour dégradé de texte */
+    -webkit-text-fill-color: transparent; /* Remplissage transparent */
+    transition: all 0.3s ease; /* Transition douce pour tous les effets */
+}
+
+/* Effet de survol */
+.logo h1:hover {
+    transform: scale(1.1); /* Agrandissement au survol */
+    text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4); /* Ombre au survol */
+}
+
+/* Style pour le mot "INSPECT" */
+.logo h1 span {
+    color: #FF6347; /* Couleur différente pour INSPECT */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Ombre pour effet 3D */
+    position: relative; /* Pour l'effet de soulignement */
+}
+
+/* Effet de soulignement sur "INSPECT" */
+.logo h1 span::after {
+    content: ""; /* Contenu vide pour créer l'effet */
+    display: block; /* Affichage en bloc */
+    width: 100%; /* Largeur pleine */
+    height: 5px; /* Hauteur de la ligne */
+    background: #FF6347; /* Couleur de la ligne */
+    position: absolute; /* Position absolue */
+    bottom: -10px; /* Position en dessous du texte */
+    left: 0; /* À gauche */
+    transform: scaleX(0); /* Réduire à 0 pour commencer */
+    transition: transform 0.3s ease; /* Transition douce */
+}
+
+/* Révéler le soulignement au survol */
+.logo h1 span:hover::after {
+    transform: scaleX(1); /* Agrandir à 100% */
+}
+
+
+ /* Bouton stylisé */
+ .delete-button {
+    background-color: #f91414;
+    color: #ffffff;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  /* Effet hover */
+  .delete-button:hover {
+    background-color: #d50000;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .delete-button {
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .delete-button {
+      padding: 8px 15px;
+      font-size: 14px;
+    }
+  }
+

@@ -417,8 +417,7 @@ window.markAsNotUpToDate = function (button, studentId) {
 //     try {
 //       // Met à jour chaque étudiant pour ajouter les nouveaux champs avec les valeurs par défaut
 //       await updateDoc(studentRef, {
-//         nombreTotalTranches: 0,   // Valeur par défaut pour nombreTotalTranches
-//         trancheRegle: 0           // Valeur par défaut pour trancheRegle
+//       present: 0,
 //       });
 //       console.log(`Champs ajoutés pour l'étudiant ${docSnap.id}`);
 //     } catch (error) {

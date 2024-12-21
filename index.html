@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./studentModal/student-modal.css">
     <link rel="stylesheet" href="./support/support.css">
     <link rel="stylesheet" href="./updates/updateInformations.css">
+    <link rel="stylesheet" href="./vote.css">
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" type="image/png" href="./icons/logo.PNG">
@@ -233,6 +234,42 @@
 </div>
 
 
+<!-- Modal permettant aux étudiants de voter un candidat en ligne -->
+
+
+
+ <!-- Bouton pour ouvrir le modal -->
+
+ <!-- Modal -->
+ <div id="voteModal" class="modal">
+   <div class="modal-content">
+     <span id="closeModal" class="close">&times;</span>
+     <h2>Système de Vote</h2>
+ 
+     <div class="candidates">
+       <!-- Carte pour le candidat 1 -->
+       <div class="candidate-card">
+         <img src="./Al_amine.jpg" alt="Candidat 1" class="candidate-photo">
+         <h3>Al Amine NDIEGUENE</h3>
+         <p>CHANGEMENT</p>
+         <button class="vote-btn" id="candidat1" data-candidate="1" >Voter</button>
+       </div>
+ 
+       <!-- Carte pour le candidat 2 -->
+       <div class="candidate-card">
+         <img src="./ben.jpg" alt="Candidat 2" class="candidate-photo">
+         <h3>Ben </h3>
+         <p>UNITED For Succes</p>
+         <button class="vote-btn" id="candidat2" data-candidate="2">Voter</button>
+       </div>
+     </div>
+   </div>
+ </div>
+
+
+ <!-- Fin du modal permettant aux étudiants de voter un candidat en ligne -->
+
+
 
 
 
@@ -352,6 +389,7 @@ const storage = getStorage(app); // Utilisez getStorage pour initialiser le stoc
       <script type="module" src="./qrCode.js"></script>
       <script src="./floating-button.js"></script>
       <script src="./humbergerButton.js"></script>
+      <script type="module" src="./vote.js"></script>
       <script type="module" src="./studentModal/student-modal.js"></script>
       <script type="module" src="./index.js"></script>
      <!-- <script  type="module" src="./modale.js"></script> -->
