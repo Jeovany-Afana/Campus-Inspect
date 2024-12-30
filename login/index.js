@@ -1,7 +1,7 @@
 // Importer les fonctions nécessaires depuis les SDK de Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail  } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, signInWithPopup  } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
 import { openAdditionalInfoModal, saveAdditionalInfo, closeModal } from "../inscription/sendDataToFirebase.js";
 import { showModal } from "../inscription/index.js";
 // Configuration de votre application Firebase
