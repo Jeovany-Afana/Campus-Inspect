@@ -24,7 +24,6 @@ import { showModalSpecific } from "./updates/updateInformations.js";
 // Assurez-vous que Firebase est déjà initialisé dans votre fichier HTML
 const db = getFirestore(); // Assurez-vous que cela soit défini après l'initialisation de Firebase
 const auth = getAuth();
-const buttonsActions = document.querySelectorAll(".home-button-container");
 const userProfil = document.querySelector(".profile-utilisateur"); //Photo de profile de l'utilisateur(Qui va s'afficher si l'utilisateur est connecté)
 const logoutButton = document.getElementById("logoutButton"); //On sélectionne le bouton de déconnexion
 const loginButton = document.getElementById("loginButton");
@@ -33,7 +32,6 @@ const loginButton = document.getElementById("loginButton");
 const modal = document.getElementById("myModal");
 const closeModalSpan = document.querySelector(".close");
 const saveTimeBtn = document.getElementById("saveTime");
-const boutonComptable = document.getElementById("boutonComptable");
 export let donneeUtilisateur; //Données de l'utilisateur connecté
 
 
@@ -211,17 +209,10 @@ export async function getUserData(uid) {
 
       if (userData.role === "responsable") {
         //
-        boutonComptable.style.display = "none";//On cache le bouton comptable si l'utilisateur est un responsable
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
         // camera.style.display = "block";
       
         getElements().then(() => {
-          // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
-
-          buttonsActions.forEach(function (element) {
-            element.style.display = "none";
-          });
-
           const switchButtons = document.querySelectorAll(".switch-container");
           switchButtons.forEach((switchButton) => {
             switchButton.style.display = "block";
@@ -307,15 +298,10 @@ export async function getUserData(uid) {
 
 
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
-        boutonComptable.style.display = "none";
         // camera.style.display = "block";
         document.getElementById("startScanButton").style.display = "block";
         getElements().then(() => {
           // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
-
-          buttonsActions.forEach(function (element) {
-            element.style.display = "none";
-          }); //On cache les boutons d'action
 
           const switchButtons = document.querySelectorAll(".switch-container");
           switchButtons.forEach((switchButton) => {
@@ -329,10 +315,6 @@ export async function getUserData(uid) {
       ) {
         document.getElementById("generateQRCode").style.display = "none"; //Si c'est un membre de l'administration qui est connecté on cache le buton pour le QRCode
         document.getElementById("startScanButton").style.display = "none";
-
-        buttonsActions.forEach(function (element) {
-          element.style.display = "block";
-        });
 
         const switchButtons = document.querySelectorAll(".switch-container");
         switchButtons.forEach((switchButton) => {
@@ -350,15 +332,10 @@ export async function getUserData(uid) {
       }
 
       if (userData.role === "comptable") {
-        boutonComptable.style.display = "block";
         document.getElementById("generateQRCode").style.display = "none"; //Si c'est un membre de l'administration qui est connecté on cache le buton pour le QRCode
 
         getElements().then(() => {
           // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
-
-          buttonsActions.forEach(function (element) {
-            element.style.display = "none";
-          });
 
           const switchButtons = document.querySelectorAll(".switch-container");
           switchButtons.forEach((switchButton) => {
@@ -380,9 +357,6 @@ onAuthStateChanged(auth, (user) => {
     getUserData(uid); // Appeler la fonction pour obtenir les données
   } else {
     console.log("L'utilisateur n'est pas connecté");
-    buttonsActions.forEach(function (element) {
-      element.style.display = "none";
-    });
     userProfil.style.display = "none"; //On cache la photo si l'utilisateur n'est pas connecté
     document.getElementById("openSearchModal").style.display = "none";//On cache le bouton de recherche si l'utilisateur n'est pas connecté
     document.getElementById("relative").style.display = "none";
@@ -413,7 +387,6 @@ onAuthStateChanged(auth, (user) => {
 
     // camera.style.display = "none";
     document.getElementById("generateQRCode").style.display = "none"; //Si aucun utilisateur n'est connecté on cache le bouton pour le QRCode
-    boutonComptable.style.display = "none";
     getElements().then(() => {
       const switchButtons = document.querySelectorAll(".switch-container");
       switchButtons.forEach((switchButton) => {
