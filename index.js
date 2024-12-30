@@ -25,10 +25,10 @@ import { showModalSpecific } from "./updates/updateInformations.js";
 const db = getFirestore(); // Assurez-vous que cela soit défini après l'initialisation de Firebase
 const auth = getAuth();
 const buttonsActions = document.querySelectorAll(".home-button-container");
-const userProfil = document.querySelector(".user-profile"); //Photo de profile de l'utilisateur(Qui va s'afficher si l'utilisateur est connecté)
+const userProfil = document.querySelector(".profile-utilisateur"); //Photo de profile de l'utilisateur(Qui va s'afficher si l'utilisateur est connecté)
 const logoutButton = document.getElementById("logoutButton"); //On sélectionne le bouton de déconnexion
 const loginButton = document.getElementById("loginButton");
-const camera = document.getElementById("scan-container");
+// const camera = document.getElementById("scan-container");
 
 const modal = document.getElementById("myModal");
 const closeModalSpan = document.querySelector(".close");
@@ -63,36 +63,36 @@ async function getElements() {
         <div class="class-info">
           <h2>${classeData.name}</h2>
           <h3 class="status" style="text-align: center; font-size: 1.5rem; font-weight: bold; color: ${
-            classeData.status_occupation === "Occupée" ? "red" : "green"
-          };">
+  classeData.status_occupation === "Occupée" ? "red" : "green"
+};">
             ${classeData.status_occupation}
           </h3>
           <p><strong>Capacité :</strong> ${classeData.capacity}</p>
           <p><strong>Équipements Disponibles :</strong>
             ${
-              classeData.equipements.length === 0
-                ? "Aucun équipement disponible"
-                : classeData.equipements
-                    .map((equipement) => `<span>${equipement}</span>`)
-                    .join(", ")
-            }
+  classeData.equipements.length === 0
+    ? "Aucun équipement disponible"
+    : classeData.equipements
+      .map((equipement) => `<span>${equipement}</span>`)
+      .join(", ")
+}
           </p>
           <p class="occupee_jusqua"><strong>Occupée jusqu'à :</strong> ${
-            classeData.occupee_jusqua
-              ? classeData.occupee_jusqua
-              : "Non spécifié"
-          }</p>
+  classeData.occupee_jusqua
+    ? classeData.occupee_jusqua
+    : "Non spécifié"
+}</p>
           <p><strong>Localisation :</strong> ${classeData.localisation}</p>
           <p class="occupants"><strong>Occupants :</strong> ${
-            classeData.occupants || "Aucun occupant"
-          }</p>
+  classeData.occupants || "Aucun occupant"
+}</p>
         </div>
         <br>
         <div class="switch-container">
           <label class="switch">
             <input type="checkbox" class="status-toggle" data-class-id="${
-              doc.id
-            }" ${classeData.status_occupation === "Occupée" ? "checked" : ""}/>
+  doc.id
+}" ${classeData.status_occupation === "Occupée" ? "checked" : ""}/>
             <span class="slider round"></span>
           </label>
         </div>
@@ -202,7 +202,7 @@ export async function getUserData(uid) {
       const userData = doc.data();
       donneeUtilisateur = userData; //On récupère les données de l'utilisateur connecté actuellement(L'étudiant)
 
-      document.getElementById("userName").innerHTML = userData.pseudoOk.split(" ")[0].toUpperCase();
+      // document.getElementById("userName").innerHTML = userData.pseudoOk.split(" ")[0];
       document
         .getElementById("userPhoto")
         .setAttribute("src", userData.photoURLOk);
@@ -213,7 +213,7 @@ export async function getUserData(uid) {
         //
         boutonComptable.style.display = "none";//On cache le bouton comptable si l'utilisateur est un responsable
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
-        camera.style.display = "block";
+        // camera.style.display = "block";
       
         getElements().then(() => {
           // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
@@ -230,6 +230,8 @@ export async function getUserData(uid) {
       } else if (userData.role === "etudiant") {
         //Si l'utilisateur connecté est un étudiant
 
+        document.getElementById("openSearchModal").style.display = "block"; //On affiche le bouton pour la recherche des étudiants
+        document.getElementById("relative").style.display = "block"; //On affiche le bouton pour les notifications
         document.querySelector(".fab-menu").innerHTML += 
         `
          
@@ -244,39 +246,39 @@ export async function getUserData(uid) {
       <i class="fa-solid fa-power-off"></i>
     </button>
         
-        `
+        `;
 
         document.getElementById("logoutButton").addEventListener("click", () => {
           let deconnexion = confirm("Voulez-vous vraiment vous déconnecter ?");
 
           if (deconnexion) {
           
-          try{
-               // Afficher le spinner
-      const loadingSpinner = document.getElementById('loadingSpinner');
-      loadingSpinner.style.display = 'block';
+            try{
+              // Afficher le spinner
+              const loadingSpinner = document.getElementById('loadingSpinner');
+              loadingSpinner.style.display = 'block';
 
-          signOut(auth)
-            .then(() => {
-              // Déconnexion réussie
-              console.log("Déconnexion réussie");
-              window.location.href = "./login/index.html"; // Redirige vers la page de connexion
-            })
-            .catch((error) => {
-              // Une erreur est survenue lors de la déconnexion
-              console.error("Erreur lors de la déconnexion:", error);
-            });
+              signOut(auth)
+                .then(() => {
+                  // Déconnexion réussie
+                  console.log("Déconnexion réussie");
+                  window.location.href = "./login/index.html"; // Redirige vers la page de connexion
+                })
+                .catch((error) => {
+                  // Une erreur est survenue lors de la déconnexion
+                  console.error("Erreur lors de la déconnexion:", error);
+                });
           
-          }catch(error){
-            console.log(error)
-          }finally{
+            }catch(error){
+              console.log(error);
+            }finally{
             // Cacher le spinner
-             // Masquer le spinner
-      const loadingSpinner = document.getElementById('loadingSpinner');
-      loadingSpinner.style.display = 'none';
-          }
+              // Masquer le spinner
+              const loadingSpinner = document.getElementById('loadingSpinner');
+              loadingSpinner.style.display = 'none';
+            }
 
-        }
+          }
         });
         
         document.getElementById('userPhoto').addEventListener('click', showStudentInfo);
@@ -285,28 +287,28 @@ export async function getUserData(uid) {
         // document.querySelector("#notification > p").innerHTML = "Découvrez les nouvelles fonctionnalités : le bouton de déconnexion a été déplacé dans le menu flottant pour une meilleure navigation !"
 
         // Lorsque l'utilisateur entre dans l'appli (par exemple au chargement de la page)
-// window.onload = function() {
+        // window.onload = function() {
 
   
-//   // Afficher la notification après un délai de 1 seconde (simule un changement dans l'application)
-//   // setTimeout(() => {
-//   //   document.getElementById('notification').classList.toggle('show');
-//   // }, 2000); // Ajuste le délai selon tes besoins
+        //   // Afficher la notification après un délai de 1 seconde (simule un changement dans l'application)
+        //   // setTimeout(() => {
+        //   //   document.getElementById('notification').classList.toggle('show');
+        //   // }, 2000); // Ajuste le délai selon tes besoins
 
-//   // Fermer la notification lorsque l'utilisateur clique sur le bouton X
-//   document.getElementById('closeNotification').addEventListener('click', () => {
-//     document.getElementById('notification').classList.toggle('show');
-//     document.getElementById("notification").style.display = "none";
-//   });
+        //   // Fermer la notification lorsque l'utilisateur clique sur le bouton X
+        //   document.getElementById('closeNotification').addEventListener('click', () => {
+        //     document.getElementById('notification').classList.toggle('show');
+        //     document.getElementById("notification").style.display = "none";
+        //   });
       
-// }
+        // }
 
 
 
 
         document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
         boutonComptable.style.display = "none";
-        camera.style.display = "block";
+        // camera.style.display = "block";
         document.getElementById("startScanButton").style.display = "block";
         getElements().then(() => {
           // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
@@ -337,6 +339,8 @@ export async function getUserData(uid) {
           switchButton.style.display = "block";
         }, 1000);
       } else {
+        document.getElementById("openSearchModal").style.display = "none";
+        document.getElementById("relative").style.display = "none";
         getElements().then(() => {
           const switchButtons = document.querySelectorAll(".switch-container");
           switchButtons.forEach((switchButton) => {
@@ -380,8 +384,10 @@ onAuthStateChanged(auth, (user) => {
       element.style.display = "none";
     });
     userProfil.style.display = "none"; //On cache la photo si l'utilisateur n'est pas connecté
+    document.getElementById("openSearchModal").style.display = "none";//On cache le bouton de recherche si l'utilisateur n'est pas connecté
+    document.getElementById("relative").style.display = "none";
     loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
-    camera.style.display = "none";
+    // camera.style.display = "none";
     document.getElementById("startScanButton").style.display = "none";
     let compteur = 0;
     
@@ -405,7 +411,7 @@ onAuthStateChanged(auth, (user) => {
     }, 1000);
 
 
-    camera.style.display = "none";
+    // camera.style.display = "none";
     document.getElementById("generateQRCode").style.display = "none"; //Si aucun utilisateur n'est connecté on cache le bouton pour le QRCode
     boutonComptable.style.display = "none";
     getElements().then(() => {
@@ -415,9 +421,4 @@ onAuthStateChanged(auth, (user) => {
       }, 1000);
     });
   }
-});
-
-//Bouton qui permet d'actualiser la page
-document.getElementById("refreshButton").addEventListener("click", function () {
-  location.reload();
 });

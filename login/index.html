@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="../logo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" href="../icons/logo.PNG">
     <title>Se connecter</title>
 </head>
@@ -22,13 +23,97 @@
 
     
 
+    <!-- Modale pour afficher les erreurs qui surviennent pendant l'inscription -->
+
+<div id="error-modal" class="modal">
+    <div class="modal-content">
+      <div id="icon-container" class="icon-container">
+        <i id="icon" class="error-icon">!</i>
+      </div>
+      <p id="modal-message" class="modal-text">Message d'erreur</p>
+      <button id="ok-button" class="ok-btn">OK</button>
+    </div>
+  </div>
+  
+
+  <!-- Modale pour afficher les erreurs qui surviennent pendant l'inscription -->
+
+<div id="error-modal" class="modal">
+    <div class="modal-content">
+      <div id="icon-container" class="icon-container">
+        <i id="icon" class="error-icon">!</i>
+      </div>
+      <p id="modal-message" class="modal-text">Message d'erreur</p>
+      <button id="ok-button" class="ok-btn">OK</button>
+    </div>
+  </div>
+  
+  
+<!-- Modale pour les informations supplémentaires -->
+<div id="additional-info-modal" class="styled-modal">
+    <div class="styled-modal-content">
+      <button class="modal-close-btn">&times;</button>
+      <h2>Complétez vos informations</h2>
+      <form id="additional-info-form">
+        <div class="input-group">
+          <label for="user-name">Nom complet</label>
+          <input type="text" id="user-name" placeholder="Entrez votre nom complet" required />
+        </div>
+  
+        <div class="input-group">
+          <label for="user-email">Email</label>
+          <input type="email" id="user-email" readonly />
+        </div>
+  
+        <div class="input-group">
+          <label for="user-class">Classe</label>
+          <select id="user-class" required>
+            <option value="" hidden disabled selected>Choisissez votre classe</option>
+            <option value="L1 INFORMATIQUE">L1 INFORMATIQUE</option>
+            <option value="L1 GESTION">L1 GESTION</option>
+            <option value="L1 DROIT">l1 DROIT</option>
+            <option value="L2 DROIT">l2 DROIT</option>
+            <option value="L3 DROIT">l3 DROIT</option>
+            <option value="L2 INFORMATIQUE">L2 INFORMATIQUE</option>
+            <option value="L1 AGRO">L1 AGRO</option>
+             <option value="L2 AGRO">L2 AGRO</option>
+            <option value="L2 GESTION A">L2 GESTION A</option>
+            <option value="L2 GESTION B">L2 GESTION B</option>
+            <option value="BTL1">BTL1</option>
+            <option value="BTL2">BTL2</option>
+            <option value="BTL3">BTL3</option>
+            <option value="COMMERCE">COMMERCE</option>
+            <option value="FINANCE">FINANCE</option>
+            <option value="MARKETING">MARKETING</option>
+            <option value="QUALITE">QUALITE</option>
+            <option value="BTL 2">BTL2</option>
+            <option value="GENIE LOGICIEL">GENIE LOGICIEL</option>
+            <option value="L2 DROIT">L2 DROIT</option>
+            <option value="QHSE">QHSE</option>
+            <option value="RSS">RSS</option>
+            <option value="RESSOURCES HUMAINES">RESSOURCES HUMAINES</option>
+       </select>
+        </div>
+  
+        <div class="input-group">
+          <label for="user-program">Numéro Kairos</label>
+          <input type="text" id="user-kairos" placeholder="Entrez votre numéro kairos" required />
+        </div>
+  
+        <button type="submit" class="custom-btn">Enregistrer</button>
+      </form>
+    </div>
+  </div>
+
+
+
 
     <div class="form-container">
         <h2>Se connecter</h2>
-        <form id="registrationForm">
+        <form id="registrationForm" class="form">
             <div class="input-group email-container">
                 <label for="email">Email:</label>
-                <input type="email" id="email" autocomplete="off" name="email" required placeholder="Entrez votre email">
+                <input type="email" id="email" autocomplete="off" name="email"  placeholder="Entrez votre email">
                 <span></span>
             </div>
 
@@ -38,19 +123,25 @@
 
             <div class="input-group password-container">
                 <label for="password">Mot de passe:</label>
-                <input type="password" id="password" autocomplete="off" name="password" required placeholder="Entrez votre mot de passe">
+                <input type="password" id="password" autocomplete="off" name="password" placeholder="Entrez votre mot de passe">
                 <p id="progress-bar"></p>
                     <span></span>
             </div>
           
             <div class="input-group">
-                <button type="submit">Se connecter</button>
+                <button class="button" type="submit">Se connecter</button>
             </div>
             <!-- Bouton mot de passe oublié -->
-<button type="button" id="forgotPasswordButton">Mot de passe oublié ?</button>
+<button class="button" type="button" id="forgotPasswordButton">Mot de passe oublié ?</button>
 
             Pas encore de compte ? <a href="../inscription/inscription.html" style="color: rgb(19, 139, 179);">Créer un compte</a>
         </form>
+
+        <br>
+         <!-- Boutton d'authentification avec Google -->
+         <button id="google-sign-in-btn" class="google-sign-in-btn">
+            <i class="fa-brands fa-google"></i> Continuer avec Google
+          </button>
       
             
         

@@ -139,7 +139,7 @@ onAuthStateChanged(auth, (user) => {
     });
     userProfil.style.display = "none"; //On cache la photo si l'utilisateur n'est pas connecté
     logoutButton.style.display = "none"; //Si l'utilisateur est pas connecté on éfface le bouton de déconnexion
-      }
+  }
 });
 
 document.getElementById("refreshButton").addEventListener("click", function () {
@@ -195,44 +195,44 @@ async function loadStudents() {
   }
 
 
-// Remplir la liste des classes
-populateClassFilter(studentsArray);
+  // Remplir la liste des classes
+  populateClassFilter(studentsArray);
 
-// Fonction pour filtrer et afficher les étudiants
-function filterStudents() {
-  const kairosSearch = studentSearchKairos.value.toLowerCase();
-  const nameSearch = searchInput.value.toLowerCase();
-  const selectedClass = classFilter.value;
+  // Fonction pour filtrer et afficher les étudiants
+  function filterStudents() {
+    const kairosSearch = studentSearchKairos.value.toLowerCase();
+    const nameSearch = searchInput.value.toLowerCase();
+    const selectedClass = classFilter.value;
 
-  const filteredStudents = studentsArray.filter((student) => {
-    const matchesKairos = String(student.kairos).toLowerCase().includes(kairosSearch);
-    const matchesName = student.pseudoOk.toLowerCase().includes(nameSearch);
-    const matchesClass = selectedClass ? student.classe === selectedClass : true;
-    return matchesKairos && matchesName && matchesClass;
-  });
+    const filteredStudents = studentsArray.filter((student) => {
+      const matchesKairos = String(student.kairos).toLowerCase().includes(kairosSearch);
+      const matchesName = student.pseudoOk.toLowerCase().includes(nameSearch);
+      const matchesClass = selectedClass ? student.classe === selectedClass : true;
+      return matchesKairos && matchesName && matchesClass;
+    });
 
-  displayStudents(filteredStudents);
-}
+    displayStudents(filteredStudents);
+  }
 
-// Ajouter les événements
-studentSearchKairos.addEventListener("input", filterStudents);
-searchInput.addEventListener("input", filterStudents);
-classFilter.addEventListener("change", filterStudents);
+  // Ajouter les événements
+  studentSearchKairos.addEventListener("input", filterStudents);
+  searchInput.addEventListener("input", filterStudents);
+  classFilter.addEventListener("change", filterStudents);
 
-// Générer les options de la liste déroulante
-function populateClassFilter(students) {
-  const classFilter = document.getElementById("classFilter");
-  const classes = [...new Set(students.map((student) => student.classe))];
-  classes.forEach((classe) => {
-    const option = document.createElement("option");
-    option.value = classe;
-    option.textContent = classe;
-    classFilter.appendChild(option);
-  });
-}
+  // Générer les options de la liste déroulante
+  function populateClassFilter(students) {
+    const classFilter = document.getElementById("classFilter");
+    const classes = [...new Set(students.map((student) => student.classe))];
+    classes.forEach((classe) => {
+      const option = document.createElement("option");
+      option.value = classe;
+      option.textContent = classe;
+      classFilter.appendChild(option);
+    });
+  }
 
-// Afficher les étudiants initiaux
-displayStudents(studentsArray);
+  // Afficher les étudiants initiaux
+  displayStudents(studentsArray);
 
 }
 
@@ -357,7 +357,7 @@ window.markAsUpToDate = async function (button, studentId) {
   statusCell.classList.remove("not-up-to-date"); // Supprime la classe "non à jour"
   statusCell.classList.add("up-to-date"); // Ajoute la classe "à jour"
 
-  loadStudents()
+  loadStudents();
   console.log(
     `Étudiant ${studentId} marqué comme à jour pour ${solvabilite} mois`
   );

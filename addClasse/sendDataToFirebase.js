@@ -23,40 +23,40 @@ const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilis
 
 export async function registerClass(classInfo) {
 
-    try
-    {
+  try
+  {
 
-        //On affiche le spinner
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        loadingSpinner.style.display = 'block';
+    //On affiche le spinner
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    loadingSpinner.style.display = 'block';
         
-        const classData = {
-            name:classInfo.name,
-            capacity:classInfo.capacity,
-            equipements:classInfo.equipements,
-            status_occupation:classInfo.status_occupation,
-            localisation:classInfo.localisation,
-            occupants:classInfo.occupants,
-            prochaines_reservations:classInfo.prochaines_reservations
+    const classData = {
+      name:classInfo.name,
+      capacity:classInfo.capacity,
+      equipements:classInfo.equipements,
+      status_occupation:classInfo.status_occupation,
+      localisation:classInfo.localisation,
+      occupants:classInfo.occupants,
+      prochaines_reservations:classInfo.prochaines_reservations
             
-        };
+    };
         
-        await addDoc(collection(db, "classes"), classData);
-        console.log("Classe enregistrée avec succès");
+    await addDoc(collection(db, "classes"), classData);
+    console.log("Classe enregistrée avec succès");
         
-        setTimeout(()=>{
-            window.location.href = '../index.html';//On change la estination après avoir ajouter une classe (On redirige l'utilisateur vers la page d'acceuil)
-        }, 2000);
+    setTimeout(()=>{
+      window.location.href = '../index.html';//On change la estination après avoir ajouter une classe (On redirige l'utilisateur vers la page d'acceuil)
+    }, 2000);
         
-    } 
-    catch(error){
-        alert('Erreur lors de l\'ajout de la classe: ', error);
-        window.location.href='/index.html';
+  } 
+  catch(error){
+    alert('Erreur lors de l\'ajout de la classe: ', error);
+    window.location.href='/index.html';
 
-    }
-    finally{
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            loadingSpinner.style.display = 'none';
-    }
+  }
+  finally{
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    loadingSpinner.style.display = 'none';
+  }
 } 
 

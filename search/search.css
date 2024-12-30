@@ -1,0 +1,363 @@
+ /* Modal Container */
+ .searchModal {
+    background: white;
+    width: 95%;
+    max-width: 600px;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    margin-top: 30px;
+    z-index: 1000;
+}
+
+
+/* Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Couleur semi-transparente */
+    z-index: 999; /* Juste en dessous du modal */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+.searchModal.active {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+/* Header Section */
+.searchModal .header {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.searchModal .header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.searchModal .header .close {
+    font-size: 24px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+}
+
+.searchModal .header .close:hover {
+    color: #ff4d4d;
+}
+
+/* Search Section */
+.searchModal .search {
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.searchModal .search input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.searchModal .search input:focus {
+    border-color: #3a86ff;
+    outline: none;
+}
+
+/* Results Section */
+.searchModal .results {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 0 20px;
+}
+
+.searchModal .results .student {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.searchModal .results .student img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.searchModal .results .student .details {
+    flex-grow: 1;
+    margin-left: 15px;
+    font-size: 16px;
+}
+
+.searchModal .results .student .details h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.searchModal .results .student .details p {
+    margin: 2px 0 0;
+    color: gray;
+    font-size: 14px;
+}
+
+.searchModal .results .student .message-icon {
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.searchModal .results .student .message-icon:hover {
+    color: #0056d6;
+}
+
+/* Button to Open Modal */
+.open-modal-btn {
+    background-color: #3a86ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.open-modal-btn:hover {
+    background-color: #0056d6;
+}
+
+.search-icon {
+    font-size: 20px;
+    cursor: pointer;
+    color: #fff;
+}
+
+@media (max-width: 480px) {
+    .searchModal {
+        width: 95%;
+    }
+
+    .searchModal .results .student {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .searchModal .results .student .message-icon {
+        align-self: flex-end;
+    }
+}
+
+
+
+
+  /* Modal Container */
+  .modale-message {
+    background: white;
+    width: 95%;
+    max-width: 500px;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 2000;
+}
+
+.modale-message.active {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+/* Header Section */
+.modale-message .header {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modale-message .header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.modale-message .header .close {
+    font-size: 24px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+}
+
+.modale-message .header .close:hover {
+    color: #ff4d4d;
+}
+
+/* Profile Section */
+.modale-message .profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+.modale-message .profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.modale-message .profile .details {
+    font-size: 16px;
+}
+
+.modal .profile .details h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.modale-message .profile .details p {
+    margin: 2px 0 0;
+    color: gray;
+    font-size: 14px;
+}
+
+/* Message Section */
+.modale-message textarea {
+    width: calc(100% - 40px);
+    margin: 0 20px;
+    height: 120px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    resize: none;
+}
+
+.modale-message textarea:focus {
+    border-color: #3a86ff;
+    outline: none;
+}
+
+/* Buttons Section */
+.modale-message .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 20px;
+}
+
+.modale-message .actions button {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.modale-message .actions .cancel {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.modale-message .actions .cancel:hover {
+    background-color: #d83737;
+}
+
+.modale-message .actions .send {
+    background-color: #3a86ff;
+    color: white;
+}
+
+.modale-message .actions .send:hover {
+    background-color: #0056d6;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .modale-message {
+        width: 95%;
+    }
+
+    .modale-message .profile {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .modale-message textarea {
+        height: 100px;
+    }
+}
+
+/* Button to Open Modal */
+.open-modal-btn {
+    background-color: #3a86ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.open-modal-btn:hover {
+    background-color: #0056d6;
+}
+
+.modal-overlay-message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1500; /* Juste en dessous du modal */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay-message.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+
+

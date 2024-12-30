@@ -5,102 +5,257 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Inspect</title>
     <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="./scannQR.css">
+    <!-- <link rel="stylesheet" href="./scannQR.css"> -->
     <link rel="stylesheet" href="./floating-button.css">
     <link rel="stylesheet" href="./modale.css">
     <link rel="stylesheet" href="./studentModal/student-modal.css">
     <link rel="stylesheet" href="./support/support.css">
     <link rel="stylesheet" href="./updates/updateInformations.css">
-    <link rel="stylesheet" href="./vote.css">
+    <link rel="stylesheet" href="./search/search.css">
+    <link rel="stylesheet" href="./notifications/notifications.css">
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="./icons/logo.PNG">
-    <link rel="icon" type="image/png" href="./icons/logo.PNG">
-    <link rel="icon" type="image/png" href="./icons/logo.PNG">
-    <link rel="icon" type="image/png" href="./icons/logo.PNG">
+
+    <script>
+      tailwind.config = {
+          theme: {
+              extend: {
+                  animation: {
+                      fadeIn: 'fadeIn 0.5s ease-in-out',
+                      scaleIn: 'scaleIn 0.3s ease-in-out',
+                  },
+                  keyframes: {
+                      fadeIn: {
+                          '0%': { opacity: '0' },
+                          '100%': { opacity: '1' },
+                      },
+                      scaleIn: {
+                          '0%': { transform: 'scale(0.8)' },
+                          '100%': { transform: 'scale(1)' },
+                      },
+                  },
+              },
+          },
+      };
+
+
+      tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563EB',
+                        secondary: '#1E40AF',
+                        accent: '#4ADE80',
+                    },
+                    animation: {
+                        slideIn: 'slideIn 0.5s ease-in-out',
+                        fadeIn: 'fadeIn 0.3s ease-out',
+                    },
+                    keyframes: {
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                    },
+                },
+            },
+        };
+
+    
+      
+  </script>
 </head>
-<body>
+<body class="bg-gray-50 bg-gray-50 flex flex-col items-center justify-center min-h-screen text-gray-800">
    
     
-  <nav class="navbar">
-    <div class="container-fluid">
-      <div class="logo">
-        <h1>CAMPUS <span>INSPECT</span></h1>
+  <nav class="bg-gradient-to-r from-blue-500 via-blue-700 to-blue-900 text-white shadow-lg fixed w-full top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center px-4 py-3">
+      <!-- Logo -->
+      <div class="text-xl font-bold flex items-center">
+        <span class="cursor-pointer">CAMPUS INSPECT</span>
       </div>
-      <button class="navbar-toggler" id="navbar-toggler" type="button">
-        <span class="navbar-toggler-icon">&#9776;</span>
-      </button>
-      <div class="navbar-collapse" id="navbar-collapse">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="./index.html">Accueil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./classes/index.html">Classes</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./bureaux/index.html">Bureaux</a>
-          </li>
-        </ul>
+  
+      <!-- Navigation Links -->
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="#" class="hover:text-gray-200" style="font-weight: bolder; font-size: 1.5rem; border: 5px solid white; border-radius: 15px; padding: 5px;">Accueil</a>
+        <a href="./bureaux/index.html" class="hover:text-gray-200">Bureaux</a>
       </div>
-      <!-- Bloc de profil utilisateur -->
-      <div class="user-profile">
-        <div class="profile-picture">
-          <img src="#" alt="Photo de profil" id="userPhoto">
-       
+  
+      <!-- User Info & Icons -->
+      <div class="flex items-center space-x-4">
+        <!-- Search Icon -->
+        <!-- <i class="fas fa-search cursor-pointer text-xl" id="openSearchModal"></i> -->
+        <i class="fa-regular fa-comments cursor-pointer text-xl" id="openSearchModal"></i>
+        <!-- Notification Icon -->
+        <div class="relative" id="relative">
+          <i class="fas fa-bell cursor-pointer text-xl" id="openNotificationModal"></i>
+          <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1" id="notificationCount"></span>
+
         </div>
-        <div class="user-name" id="userName"></div>
+  
+        <!-- User Profile -->
+        <div class="flex items-center space-x-2 profile-utilisateur">
+          <div class="profile-picture w-10 h-10 rounded-full overflow-hidden">
+            <img src="#" alt="Photo de profil" id="userPhoto" class="w-full h-full object-cover">
+          </div>
+          <div class="user-name text-sm md:text-base font-medium truncate" id="userName"></div>
+        </div>
+  
+        <!-- Toggle Button for Small Screens -->
+        <div class="md:hidden">
+          <button class="menu-toggle text-xl" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
       </div>
     </div>
-  </nav>
   
-<!-- Deux boutons -->
-<div class="button-container">
-  <button id="refreshButton" class="btn">Actualiser</button>
-  <a href="./bureaux/index.html" id="bureauButton" class="btn">Bureaux</a>
+    <!-- Mobile Menu -->
+    <div class="hidden md:hidden flex flex-col items-start bg-blue-800 text-white p-4" id="mobileMenu">
+      <a href="#" class="hover:text-gray-300 mb-2">Accueil</a>
+      <a href="./bureaux/index.html" class="hover:text-gray-300 mb-2">bureaux</a>
+    </div>
+  </nav>
+
+
+<!-- Modal de recherche (pour rechercher un étudiant) -->
+
+<div class="modal-overlay">
+    <!-- Contenu de votre modal -->
+
+  <div class="searchModal" id="searchModal">
+    <!-- Modal Header -->
+    <div class="header">
+        <h2>Rechercher un étudiant</h2>
+        <span class="close" id="closeSearchModal">&times;</span>
+    </div>
+
+    <!-- Search Input -->
+    <div class="search">
+        <input type="text" placeholder="Rechercher un étudiant" id="searchInput">
+    </div>
+
+    <!-- Results Section -->
+    <div class="results" id="resultsContainer">
+    </div>
+</div>
 </div>
 
 
-<!-- Fin de la navbar -->
-
-<!-- QR Code -->
-
-<div class="overlay" id="overlay"></div>
-<div id="qrcode-container">
-  <h2>QR Code de l'étudiant</h2>
-  <div id="qrcode"></div>
-  <button class="button close-button" id="closeQRCode">Fermer</button> <!-- Bouton pour fermer -->
-</div>
-<br>
-
-
-<!-- Utiliser la caméra pour scanner un QR CODE -->
-
-<div class="icon-container">
-  <i class="fas fa-qrcode" id="generateQRCode" style="font-size: 3rem;"></i>
-  <i class="fas fa-camera camera-button" id="startScanButton" style="font-size: 3rem;"></i>
+<!-- Modal pour les notifications de l'étudiant-->
+<div class="student-notification-overlay"></div>
+<div class="student-notification-modal" id="studentNotificationModal">
+  <div class="modal-header">
+      <h2 style="font-size: 1.7rem; font-weight: bold; color: white;"> Notifications <i class="fas fa-bell cursor-pointer text-xl"></i></h2>
+      <span class="close-btn" id="closeStudentNotificationModal">&times;</span>
+  </div>
+  <div class="modal-messages" id="studentMessageContainer">
+  </div>
 </div>
 
 
-<div title="Scanner le code QR" id="scan-container">
-  <!-- Bouton pour démarrer le scanner avec l'icône de la caméra -->
- <!-- HTML -->
+
+<!-- Modal pour l'envoie d'un message -->
+<div class="modal-overlay-message"></div>
+<div class="modale-message" id="messageModal">
+  <!-- Modal Header -->
+  <div class="header">
+      <h2>Envoyer un message</h2>
+  </div>
+
+  <!-- Profile Section -->
+  <div class="profile">
+      <img id="modalStudentPhoto" src="https://via.placeholder.com/50" alt="Profile Picture">
+      <div class="details">
+          <h3 id="modalStudentName"></h3>
+          <p id="modalStudentClass"></p>
+      </div>
+  </div>
+
+  <!-- Message Section -->
+  <textarea placeholder="Tapez votre message"></textarea>
+
+  <!-- Actions Section -->
+  <div class="actions">
+      <button class="cancel" id="cancelBtn">Quitter</button>
+      <button class="send">Envoyer</button>
+  </div>
 </div>
 
-<!-- L'overlay pour afficher la vidéo avec le bouton de fermeture -->
-<div id="videoOverlay">
-    <!-- Bouton de fermeture de l'overlay -->
-    <button id="closeButton">X</button>
 
-    <!-- Élément vidéo qui affiche le flux de la caméra -->
-    <video id="preview" style="display: block;"></video>
-
-    <!-- Contenu du QR Code trouvé (initialement vide) -->
-    <div id="qrCodeContent" style="display: none;"></div>
+   <!-- Action Buttons -->
+   <div class="flex flex-col items-center mt-32">
+    <button id="generateQRCode" class="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-secondary hover:shadow-xl transition">
+        <i class="fas fa-qrcode text-3xl"></i>
+    </button>
+     <br>
+    <button id="startScanButton" class="bg-accent text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 hover:shadow-xl transition">
+        <i class="fas fa-camera text-3xl"></i>
+    </button>
 </div>
 
-<!-- Div pour afficher le résultat du QR code scanné -->
-<div id="result" style="margin-top: 20px; font-size: 1.2em; color: green;"></div>
+
+
+<!-- QR Code Overlay (Container) -->
+<div class="overlay hidden fixed inset-0 bg-gray-900 bg-opacity-80 z-50 flex flex-col items-center justify-center text-white animate-fadeIn" id="overlay">
+    <!-- QR Code Content -->
+    <div id="qrcode-container" class="bg-white text-black p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold text-center mb-4">QR Code de l'étudiant</h2>
+        <div id="qrcode" class="flex justify-center mb-4">
+           
+        </div>
+        <button class="button close-button bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition" id="closeQRCode">Fermer</button>
+    </div>
+</div>
+
+<!-- Video Overlay for QR Scanning -->
+<div id="videoOverlay" class="hidden fixed inset-0 bg-gray-900 bg-opacity-80 z-50 flex flex-col items-center justify-center text-white animate-fadeIn">
+    <!-- Scan Message -->
+    <div id="scanMessage" class="text-xl font-semibold bg-primary bg-opacity-80 px-4 py-2 rounded-md shadow-md mb-4">
+        Scannez le code QR
+    </div>
+
+    <!-- Close Button -->
+    <button id="closeButton" class="absolute top-4 right-4 bg-red-500 w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+        X
+    </button>
+
+    <!-- Video Preview -->
+    <div class="w-4/5 max-w-lg">
+        <video id="preview" class="w-full border-4 border-accent rounded-lg shadow-md"></video>
+    </div>
+
+    <!-- QR Code Content -->
+    <div id="qrCodeContent" class="mt-6 p-4 bg-gray-800 rounded-lg shadow-md hidden">
+        <h2 class="text-xl font-semibold mb-2">QR Code Scanné :</h2>
+        <p id="qrContentText" class="text-lg font-medium text-accent"></p>
+    </div>
+</div>
+
+<!-- QR Code Result Frame -->
+<div id="qrFrame" class="hidden mt-10 border-4 border-dashed border-primary p-6 bg-gray-100 rounded-lg shadow-md">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-semibold text-primary">QR Code Généré :</h3>
+        <!-- Close Button for QR Code -->
+        <button id="closeQRButton" class="bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition">
+            Fermer
+        </button>
+    </div>
+    <div id="generatedQR" class="mt-4 p-4 bg-white rounded shadow-md flex items-center justify-center">
+        <!-- QR Code Content will be injected here -->
+        <span class="text-gray-500">QR Code Placeholder</span>
+    </div>
+</div>
+
+
+
+
 
 <!-- Inclusion de la bibliothèque jsQR depuis un CDN -->
 <script src="https://unpkg.com/jsqr"></script>
@@ -148,30 +303,32 @@
 
 <!-- Modale pour afficher les informations de l'étudiant connecté -->
  <!-- Modale pour afficher les informations de l'étudiant -->
-<div class="student-modal" id="studentModal">
-  <div class="student-modal-content">
-    <span class="close-modal" id="closeStudentModal">&times;</span>
-    <div class="student-info">
-      <!-- Photo de l'étudiant -->
-      <div class="student-photo-container">
-        <img src="#" alt="Photo de l'étudiant" class="student-photo" id="student-photo">
-    </div>
+ <div class="user-profile-modale" id="user-profile-modale">
+  <div class="header">
+    <!-- Bouton de fermeture -->
+    <button id="close-modal-btn" class="close-btn">✖</button>
+  </div>
+  <div style="border: 4px solid #3a86ff;">
+  <div class="profile-image">
+      <img src="" alt="Profile Picture" id="student-photo">
+  </div>
+ 
+  <h2 id="studentName"></h2>
+  <p id="studentClasse"></p>
+  <p id="kairosNumber"></p>
+  <p id="studentEmail"></p>
+  <div class="social-icons">
+      <a href="#" title="LinkedIn">🔗</a>
+      <a href="#" title="GitHub">🐙</a>
+      <a href="#" title="Email">📧</a>
+  </div>
+  <button class="message-btn" id="accountStatus"></button>
+</div>
+</div>
+
     
 
-      <!-- Informations de l'étudiant -->
-      <div class="student-details">
-        <div class="verified-badge">
-          <i class="fa fa-check"></i>
-      </div>      
-        <h2 id="studentName">Nom de l'étudiant</h2><br>
-        <p><i class="fa-regular fa-id-badge"></i><span id="kairosNumber">123456789</span></p><br>
-        <p><i class="fa-regular fa-envelope"></i> <span id="studentEmail">email@exemple.com</span></p><br>
-        <p><i class="fa-regular fa-calendar"></i><span id="studentSolvabilite">0</span></p><br>
-        <p> <span id="accountStatus" class="status"></span></p>
-      </div>
-    </div>
-  </div>
-</div>
+    
 
 
 <!-- Loading spinner -->
@@ -218,6 +375,11 @@
       <button id="updateNameButton">Mettre à jour le nom</button>
     </div>
     <div>
+      <label for="updateKairos">Numéro Kairos</label>
+      <input type="text" id="updateKairos" placeholder="Votre numéro Kairos" />
+      <button id="updateKairosButton">Mettre à jour le numéro Kairos</button>
+    </div>
+    <div>
       <label for="updateUserEmail">Adresse e-mail :</label>
       <input type="email" id="updateUserEmail" placeholder="Votre adresse e-mail" />
       <button id="updateEmailButton">Mettre à jour l'e-mail</button>
@@ -234,6 +396,20 @@
 </div>
 
 
+<!-- Modale pour afficher les erreurs/succès -->
+<div id="error-modal" class="error-modal">
+  <div class="modal-content">
+    <div id="icon-container" class="icon-container">
+      <i id="icon" class="error-icon">!</i>
+    </div>
+    <p id="modal-message" class="modal-text">Message d'erreur</p>
+    <button id="ok-button" class="ok-btn">OK</button>
+  </div>
+</div>
+
+
+
+
 <!-- Modal permettant aux étudiants de voter un candidat en ligne -->
 
 
@@ -241,13 +417,13 @@
  <!-- Bouton pour ouvrir le modal -->
 
  <!-- Modal -->
- <div id="voteModal" class="modal">
+ <!-- <div id="voteModal" class="modal">
    <div class="modal-content">
      <span id="closeModal" class="close">&times;</span>
      <h2>Système de Vote</h2>
  
      <div class="candidates">
-       <!-- Carte pour le candidat 1 -->
+       Carte pour le candidat 1 
        <div class="candidate-card">
          <img src="./Al_amine.jpg" alt="Candidat 1" class="candidate-photo">
          <h3>Al Amine NDIEGUENE</h3>
@@ -255,7 +431,7 @@
          <button class="vote-btn" id="candidat1" data-candidate="1" >Voter</button>
        </div>
  
-       <!-- Carte pour le candidat 2 -->
+       Carte pour le candidat 2 
        <div class="candidate-card">
          <img src="./ben.jpg" alt="Candidat 2" class="candidate-photo">
          <h3>Ben </h3>
@@ -265,7 +441,7 @@
      </div>
    </div>
  </div>
-
+ -->
 
  <!-- Fin du modal permettant aux étudiants de voter un candidat en ligne -->
 
@@ -288,20 +464,6 @@
   </div>
 </div> -->
 
-
-
-
-
-
-
-
-<!-- Notification indépendante du menu flottant
-<div class="notification show" id="notification">
-  <i class="fa-regular fa-circle-xmark close-notification" id="closeNotification"></i>
-  <p>De nouvelles modifications ont été effectuées.</p>
-</div> -->
-
-
       
       
         <!-- Contenu du fichier principal -->
@@ -315,8 +477,6 @@
             <button id="saveTime" class="btn-confirm">Confirmer</button>
           </div>
         </div>
-
-        <h1 class="responsive-title">Accueil</h1>
         <div id="class-list"></div>
 
 <footer class="footer">
@@ -387,10 +547,12 @@ const storage = getStorage(app); // Utilisez getStorage pour initialiser le stoc
       <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
       <script type="module" src="./studentScan.js"></script>
       <script type="module" src="./qrCode.js"></script>
+      <script type="module" src="./search/search.js"></script>
       <script src="./floating-button.js"></script>
-      <script src="./humbergerButton.js"></script>
-      <script type="module" src="./vote.js"></script>
+      <script type="module" src="./notifications/notifications.js"></script>
+      <!-- <script src="./humbergerButton.js"></script> -->
       <script type="module" src="./studentModal/student-modal.js"></script>
+      <script type="module" src="./messaging.js"></script>
       <script type="module" src="./index.js"></script>
      <!-- <script  type="module" src="./modale.js"></script> -->
       <script type="module" src="./updates/updateInformations.js"></script>

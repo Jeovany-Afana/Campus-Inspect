@@ -48,9 +48,9 @@ async function getElements() {
           <p><strong>Capacité :</strong> ${classeData.capacity}</p>
           <p><strong>Équipements Disponibles :</strong>
             ${classeData.equipements.length === 0 
-              ? "Aucun équipement disponible" 
-              : classeData.equipements.map(equipement => `<span>${equipement}</span>`).join(', ')
-            }
+    ? "Aucun équipement disponible" 
+    : classeData.equipements.map(equipement => `<span>${equipement}</span>`).join(', ')
+}
           </p>
           <p class="occupee_jusqua"><strong>Occupée jusqu'à :</strong> ${classeData.occupee_jusqua ? classeData.occupee_jusqua : "Non spécifié"}</p>
           <p><strong>Localisation :</strong> ${classeData.localisation}</p>
@@ -141,51 +141,51 @@ getElements();
 
 
 logoutButton.addEventListener('click', () => {
-    signOut(auth).then(() => {
-        // Déconnexion réussie
-        console.log('Déconnexion réussie');
-        window.location.href = '../login/index.html'; // Redirige vers la page de connexion
-    }).catch((error) => {
-        // Une erreur est survenue lors de la déconnexion
-        console.error('Erreur lors de la déconnexion:', error);
-    });
+  signOut(auth).then(() => {
+    // Déconnexion réussie
+    console.log('Déconnexion réussie');
+    window.location.href = '../login/index.html'; // Redirige vers la page de connexion
+  }).catch((error) => {
+    // Une erreur est survenue lors de la déconnexion
+    console.error('Erreur lors de la déconnexion:', error);
+  });
 });
 
 
 
 async function getUserData(uid) {
-    // Crée une requête pour rechercher l'utilisateur par son uid
-    const q = query(collection(db, "users"), where("uid", "==", uid));
+  // Crée une requête pour rechercher l'utilisateur par son uid
+  const q = query(collection(db, "users"), where("uid", "==", uid));
     
-    const querySnapshot = await getDocs(q);
+  const querySnapshot = await getDocs(q);
     
-    if (!querySnapshot.empty) {
-      querySnapshot.forEach((doc) => {
-        const userData = doc.data();
-       document.getElementById('userName').innerHTML = userData.pseudoOk;
-       document.getElementById('userPhoto').setAttribute('src', userData.photoURLOk);
-       userProfil.style.display = "block";//Si l'utilisateur est connecté on affiche sa photo de profile
-       logoutButton.style.display="block";//Si l'utilisateur est connecté on affiche le bouton de déconnexion
-       loginButton.style.display = "none"; //On éfface le bouton connection si l'utilisateur est déjà connecté
+  if (!querySnapshot.empty) {
+    querySnapshot.forEach((doc) => {
+      const userData = doc.data();
+      document.getElementById('userName').innerHTML = userData.pseudoOk;
+      document.getElementById('userPhoto').setAttribute('src', userData.photoURLOk);
+      userProfil.style.display = "block";//Si l'utilisateur est connecté on affiche sa photo de profile
+      logoutButton.style.display="block";//Si l'utilisateur est connecté on affiche le bouton de déconnexion
+      loginButton.style.display = "none"; //On éfface le bouton connection si l'utilisateur est déjà connecté
        
        
        
-       if (userData.role === "responsable") 
-        {
+      if (userData.role === "responsable") 
+      {
 
-          buttonsActions.forEach(function (element){
-            element.style.display="none";
-          });
-            getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
-                    const switchButtons = document.querySelectorAll('.switch-container');
-                    switchButtons.forEach((switchButton) => {
-                       switchButton.style.display = "block";
+        buttonsActions.forEach(function (element){
+          element.style.display="none";
+        });
+        getElements().then(() => {// Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
+          const switchButtons = document.querySelectorAll('.switch-container');
+          switchButtons.forEach((switchButton) => {
+            switchButton.style.display = "block";
                         
-                    }, 1000);
-            });
-       } 
+          }, 1000);
+        });
+      } 
 
-       else if (userData.role === "directeur" || userData.role === "administration") {
+      else if (userData.role === "directeur" || userData.role === "administration") {
         buttonsActions.forEach(function (element){
           element.style.display="block";
         });
@@ -198,56 +198,56 @@ async function getUserData(uid) {
           
           const switchButtons = document.querySelectorAll('.switch-container');
           switchButtons.forEach((switchButton) => {
-             switchButton.style.display = "block";
+            switchButton.style.display = "block";
               
           }, 1000);
         });
         
-       }
+      }
        
-       else {
+      else {
         getElements().then(() => {
            
-                const switchButtons = document.querySelectorAll('.switch-container');
-                switchButtons.forEach((switchButton) => {
-                   switchButton.style.display = "none";
+          const switchButtons = document.querySelectorAll('.switch-container');
+          switchButtons.forEach((switchButton) => {
+            switchButton.style.display = "none";
                  
-                }, 1000);
+          }, 1000);
         });
-       }
-        // Utilise les données de l'utilisateur selon tes besoins
-      });
-    } else {
-      console.log('Aucune donnée trouvée pour cet utilisateur');
+      }
+      // Utilise les données de l'utilisateur selon tes besoins
+    });
+  } else {
+    console.log('Aucune donnée trouvée pour cet utilisateur');
      
-    }
   }
+}
   
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const uid = user.uid; // Obtenir le uid de l'utilisateur connecté
-      getUserData(uid); // Appeler la fonction pour obtenir les données
-    } else {
-      console.log("L'utilisateur n'est pas connecté");
-      buttonsActions.forEach(function (element){
-        element.style.display="none";
-      });
-      userProfil.style.display = "none";//On cache la photo si l'utilisateur n'est pas connecté
-      logoutButton.style.display="none";//Si l'utilisateur est pas connecté on éfface le bouton de déconnexion
-      loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
-      getElements().then(() => {
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const uid = user.uid; // Obtenir le uid de l'utilisateur connecté
+    getUserData(uid); // Appeler la fonction pour obtenir les données
+  } else {
+    console.log("L'utilisateur n'est pas connecté");
+    buttonsActions.forEach(function (element){
+      element.style.display="none";
+    });
+    userProfil.style.display = "none";//On cache la photo si l'utilisateur n'est pas connecté
+    logoutButton.style.display="none";//Si l'utilisateur est pas connecté on éfface le bouton de déconnexion
+    loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
+    getElements().then(() => {
        
-            const switchButtons = document.querySelectorAll('.switch-container');
-            switchButtons.forEach((switchButton) => {
-               switchButton.style.display = "none";
+      const switchButtons = document.querySelectorAll('.switch-container');
+      switchButtons.forEach((switchButton) => {
+        switchButton.style.display = "none";
             
-            }, 1000);
+      }, 1000);
     }); }
-  });
+});
   
-  document.getElementById('refreshButton').addEventListener('click', function() {
-    location.reload();
+document.getElementById('refreshButton').addEventListener('click', function() {
+  location.reload();
 });
 
 

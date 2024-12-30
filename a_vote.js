@@ -22,42 +22,42 @@ const voteCollections = collection(db, 'liste_votants');
 
 //Fonction pour afficher les votants dans la table
 
-const afficherTableauEtudiants = (votants) => 
-{
-  // Récupérer les données de la collection "votants" dans Firestore
-    const tableBody = document.getElementById("table-body");
-    tableBody.innerHTML = ""; //Nettoie l'ancien contenu
+// const afficherTableauEtudiants = (votants) => 
+// {
+//   // Récupérer les données de la collection "votants" dans Firestore
+//     const tableBody = document.getElementById("table-body");
+//     tableBody.innerHTML = ""; //Nettoie l'ancien contenu
 
 
-    votants.forEach((votant) => {
-        const row = document.createElement("tr");
+//     votants.forEach((votant) => {
+//         const row = document.createElement("tr");
 
-        row.innerHTML = 
-        `
-        <td style="text-align: center;"><b>${votant.kairos}</b></td>
-       <td style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.2rem; text-align:center;"><b>${votant.pseudoOk.toUpperCase()}</b></td>
-         <td>${votant.classe}</td>
-      <td class="status ${votant.a_vote ? "up-to-date" : "not-up-to-date"}">
-          ${votant.a_vote ? "Déjà voté" : "Pas encore voté"}
-      </td>
+//         row.innerHTML = 
+//         `
+//         <td style="text-align: center;"><b>${votant.kairos}</b></td>
+//        <td style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.2rem; text-align:center;"><b>${votant.pseudoOk.toUpperCase()}</b></td>
+//          <td>${votant.classe}</td>
+//       <td class="status ${votant.a_vote ? "up-to-date" : "not-up-to-date"}">
+//           ${votant.a_vote ? "Déjà voté" : "Pas encore voté"}
+//       </td>
 
-      <td style="text-align: center; font-weight: bold;" >
+//       <td style="text-align: center; font-weight: bold;" >
       
-      ${votant.date}
+//       ${votant.date}
 
-      </td>
-        `
+//       </td>
+//         `
 
-        tableBody.appendChild(row);
+//         tableBody.appendChild(row);
         
-    });
-}
+//     });
+// }
 
 // Écoute en temps réel les modifications dans la collection "votants"
 onSnapshot(voteCollections, (snapshot) => {
   const votants = [];
   snapshot.forEach((doc) => {
-      votants.push(doc.data());
+    votants.push(doc.data());
   });
 
   // Trier les votants par timestamp (du plus récent au plus ancien)
@@ -74,17 +74,17 @@ const candidateCollections = collection(db, "candidats");
 
 // Écoute des votes en temps réel
 onSnapshot(candidateCollections, (snapshot) => {
-    snapshot.forEach((doc) => {
-        const candidat = doc.data();
-        const { nom, nombre_votes } = candidat;
+  snapshot.forEach((doc) => {
+    const candidat = doc.data();
+    const { nom, nombre_votes } = candidat;
 
-        // Mettre à jour le DOM pour chaque candidat
-        if (nom === "Ndieguene1") {
-            document.getElementById("voteCandidat1").innerHTML = nombre_votes;
-        } else if (nom === "Ndieguene2") {
-            document.getElementById("voteCandidat2").innerHTML = nombre_votes;
-        }
-    });
+    // Mettre à jour le DOM pour chaque candidat
+    if (nom === "Ndieguene1") {
+      document.getElementById("voteCandidat1").innerHTML = nombre_votes;
+    } else if (nom === "Ndieguene2") {
+      document.getElementById("voteCandidat2").innerHTML = nombre_votes;
+    }
+  });
 });
 
 

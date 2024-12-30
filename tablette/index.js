@@ -25,14 +25,14 @@ const scansCollection = collection(db, 'scans');
 const afficherTableauEtudiants = (scans) => 
 {
   // Récupérer les données de la collection "scans" dans Firestore
-    const tableBody = document.getElementById("table-body");
-    tableBody.innerHTML = ""; //Nettoie l'ancien contenu
+  const tableBody = document.getElementById("table-body");
+  tableBody.innerHTML = ""; //Nettoie l'ancien contenu
 
 
-    scans.forEach((scan) => {
-        const row = document.createElement("tr");
+  scans.forEach((scan) => {
+    const row = document.createElement("tr");
 
-        row.innerHTML = 
+    row.innerHTML = 
         `
         <td style="text-align: center;"><b>${scan.kairos}</b></td>
        <td style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.2rem; text-align:center;"><b>${scan.pseudoOk.toUpperCase()}</b></td>
@@ -41,21 +41,21 @@ const afficherTableauEtudiants = (scans) =>
       <td class="status ${scan.a_jour ? "up-to-date" : "not-up-to-date"}">
           ${scan.a_jour ? "À jour" : "Pas à jour"}
       </td>
-        `
+        `;
 
-        tableBody.appendChild(row);
+    tableBody.appendChild(row);
         
-    });
-}
+  });
+};
 
 //Ecoute en temps réel les modifications dans la collection "scans"
 onSnapshot(scansCollection, (snapshot) => {
-    const scans = [];
-    snapshot.forEach((doc) => {
-        scans.push(doc.data());
-    });
+  const scans = [];
+  snapshot.forEach((doc) => {
+    scans.push(doc.data());
+  });
 
-    afficherTableauEtudiants(scans);
+  afficherTableauEtudiants(scans);
 });
 
 

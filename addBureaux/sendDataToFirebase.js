@@ -25,48 +25,48 @@ const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilis
 
 export async function registerBureau(bureauInfo, file) {
 
-    try {
+  try {
 
-            //Afficher le spinner
-            const loadingSpinner = document.getElementById('loadingSpinner');
-            loadingSpinner.style.display = 'block';
+    //Afficher le spinner
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    loadingSpinner.style.display = 'block';
 
-        //Upload la photo du bureau
-        const storageRef = ref(storage, 'bureaux/' + file.name);
+    //Upload la photo du bureau
+    const storageRef = ref(storage, 'bureaux/' + file.name);
 
-        const snapshot = await uploadBytes(storageRef, file);
-        const downloadURL = await getDownloadURL(storageRef);
+    const snapshot = await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
 
-        //Stocker les informations du bureau dans Firestore
+    //Stocker les informations du bureau dans Firestore
 
-        const bureauData = {
-            proprio: bureauInfo.proprioOk,
-            localisation: bureauInfo.localisation,
-            presence: "Absent",
-            status: "Libre",
-            poste: "",
-            photoURL: downloadURL
-        };
+    const bureauData = {
+      proprio: bureauInfo.proprioOk,
+      localisation: bureauInfo.localisation,
+      presence: "Absent",
+      status: "Libre",
+      poste: "",
+      photoURL: downloadURL
+    };
 
-        //Ajouter le bureau dans la collection bureaux de Firestore
+    //Ajouter le bureau dans la collection bureaux de Firestore
 
-        await addDoc(collection(db, "bureaux"), bureauData);
+    await addDoc(collection(db, "bureaux"), bureauData);
 
-        setTimeout(() => {
-            alert('Bureau ajouter avec succès');
-            window.location.href = '../bureaux/index.html'; // Change la destination
-          }, 2000); // 2 secondes avant redirection
+    setTimeout(() => {
+      alert('Bureau ajouter avec succès');
+      window.location.href = '../bureaux/index.html'; // Change la destination
+    }, 2000); // 2 secondes avant redirection
 
 
-    } catch (error) {
+  } catch (error) {
 
-        console.log("Erreur lors de l'ajout du bureau" + error);
-    }
+    console.log("Erreur lors de l'ajout du bureau" + error);
+  }
 
-    finally
-    {
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        loadingSpinner.style.display = 'none';
-    }
+  finally
+  {
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    loadingSpinner.style.display = 'none';
+  }
     
 }

@@ -1,8 +1,9 @@
 // Importer les fonctions nécessaires depuis les SDK de Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail  } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
-
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail  } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
+import { openAdditionalInfoModal, saveAdditionalInfo, closeModal } from "../inscription/sendDataToFirebase.js";
+import { showModal } from "../inscription/index.js";
 // Configuration de votre application Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA", // Clé API de votre projet
@@ -14,10 +15,60 @@ const firebaseConfig = {
   measurementId: "G-NVN5GERDV6" // ID de mesure pour les analyses
 };
 
+
 // Initialiser Firebase avec la configuration fournie
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+
+
+const googleButton = document.getElementById("google-sign-in-btn");
+
+googleButton.addEventListener("click", async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
+
+    // Vérifier si l'utilisateur existe déjà dans Firestore
+    const userDocRef = doc(db, "users", user.uid);
+    const userSnapshot = await getDoc(userDocRef); // Utilisation de getDoc ici pour un seul document
+
+    if (!userSnapshot.exists()) {
+      // Si l'utilisateur n'existe pas, ouvrir le modale pour collecter ses informations
+      openAdditionalInfoModal(user);
+    } else {
+      // Si l'utilisateur existe, redirection vers la page d'accueil
+      await showModal("Connexion réussie !", "success");
+      window.location.href = "../index.html";
+    }
+  } catch (error) {
+    console.error("Erreur lors de la connexion avec Google :", error);
+  }
+});
+
+document.getElementById("additional-info-form").addEventListener("submit", (e) => {
+  e.preventDefault(); // Empêche la soumission classique du formulaire
+  
+  // Récupérer l'utilisateur connecté avec la méthode modulaire
+  const user = getAuth().currentUser; // Utilisation de getAuth() pour récupérer l'utilisateur
+  if (user) {
+    saveAdditionalInfo(user);
+  } else {
+    alert("Aucun utilisateur n'est connecté.");
+  }
+});
+
+// Ajouter un écouteur pour fermer le modale via le bouton "×"
+document.querySelector(".modal-close-btn").addEventListener("click", closeModal);
+    
+// Fermer le modale en cliquant en dehors de son contenu
+const modal = document.getElementById("additional-info-modal");
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    closeModal();
+  }
+});
 
 
 
@@ -43,7 +94,7 @@ document.getElementById("forgotPasswordButton").addEventListener("click", async 
 
 
 
-const form = document.querySelector("form");
+const form = document.querySelector(".form");
 const inputs = document.querySelectorAll(
   'input[type="email"], input[type="password"]'
 );
@@ -78,12 +129,12 @@ const passwordChecker = (value) => {
   progressBar.classList = "";
   if (
     !value.match(
-      /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/
+      /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?!.*\s).{8,}$/
     )
   ) {
     errorDisplay(
       "password",
-      "Minimum de 8 caractères, une majuscule, un chiffre et un caractère spécial"
+      "Minimum de 8 caractères, une majuscule et un chiffre"
     );
     progressBar.classList.add("progressRed");
     password = null;
@@ -98,20 +149,18 @@ const passwordChecker = (value) => {
   }
 };
 
-
-
 inputs.forEach((input) => {
   input.addEventListener("input", (e) => {
     switch (e.target.id) {
-      case "email":
-        emailChecker(e.target.value);
-        break;
-      case "password":
-        passwordChecker(e.target.value);
-        break;
+    case "email":
+      emailChecker(e.target.value);
+      break;
+    case "password":
+      passwordChecker(e.target.value);
+      break;
     
-      default:
-        null;
+    default:
+      null;
     }
   });
 });
@@ -120,56 +169,50 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   if (email && password) {
-    const data = {
-      email,
-      password,
-    };
+    const data = { email, password };
     console.log(data);
 
     const emailOk = document.getElementById("email").value;
     const passwordOk = document.getElementById("password").value;
 
-
     try {
-      // Authentifier l'utilisateur avec Firebase Auth
-      const loadingSpinner = document.getElementById('loadingSpinner');//On récupère le loading spinner
+      const loadingSpinner = document.getElementById('loadingSpinner');
       loadingSpinner.style.display = 'block';
-
-
-
 
       const userCredential = await signInWithEmailAndPassword(auth, emailOk, passwordOk);
       const user = userCredential.user;
-  
-      // Une fois connecté, vous pouvez rediriger l'utilisateur ou afficher un message
-      alert('Connexion réussie !');
-      console.log("Utilisateur connecté :", user);
-  
-      // Redirection vers la page d'accueil ou autre après connexion
-      window.location.href = "../index.html";
+
+      // L'utilisateur est authentifié, afficher le modal de succès
+      if (user) {
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        loadingSpinner.style.display = 'none';
+        await showModal("Connexion réussie !", "success");
+        console.log("Utilisateur connecté :", user);
+
+        // Redirection vers la page d'accueil après la connexion
+        window.location.href = "../index.html";
+      }
+
     } catch (error) {
       console.error("Erreur lors de la connexion :", error);
-      alert("Échec de la connexion. Veuillez vérifier vos informations.");
+
+      // Afficher un modal d'erreur en cas d'échec de la connexion
+      await showModal("Échec de la connexion. Veuillez vérifier vos informations.", "error");
     } finally {
       const loadingSpinner = document.getElementById('loadingSpinner');
       loadingSpinner.style.display = 'none';
     }
 
-
-
+    // Réinitialisation des champs et variables
     inputs.forEach((input) => (input.value = ""));
     progressBar.classList = "";
-
     email = null;
     password = null;
-  } 
-  else {
-    alert("Veuillez remplir correctement les champs");
+
+  } else {
+    // Si les champs ne sont pas remplis, afficher un modal d'erreur
+    await showModal("Veuillez remplir tous les champs", "error");
   }
 });
-
-
-
-
 
 

@@ -261,135 +261,6 @@ body {
   overflow-x: hidden; /* Évite les débordements horizontaux */
 }
 
-.navbar {
-  background-color: #007bff;
-  padding: 10px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: content;
-  position: relative;
-  z-index: 1000;
-}
-
-.container-fluid {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.logo h1 {
-  font-size: 1.2em;
-  color: #ffffff;
-}
-
-.navbar-nav {
-  list-style: none;
-  display: flex;
-  gap: 20px;
-}
-
-.nav-link {
-  text-decoration: none;
-  font-size: 18px;
-  color: white;
-  transition: color 0.3s ease;
-}
-
-.nav-link:hover {
-  color: #002f6c;
-}
-
-/* Profil utilisateur */
-.user-profile {
-display: block;
-font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
-}
-
-.profile-picture {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.profile-picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.status-indicator {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: green;
-  border: 2px solid white;
-}
-
-.user-name {
-  font-size: 12px;
-  color: white;
-  margin-top: 5px;
-}
-
-/* Menu hamburger */
-.navbar-toggler {
-  display: none;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.navbar-toggler-icon {
-  font-size: 28px;
-}
-
-/* Menu déroulant (responsive) */
-.navbar-collapse {
-  display: none;
-  flex-direction: column;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background-color: #007bff;
-  padding: 10px 0;
-}
-
-.navbar-collapse.active {
-  display: flex;
-}
-
-.nav-item {
-  padding: 10px 0;
-  text-align: center;
-}
-
-/* Responsiveness */
-@media (max-width: 768px) {
-  .navbar-toggler {
-    display: block;
-  }
-
-  .navbar-nav {
-    flex-direction: column;
-  }
-
-  .navbar{
-    width: fit-content;
-  }
-
-  .user-profile {
-    display: none;
-  }
-}
 
 
 .footer {
@@ -738,27 +609,6 @@ font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
   background-color: #218838;
 }
 
-/* Style pour le QR CODE */
-#qrcode-container {
-  display: none; /* Cacher par défaut */
-  position: fixed; /* Positionnement fixe */
-  top: 50%; /* Centrer verticalement */
-  left: 50%; /* Centrer horizontalement */
-  transform: translate(-50%, -50%); /* Ajuster pour centrer correctement */
-  z-index: 1000; /* Au-dessus d'autres éléments */
-  background-color: white; /* Fond blanc */
-  padding: 20px; /* Espacement interne */
-  border-radius: 10px; /* Coins arrondis */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Ombre */
-}
-
-#qrcode {
-  width: 300px; 
-  height: 300px; 
-  background: linear-gradient(120deg, blue, white);
-  padding: 10px;
-
-}
 
 .button {
   padding: 10px 20px;
@@ -771,20 +621,7 @@ font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
   margin-top: 20px; /* Espacement au-dessus du bouton */
 }
 
-.close-button {
-  background-color: red; /* Couleur rouge pour le bouton de fermeture */
-}
 
-.overlay {
-  display: none; /* Cacher l'overlay par défaut */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
-  z-index: 500; /* Au-dessus d'autres éléments */
-} */
 
 h2 {
   margin: 0; /* Enlever le marges par défaut */
@@ -792,13 +629,7 @@ h2 {
 
 
 
-/*BOUTTON POUR SCANNER LE CODE QR*/
 
-#button-scan{
-
-  width: 5.4%;
-  border: none;
-}
 
 
 /* Loading spinner */
@@ -824,35 +655,6 @@ h2 {
 }
 
 
-/* Conteneur des boutons */
-.button-container {
-  display: flex;
-  flex-direction: column; /* Aligne les éléments verticalement */
-  align-items: flex-start; /* Place les éléments à gauche */
-  gap: 20px; /* Espace entre les icônes */
-  margin-left: 10px; /* Positionne légèrement à gauche de la page */
-}
-
-/* Styles généraux des boutons */
-.button-container i {
-  font-size: 50px; /* Taille uniforme des icônes */
-  cursor: pointer; /* Ajoute le curseur interactif */
-  width: 60px; /* Taille carrée pour les boutons */
-  height: 60px;
-  display: flex; /* Centre l'icône dans son conteneur */
-  justify-content: center;
-  align-items: center;
-  border: 2px solid #ccc; /* Ajoute une bordure */
-  border-radius: 10px; /* Coins arrondis */
-  transition: all 0.3s ease; /* Animation pour les interactions */
-}
-
-/* Style au survol */
-.button-container i:hover {
-  border-color: #007bff; /* Change la couleur de la bordure au hover */
-  color: #007bff; /* Change la couleur de l'icône */
-}
-
 /* Responsiveness - Pour les écrans plus petits */
 @media (max-width: 768px) {
   .button-container {
@@ -863,5 +665,120 @@ h2 {
     font-size: 30px; /* Réduit la taille des icônes */
     width: 50px; /* Réduit la taille des boutons */
     height: 50px;
+  }
+}
+
+
+
+
+
+/* Modale qui remplace les alertes */
+
+/* Modal spécifique pour les erreurs/succès */
+.error-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease forwards;
+  z-index: 3000;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: scale(0.8);
+  animation: zoomIn 0.3s ease forwards;
+}
+
+.icon-container {
+  margin: 20px 0;
+}
+
+.error-icon {
+  display: inline-block;
+  font-size: 3rem;
+  font-weight: bold;
+  color: red;
+  border: 3px solid red;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+}
+
+.modal-text {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.ok-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.ok-btn:hover {
+  background: darkred;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0);
   }
 }
