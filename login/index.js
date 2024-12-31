@@ -1,9 +1,7 @@
 // Importer les fonctions nécessaires depuis les SDK de Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, sendPasswordResetEmail, signInWithPopup  } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
-import { openAdditionalInfoModal, saveAdditionalInfo, closeModal } from "../inscription/sendDataToFirebase.js";
-import { showModal } from "../inscription/index.js";
+import { getFirestore, where, getDocs, query,doc, collection, setDoc,    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
+import { getAuth, createUserWithEmailAndPassword,signInWithEmailAndPassword, signOut, sendPasswordResetEmail, signInWithPopup, fetchSignInMethodsForEmail, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
 // Configuration de votre application Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA", // Clé API de votre projet
@@ -19,6 +17,7 @@ const firebaseConfig = {
 // Initialiser Firebase avec la configuration fournie
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilisé
 const provider = new GoogleAuthProvider();
 
 
@@ -30,23 +29,130 @@ googleButton.addEventListener("click", async () => {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
-    // Vérifier si l'utilisateur existe déjà dans Firestore
-    const userDocRef = doc(db, "users", user.uid);
-    const userSnapshot = await getDoc(userDocRef); // Utilisation de getDoc ici pour un seul document
+    // Vérifier si l'email existe déjà dans Firebase Auth
+    const emailExist = await fetchUsersByEmail(user.email);
 
-    if (!userSnapshot.exists()) {
-      // Si l'utilisateur n'existe pas, ouvrir le modale pour collecter ses informations
-      openAdditionalInfoModal(user);
+    if (emailExist) {
+      // Si l'email existe déjà dans Firebase Auth, afficher un message d'alerte
+      await showModal("Vous êtes déjà inscrit. Veuillez vous connecter avec votre mot de passe.", "error");
+      // Optionnel : Rediriger l'utilisateur vers le formulaire de connexion avec mot de passe
     } else {
-      // Si l'utilisateur existe, redirection vers la page d'accueil
-      await showModal("Connexion réussie !", "success");
-      window.location.href = "../index.html";
+      // Si l'utilisateur n'existe pas dans Firebase Auth, vérifier dans Firestore
+      const userSnapshot = await getFirestoreUserByUid(user.uid);
+
+      if (!userSnapshot) {
+        // Si l'utilisateur n'existe pas dans Firestore, ouvrir le modal pour collecter ses informations
+        openAdditionalInfoModal(user);
+      } else {
+        // Si l'utilisateur existe déjà, redirection vers la page d'accueil
+        await showModal("Connexion réussie !", "success");
+        window.location.href = "../index.html";
+      }
     }
   } catch (error) {
     console.error("Erreur lors de la connexion avec Google :", error);
   }
 });
 
+// Fonction pour rechercher un utilisateur dans Firebase Auth par email
+async function fetchUsersByEmail(email) {
+  try {
+    const methods = await fetchSignInMethodsForEmail(auth, email);
+    return methods.length > 0;  // Si l'email est déjà utilisé, renvoyer true
+  } catch (error) {
+    console.error("Erreur lors de la vérification de l'email : ", error);
+    return false;  // En cas d'erreur, considérer que l'email n'est pas utilisé
+  }
+}
+
+// Fonction pour vérifier si un utilisateur avec un UID existe déjà dans Firestore
+async function getFirestoreUserByUid(uid) {
+  const userQuerySnapshot = await getDocs(query(collection(db, "users"), where("uid", "==", uid)));
+  
+  if (!userQuerySnapshot.empty) {
+    return userQuerySnapshot.docs[0].data();  // Retourner les données du premier utilisateur trouvé
+  }
+  return null;  // Si aucun utilisateur n'est trouvé
+}
+
+
+
+
+
+// Fonction pour fermer le modale
+export function closeModal() {
+  const modal = document.getElementById("additional-info-modal");
+  modal.style.display = "none";
+}
+  
+
+// Fonction pour ouvrir le modale et pré-remplir les champs
+export function openAdditionalInfoModal(user) {
+  const modal = document.getElementById("additional-info-modal");
+  const emailInput = document.getElementById("user-email");
+  const nameInput = document.getElementById("user-name");
+  
+  // Pré-remplir les champs avec les informations de Google
+  emailInput.value = user.email || ""; // Email de Google
+  nameInput.value = user.displayName || ""; // Nom complet de Google
+  
+  // Afficher le modale
+  modal.style.display = "flex";
+}
+  
+
+// Ajouter un écouteur pour fermer le modale via le bouton "×"
+document.querySelector(".modal-close-btn").addEventListener("click", closeModal);
+  
+// Fermer le modale en cliquant en dehors de son contenu
+const modal = document.getElementById("additional-info-modal");
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    closeModal();
+  }
+});
+  
+// Sauvegarder les informations dans Firestore
+export async function saveAdditionalInfo(user) {
+  const nameInput = document.getElementById("user-name").value.trim();
+  const emailInput = document.getElementById("user-email").value.trim();
+  const classInput = document.getElementById("user-class").value.trim();
+  const kairosInput = document.getElementById("user-kairos").value.trim();
+  
+  // Validation des champs
+  if (!nameInput || !classInput || !kairosInput) {
+    alert("Tous les champs sont obligatoires !");
+    return;
+  }
+  
+  try {
+    // Ajouter les données à Firestore (Assurez-vous que Firebase est configuré)
+    const userDocRef = doc(db, "users", user.uid);
+  
+    await setDoc(userDocRef, {
+      uid: user.uid, // ID unique de l'utilisateur Firebase
+      pseudoOk: nameInput,
+      emailOk: emailInput,
+      classe: classInput,
+      kairos: kairosInput,
+      dureeSolvabilite:0,
+      role: "etudiant",
+      photoURLOk: user.photoURL,
+      passwordOk: "",
+      a_jour: false,
+      createdAt: new Date(), // Date d'enregistrement
+    });
+  
+    await showModal("Votre inscription a été enregistrée avec succès !", "success");
+    closeModal();
+    window.location.href = "../login/index.html";
+  } catch (error) {
+    console.error("Erreur lors de l'enregistrement dans Firestore :", error);
+    await showModal("Erreur lors de l'enregistrement. Veuillez réessayer.", "error");
+  }
+}
+  
+// Gestionnaire de soumission du formulaire dans le modale
 document.getElementById("additional-info-form").addEventListener("submit", (e) => {
   e.preventDefault(); // Empêche la soumission classique du formulaire
   
@@ -59,16 +165,13 @@ document.getElementById("additional-info-form").addEventListener("submit", (e) =
   }
 });
 
-// Ajouter un écouteur pour fermer le modale via le bouton "×"
-document.querySelector(".modal-close-btn").addEventListener("click", closeModal);
-    
-// Fermer le modale en cliquant en dehors de son contenu
-const modal = document.getElementById("additional-info-modal");
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    closeModal();
-  }
-});
+
+
+
+
+
+
+  
 
 
 
@@ -215,4 +318,60 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
+
+
+async function showModal(message, color) {
+  const modal = document.getElementById("error-modal");
+  const modalMessage = document.getElementById("modal-message");
+  const modalContent = modal.querySelector(".modal-content");
+  const okButton = document.getElementById("ok-button");
+  const errorIcon = document.querySelector(".error-icon");
+
+  // Mettre à jour le message et la couleur
+  modalMessage.textContent = message;
+  modal.style.display = "flex";
+  modalContent.style.animation = "zoomIn 0.3s ease forwards";
+  
+  // Changer la couleur du message et de l'icône en fonction du statut (succès ou erreur)
+  if (color === "error") {
+    errorIcon.style.color = "red";
+    okButton.style.backgroundColor = "red";
+    errorIcon.style.borderColor = "red";
+  } else if (color === "success") {
+    errorIcon.style.color = "green";
+    okButton.style.backgroundColor = "green";
+    errorIcon.style.borderColor = "green";
+  }
+
+  else if (color === "warning") {
+    errorIcon.style.color = "orange";
+    okButton.style.backgroundColor = "orange";
+    errorIcon.style.borderColor = "orange";
+  }
+
+  // Retourner une promesse qui ne se résout qu'à la fermeture du modal
+  return new Promise((resolve) => {
+    okButton.onclick = () => {
+      closeModal(resolve); // Appeler resolve lorsque l'utilisateur appuie sur OK
+    };
+
+    window.onclick = (event) => {
+      if (event.target === modal) {
+        closeModal(resolve); // Appeler resolve si on clique en dehors du modal
+      }
+    };
+
+    // Fonction pour fermer le modal
+    function closeModal(resolve) {
+      modalContent.style.animation = "zoomOut 0.3s ease forwards";
+      modal.style.animation = "fadeOut 0.3s ease forwards";
+
+      // Attendre la fin de l'animation avant de cacher le modal
+      setTimeout(() => {
+        modal.style.display = "none";
+        resolve(); // Résoudre la promesse, ce qui permet de continuer le code
+      }, 300);
+    }
+  });
+}
 

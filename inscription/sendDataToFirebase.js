@@ -1,8 +1,8 @@
-import {collection, addDoc, getDocs, getDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+import {collection, addDoc, getDocs, getDoc, doc, query, where, setDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js"; // Pour utiliser Storage
-import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithPopup, fetchSignInMethodsForEmail, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js';
 import { showModal} from "./index.js";
 // Configuration de votre application Firebase
 const firebaseConfig = {
@@ -27,27 +27,60 @@ const statusMessage = document.getElementById('statusMessage'); // Sélectionner
 
 
 
+// Connexion avec Google
 googleButton.addEventListener("click", async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
-    // Vérifier si l'utilisateur existe déjà dans Firestore
-    const userDocRef = doc(db, "users", user.uid);
-    const userSnapshot = await getDoc(userDocRef); // Utilisation de getDoc ici pour un seul document
+    // Vérifier si l'email existe déjà dans Firebase Auth
+    const emailExist = await fetchUsersByEmail(user.email);
 
-    if (!userSnapshot.exists()) {
-      // Si l'utilisateur n'existe pas, ouvrir le modale pour collecter ses informations
-      openAdditionalInfoModal(user);
+    if (emailExist) {
+      // Si l'email existe déjà dans Firebase Auth, afficher un message d'alerte
+      await showModal("Vous êtes déjà inscrit. Veuillez vous connecter avec votre mot de passe.", "error");
+      // Optionnel : Rediriger l'utilisateur vers le formulaire de connexion avec mot de passe
     } else {
-      // Si l'utilisateur existe, redirection vers la page d'accueil
-      await showModal("Connexion réussie !", "success");
-      window.location.href = "../index.html";
+      // Si l'utilisateur n'existe pas dans Firebase Auth, vérifier dans Firestore
+      const userSnapshot = await getFirestoreUserByUid(user.uid);
+
+      if (!userSnapshot) {
+        // Si l'utilisateur n'existe pas dans Firestore, ouvrir le modal pour collecter ses informations
+        openAdditionalInfoModal(user);
+      } else {
+        // Si l'utilisateur existe déjà, redirection vers la page d'accueil
+        await showModal("Connexion réussie !", "success");
+        window.location.href = "../index.html";
+      }
     }
   } catch (error) {
     console.error("Erreur lors de la connexion avec Google :", error);
   }
 });
+
+// Fonction pour rechercher un utilisateur dans Firebase Auth par email
+async function fetchUsersByEmail(email) {
+  try {
+    const methods = await fetchSignInMethodsForEmail(auth, email);
+    return methods.length > 0;  // Si l'email est déjà utilisé, renvoyer true
+  } catch (error) {
+    console.error("Erreur lors de la vérification de l'email : ", error);
+    return false;  // En cas d'erreur, considérer que l'email n'est pas utilisé
+  }
+}
+
+// Fonction pour vérifier si un utilisateur avec un UID existe déjà dans Firestore
+async function getFirestoreUserByUid(uid) {
+  const userQuerySnapshot = await getDocs(query(collection(db, "users"), where("uid", "==", uid)));
+  
+  if (!userQuerySnapshot.empty) {
+    return userQuerySnapshot.docs[0].data();  // Retourner les données du premier utilisateur trouvé
+  }
+  return null;  // Si aucun utilisateur n'est trouvé
+}
+
+
+
 
 
 // Fonction pour fermer le modale
@@ -116,6 +149,7 @@ export async function saveAdditionalInfo(user) {
   
     await showModal("Votre inscription a été enregistrée avec succès !", "success");
     closeModal();
+    window.location.href = "../login/index.html";
   } catch (error) {
     console.error("Erreur lors de l'enregistrement dans Firestore :", error);
     await showModal("Erreur lors de l'enregistrement. Veuillez réessayer.", "error");

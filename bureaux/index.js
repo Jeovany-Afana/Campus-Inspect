@@ -176,7 +176,6 @@ async function getUserData(uid) {
   if (!querySnapshot.empty) {
     querySnapshot.forEach((doc) => {
       const userData = doc.data();
-      document.getElementById('userName').innerHTML = userData.pseudoOk;
       document.getElementById('userPhoto').setAttribute('src', userData.photoURLOk);
       userProfil.style.display = "block";//Si l'utilisateur est connecté on affiche sa photo de profile
       logoutButton.style.display="block";//Si l'utilisateur est connecté on affiche le bouton de déconnexion
@@ -269,6 +268,13 @@ onAuthStateChanged(auth, (user) => {
     }); }
 });
 
+ // Menu toggle logic for mobile view
+ const menuToggle = document.getElementById('menu-toggle');
+ const mobileMenu = document.getElementById('mobileMenu'); // Corrected ID here
+
+ menuToggle.addEventListener('click', () => {
+     mobileMenu.classList.toggle('hidden');
+ });
 
 
 

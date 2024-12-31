@@ -58,7 +58,7 @@
           <div class="profile-picture w-10 h-10 rounded-full overflow-hidden">
             <img src="#" alt="Photo de profil" id="userPhoto" class="w-full h-full object-cover">
           </div>
-          <div class="user-name text-sm md:text-base font-medium truncate" id="userName"></div>
+  
         </div>
   
         <!-- Toggle Button for Small Screens -->
@@ -73,7 +73,7 @@
     <!-- Mobile Menu -->
     <div class="hidden md:hidden flex flex-col items-start bg-blue-800 text-white p-4" id="mobileMenu">
       <a href="../index.html" class="hover:text-gray-300 mb-2">Accueil</a>
-      <a href="#" class="hover:text-gray-300 mb-2">bureaux</a>
+      <a href="#" class="hover:text-gray-300 mb-2" style="font-weight: bold; font-size: 1.4rem;">bureaux</a>
     </div>
   </nav>
 
@@ -177,7 +177,6 @@ const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilis
 // Initialiser Firebase Storage (pour stocker des fichiers)
 const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
       </script>
-      <script src="./humbergerButton.js"></script>
       <script src="../floating-button.js"></script>
       <script type="module" src="./index.js"></script>
 </body>

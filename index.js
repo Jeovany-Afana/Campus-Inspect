@@ -395,3 +395,11 @@ onAuthStateChanged(auth, (user) => {
     });
   }
 });
+
+ // Menu toggle logic for mobile view
+ const menuToggle = document.getElementById('menu-toggle');
+ const mobileMenu = document.getElementById('mobileMenu'); // Corrected ID here
+
+ menuToggle.addEventListener('click', () => {
+     mobileMenu.classList.toggle('hidden');
+ });
