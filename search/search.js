@@ -130,19 +130,21 @@ searchInput.addEventListener('input', (e) => {
 
 
 // Initialisation : Récupère les étudiants une seule fois au chargement
-window.addEventListener('load', async () => {
-    try {
-        await fetchAllStudents();
-        console.log("Cache des étudiants initialisé.");
-    } catch (error) {
-        console.error("Erreur lors de la récupération initiale des étudiants :", error);
-    }
-});
+// window.addEventListener('load', async () => {
+//     try {
+//         await fetchAllStudents();
+//         console.log("Cache des étudiants initialisé.");
+//     } catch (error) {
+//         console.error("Erreur lors de la récupération initiale des étudiants :", error);
+//     }
+// });
 
 
 
 // Function to open the modal
-function openSearchModal() {
+async function openSearchModal() {
+    await fetchAllStudents();
+    console.log("Cache des étudiants initialisé.");
     searchModal.classList.add('active');
     overlay.classList.add('active'); // Active l'overlay
     showStudents();
@@ -156,7 +158,7 @@ function closeSearchModal() {
 
 // Event listeners
 openSearchModalBtn.addEventListener('click', openSearchModal);
-closeSearchModalBtn.addEventListener('click', closeSearchModal);
+closeSearchModalBtn.addEventListener('click' , closeSearchModal);
 
 // Close modal when clicking outside of it
 window.addEventListener('click', (e) => {

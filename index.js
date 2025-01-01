@@ -24,7 +24,6 @@ import { showModalSpecific } from "./updates/updateInformations.js";
 // Assurez-vous que Firebase est déjà initialisé dans votre fichier HTML
 const db = getFirestore(); // Assurez-vous que cela soit défini après l'initialisation de Firebase
 const auth = getAuth();
-const userProfil = document.querySelector(".profile-utilisateur"); //Photo de profile de l'utilisateur(Qui va s'afficher si l'utilisateur est connecté)
 const logoutButton = document.getElementById("logoutButton"); //On sélectionne le bouton de déconnexion
 const loginButton = document.getElementById("loginButton");
 // const camera = document.getElementById("scan-container");
@@ -200,11 +199,8 @@ export async function getUserData(uid) {
       const userData = doc.data();
       donneeUtilisateur = userData; //On récupère les données de l'utilisateur connecté actuellement(L'étudiant)
 
-      // document.getElementById("userName").innerHTML = userData.pseudoOk.split(" ")[0];
-      document
-        .getElementById("userPhoto")
-        .setAttribute("src", userData.photoURLOk);
-      userProfil.style.display = "block"; //Si l'utilisateur est connecté on affiche sa photo de profile
+      
+      afficherProfilUtilisateur(userData);
       loginButton.style.display = "none"; //On éfface le bouton connection si l'utilisateur est déjà connecté
 
       if (userData.role === "responsable") {
@@ -272,7 +268,7 @@ export async function getUserData(uid) {
           }
         });
         
-        document.getElementById('userPhoto').addEventListener('click', showStudentInfo);
+        
         document.getElementById('openSupportModal').addEventListener('click', showSupportModal);
         document.getElementById('updateInformationsModal').addEventListener('click', showModalSpecific);
         // document.querySelector("#notification > p").innerHTML = "Découvrez les nouvelles fonctionnalités : le bouton de déconnexion a été déplacé dans le menu flottant pour une meilleure navigation !"
@@ -357,7 +353,6 @@ onAuthStateChanged(auth, (user) => {
     getUserData(uid); // Appeler la fonction pour obtenir les données
   } else {
     console.log("L'utilisateur n'est pas connecté");
-    userProfil.style.display = "none"; //On cache la photo si l'utilisateur n'est pas connecté
     document.getElementById("openSearchModal").style.display = "none";//On cache le bouton de recherche si l'utilisateur n'est pas connecté
     document.getElementById("relative").style.display = "none";
     loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
@@ -403,3 +398,42 @@ onAuthStateChanged(auth, (user) => {
  menuToggle.addEventListener('click', () => {
      mobileMenu.classList.toggle('hidden');
  });
+
+
+ async function afficherProfilUtilisateur(userData) {
+  // Vérifie si l'utilisateur est connecté
+  if (userData.photoURLOk) {
+    // Création du conteneur principal
+    const userProfil = document.createElement("div");
+    userProfil.classList.add("flex", "items-center", "space-x-2", "profile-utilisateur");
+
+    // Création de l'élément pour l'image de profil
+    const profilePicture = document.createElement("div");
+    profilePicture.classList.add("profile-picture", "w-10", "h-10", "rounded-full", "overflow-hidden");
+
+    // Création de l'image elle-même
+    const userPhoto = document.createElement("img");
+    userPhoto.setAttribute("src", userData.photoURLOk); // Définir l'URL de la photo
+    userPhoto.setAttribute("alt", "Photo de profil");
+    userPhoto.setAttribute("id", "userPhoto");
+    userPhoto.classList.add("w-full", "h-full", "object-cover");
+
+    // Ajout de l'image au conteneur de la photo
+    profilePicture.appendChild(userPhoto);
+
+    // Ajout du conteneur de la photo au conteneur principal
+    userProfil.appendChild(profilePicture);
+
+    // Ajouter `userProfil` au DOM
+    const parentElement = document.querySelector(".container") || document.body; // Remplacez "header" par l'ID de votre conteneur parent
+    parentElement.appendChild(userProfil);
+
+    // Afficher le conteneur principal
+    userProfil.style.display = "block";
+
+    // Ajouter l'événement après que l'élément soit dans le DOM
+    document.getElementById('userPhoto').addEventListener('click', showStudentInfo);
+  } else {
+    console.error("Utilisateur non connecté ou photo de profil manquante.");
+  }
+}
