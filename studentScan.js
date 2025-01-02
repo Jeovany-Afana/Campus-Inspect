@@ -8,6 +8,7 @@ import {
   addDoc,
   doc, // Importation ajoutée
   getDoc, // Importation ajoutée
+  serverTimestamp, // Importation ajoutée
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
   
 import {
@@ -128,14 +129,14 @@ async function ajouterScanDansFirestore() {
 
     // Si aucun document trouvé, ajouter les informations dans Firestore
     await addDoc(scansCollection, {
-      uid: user.uid, // Ajouter l'UID pour identification unique
+      uid: user.uid,
       pseudoOk: user.pseudoOk || "Inconnu",
       kairos: user.kairos || "Non défini",
       classe: user.classe || "Non spécifié",
       dureeSolvabilite: user.dureeSolvabilite || 0,
       a_jour: user.a_jour || false,
-      date: new Date().toISOString().split("T")[0], // Date (AAAA-MM-JJ)
-      timestamp: new Date().toISOString(), // Horodatage complet
+      date: new Date().toISOString().split("T")[0], // Date formatée (AAAA-MM-JJ)
+      timestamp: serverTimestamp(), // Horodatage généré côté serveur
     });
 
     alert("Merci pour votre scan !");
