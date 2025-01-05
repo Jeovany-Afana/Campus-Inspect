@@ -135,7 +135,7 @@ async function ajouterScanDansFirestore() {
       classe: user.classe || "Non spécifié",
       dureeSolvabilite: user.dureeSolvabilite || 0,
       a_jour: user.a_jour || false,
-      date: new Date().toISOString().split("T")[1], // Date formatée (AAAA-MM-JJ)
+      date: new Date().toLocaleTimeString("fr-FR", { hour12: false }), // HH:MM:SS
       timestamp: serverTimestamp(), // Horodatage généré côté serveur
     });
 
@@ -145,6 +145,7 @@ async function ajouterScanDansFirestore() {
     console.error("Erreur lors de l'ajout dans Firestore :", error);
   }
 }
+
 
   
   
