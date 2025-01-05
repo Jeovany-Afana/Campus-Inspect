@@ -1,196 +1,77 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau Étudiants - Mise à jour du statut</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Navigation Bar</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
             margin: 0;
-            padding: 20px;
+            font-family: Arial, sans-serif;
         }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        thead {
-            background-color: #3b82f6;
-            color: white;
-            text-align: left;
-        }
-
-        th, td {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            font-size: 16px;
-            text-transform: uppercase;
-        }
-
-        td {
-            font-size: 14px;
-        }
-
-        tr:hover {
-            background-color: #f1f5f9;
-        }
-
-        .action-buttons {
+        .navbar {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px 20px;
+            color: white;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .menu {
+            display: none;
+            flex-direction: column;
             gap: 10px;
         }
-
-        .icon-btn {
-            border: none;
-            cursor: pointer;
+        .menu-button {
+            display: none;
             background: none;
+            border: none;
+            color: white;
             font-size: 20px;
+            cursor: pointer;
         }
-
-        .icon-btn.up-to-date {
-            color: green;
-        }
-
-        .icon-btn.not-up-to-date {
-            color: red;
-        }
-
-        .icon-btn:hover {
-            opacity: 0.7;
-        }
-
-        .status {
-            font-weight: bold;
-            text-align: center;
-            padding: 8px 12px;
-            border-radius: 5px;
-        }
-
-        .status.up-to-date {
-            color: white;
-            background-color: green;
-        }
-
-        .status.not-up-to-date {
-            color: white;
-            background-color: red;
-        }
-
-        /* Responsive */
-        @media only screen and (max-width: 768px) {
-            th, td {
-                padding: 10px;
-                font-size: 12px;
+        @media (max-width: 768px) {
+            .menu-button {
+                display: block;
             }
-
-            .icon-btn {
-                font-size: 18px;
+            .links {
+                display: none;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .links.active {
+                display: flex;
             }
         }
     </style>
 </head>
 <body>
-
-    <h2 style="text-align: center; color: #3b82f6;">Liste des Étudiants</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Classe</th>
-                <th>Statut</th>
-                <th>À jour</th>
-                <th>Non à jour</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>Jean Dupont</td>
-                <td>Mathématiques</td>
-                <td class="status">En attente</td>
-                <td class="action-buttons">
-                    <button class="icon-btn up-to-date" onclick="markAsUpToDate(this)">
-                        <i class="fas fa-check-circle"></i>
-                    </button>
-                </td>
-                <td class="action-buttons">
-                    <button class="icon-btn not-up-to-date" onclick="markAsNotUpToDate(this)">
-                        <i class="fas fa-times-circle"></i>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Marie Martin</td>
-                <td>Informatique</td>
-                <td class="status">En attente</td>
-                <td class="action-buttons">
-                    <button class="icon-btn up-to-date" onclick="markAsUpToDate(this)">
-                        <i class="fas fa-check-circle"></i>
-                    </button>
-                </td>
-                <td class="action-buttons">
-                    <button class="icon-btn not-up-to-date" onclick="markAsNotUpToDate(this)">
-                        <i class="fas fa-times-circle"></i>
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Pierre Leroy</td>
-                <td>Biologie</td>
-                <td class="status">En attente</td>
-                <td class="action-buttons">
-                    <button class="icon-btn up-to-date" onclick="markAsUpToDate(this)">
-                        <i class="fas fa-check-circle"></i>
-                    </button>
-                </td>
-                <td class="action-buttons">
-                    <button class="icon-btn not-up-to-date" onclick="markAsNotUpToDate(this)">
-                        <i class="fas fa-times-circle"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <nav class="navbar">
+        <div class="logo">Logo</div>
+        <button class="menu-button" id="menu-button">&#9776;</button>
+        <div class="links" id="links">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+        </div>
+    </nav>
 
     <script>
-        function markAsUpToDate(button) {
-            // Trouver la cellule de statut de la même ligne
-            const row = button.closest('tr');
-            const statusCell = row.querySelector('.status');
-            
-            // Mettre à jour le statut et les styles
-            statusCell.textContent = 'À jour';
-            statusCell.classList.remove('not-up-to-date');
-            statusCell.classList.add('up-to-date');
-        }
+        const menuButton = document.getElementById('menu-button');
+        const links = document.getElementById('links');
 
-        function markAsNotUpToDate(button) {
-            // Trouver la cellule de statut de la même ligne
-            const row = button.closest('tr');
-            const statusCell = row.querySelector('.status');
-            
-            // Mettre à jour le statut et les styles
-            statusCell.textContent = 'Non à jour';
-            statusCell.classList.remove('up-to-date');
-            statusCell.classList.add('not-up-to-date');
-        }
+        menuButton.addEventListener('click', () => {
+            links.classList.toggle('active');
+        });
     </script>
-
 </body>
 </html>

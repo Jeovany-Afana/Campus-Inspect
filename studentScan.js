@@ -58,7 +58,7 @@ async function startCamera() {
     requestAnimationFrame(scanQRCode);
   } catch (error) {
     console.error("Erreur d'accès à la caméra :", error);
-    alert("Impossible d'accéder à la caméra.");
+    await showModal("Impossible d'accéder à la caméra !", "error");
   }
 }
 
@@ -90,7 +90,7 @@ async function scanQRCode() {
         console.log("QR code valide détecté !");
         await ajouterScanDansFirestore();
       } else {
-        alert("QR code invalide.");
+        await showModal("QR code invalide !", "error");
       }
     }
   }
@@ -104,7 +104,7 @@ async function ajouterScanDansFirestore() {
   const user = await getUtilisateurConnecte();
   if (!user) {
     console.error("Aucun utilisateur connecté.");
-    alert("Veuillez vous connecter pour scanner.");
+    await showModal("Veuillez vous connecter pour scanner.", "error");
     return;
   }
 
@@ -122,7 +122,7 @@ async function ajouterScanDansFirestore() {
 
     if (!querySnapshot.empty) {
       // Si on trouve un document avec cet UID
-      alert("Vous avez déjà scanné !");
+      await showModal("Votre scan a déjà été enregistré, merci !", "warning");
       console.log("Scan déjà enregistré pour cet utilisateur.");
       return;
     }
@@ -139,9 +139,9 @@ async function ajouterScanDansFirestore() {
       timestamp: serverTimestamp(), // Horodatage généré côté serveur
     });
 
-    alert("Merci pour votre scan !");
+    await showModal("Merci pour votre scan !", "success");
   } catch (error) {
-    alert("Désolé, une erreur est survenue !");
+    await showModal("Désolé, une erreur est survenue !", "error");
     console.error("Erreur lors de l'ajout dans Firestore :", error);
   }
 }
@@ -163,11 +163,11 @@ async function getUtilisateurConnecte() {
           if (!querySnapshot.empty) {
             // Si on trouve un ou plusieurs résultats, récupérer le premier
             const utilisateurData = querySnapshot.docs[0].data();
-            console.log("Données utilisateur récupérées :", utilisateurData);
+            // console.log("Données utilisateur récupérées :", utilisateurData);
             resolve(utilisateurData);
           } else {
             alert("Aucun utilisateur correspondant trouvé dans Firestore.");
-            console.error("Aucun document trouvé pour le champ uid :", user.uid);
+            // console.error("Aucun document trouvé pour le champ uid :", user.uid);
             resolve(null);
           }
         } catch (error) {
@@ -201,3 +201,55 @@ closeButton.addEventListener("click", () => {
   video.style.display = "block";
 });
   
+async function showModal(message, color) {
+  const modal = document.getElementById("error-modal");
+  const modalMessage = document.getElementById("modal-message");
+  const modalContent = modal.querySelector(".modal-content");
+  const okButton = document.getElementById("ok-button");
+  const errorIcon = document.querySelector(".error-icon");
+
+  // Mettre à jour le message et la couleur
+  modalMessage.textContent = message;
+  modal.style.display = "flex";
+  modalContent.style.animation = "zoomIn 0.3s ease forwards";
+  
+  // Changer la couleur du message et de l'icône en fonction du statut (succès ou erreur)
+  if (color === "error") {
+    errorIcon.style.color = "red";
+    okButton.style.backgroundColor = "red";
+    errorIcon.style.borderColor = "red";
+  } else if (color === "success") {
+    errorIcon.style.color = "green";
+    okButton.style.backgroundColor = "green";
+    errorIcon.style.borderColor = "green";
+  } else if (color === "warning") {
+    errorIcon.style.color = "orange";
+    okButton.style.backgroundColor = "orange";
+    errorIcon.style.borderColor = "orange";
+  }
+
+  // Retourner une promesse qui ne se résout qu'à la fermeture du modal
+  return new Promise((resolve) => {
+    okButton.onclick = () => {
+      closeModal(resolve); // Appeler resolve lorsque l'utilisateur appuie sur OK
+    };
+
+    window.onclick = (event) => {
+      if (event.target === modal) {
+        closeModal(resolve); // Appeler resolve si on clique en dehors du modal
+      }
+    };
+
+    // Fonction pour fermer le modal
+    function closeModal(resolve) {
+      modalContent.style.animation = "zoomOut 0.3s ease forwards";
+      modal.style.animation = "fadeOut 0.3s ease forwards";
+
+      // Attendre la fin de l'animation avant de cacher le modal
+      setTimeout(() => {
+        modal.style.display = "none";
+        resolve(); // Résoudre la promesse, ce qui permet de continuer le code
+      }, 300);
+    }
+  });
+}

@@ -391,25 +391,17 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
- // Menu toggle logic for mobile view
- const menuToggle = document.getElementById('menu-toggle');
- const mobileMenu = document.getElementById('mobileMenu'); // Corrected ID here
 
- menuToggle.addEventListener('click', () => {
-     mobileMenu.classList.toggle('hidden');
- });
-
-
- async function afficherProfilUtilisateur(userData) {
+async function afficherProfilUtilisateur(userData) {
   // Vérifie si l'utilisateur est connecté
   if (userData.photoURLOk) {
-    // Création du conteneur principal
+    // Création du conteneur principal pour la photo
     const userProfil = document.createElement("div");
     userProfil.classList.add("flex", "items-center", "space-x-2", "profile-utilisateur");
 
     // Création de l'élément pour l'image de profil
     const profilePicture = document.createElement("div");
-    profilePicture.classList.add("profile-picture", "w-10", "h-10", "rounded-full", "overflow-hidden");
+    profilePicture.classList.add("profile-picture", "w-10", "h-10", "rounded-full", "overflow-hidden", "shadow-lg", "transform", "hover:scale-110", "transition-transform", "duration-300");
 
     // Création de l'image elle-même
     const userPhoto = document.createElement("img");
@@ -424,16 +416,18 @@ onAuthStateChanged(auth, (user) => {
     // Ajout du conteneur de la photo au conteneur principal
     userProfil.appendChild(profilePicture);
 
-    // Ajouter `userProfil` au DOM
-    const parentElement = document.querySelector(".container") || document.body; // Remplacez "header" par l'ID de votre conteneur parent
-    parentElement.appendChild(userProfil);
+    // Ajouter le conteneur principal dans le DOM (dans `#userProfileContainer`)
+    const parentElement = document.getElementById("userProfileContainer");
+    if (parentElement) {
+      parentElement.appendChild(userProfil);
 
-    // Afficher le conteneur principal
-    userProfil.style.display = "block";
-
-    // Ajouter l'événement après que l'élément soit dans le DOM
-    document.getElementById('userPhoto').addEventListener('click', showStudentInfo);
+      // Ajouter un événement click sur la photo pour afficher plus d'infos
+      document.getElementById("userPhoto").addEventListener("click", showStudentInfo);
+    } else {
+      console.error("Le conteneur parent n'a pas été trouvé.");
+    }
   } else {
     console.error("Utilisateur non connecté ou photo de profil manquante.");
   }
 }
+

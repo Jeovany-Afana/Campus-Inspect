@@ -1,18 +1,8 @@
+const menuToggle = document.querySelector('.menu-toggle');
+const mobileMenu = document.querySelector('#mobileMenu');
 
-function loadtoggler() {
-  
-  const toggler = document.getElementById('navbar-toggler');
-  const navbarCollapse = document.getElementById('navbar-collapse');
-
-
-  toggler.addEventListener('click', function() {
-    navbarCollapse.classList.toggle('active');
-  });
-}
-
-setTimeout(loadtoggler,2000);
-
-
-
-
-  
+menuToggle.addEventListener('click', () => {
+  mobileMenu.classList.toggle('hidden');
+  mobileMenu.classList.toggle('flex');
+  mobileMenu.classList.toggle('animate-fadeIn');
+});

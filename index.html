@@ -74,56 +74,68 @@
 <body class="bg-gray-50 bg-gray-50 flex flex-col items-center justify-center min-h-screen text-gray-800">
    
     
-  <nav class="bg-gradient-to-r from-blue-500 via-blue-700 to-blue-900 text-white shadow-lg fixed w-full top-0 z-50">
-    <div class="container mx-auto flex justify-between items-center px-4 py-3">
+  <nav class="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-900 text-white shadow-lg fixed w-full top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center px-6 py-4">
       <!-- Logo -->
-      <div class="text-xl font-bold flex items-center">
-        <span class="cursor-pointer">CAMPUS INSPECT</span>
+      <div class="flex items-center space-x-3">
+        <div class="bg-white rounded-full p-2 shadow-md transform hover:scale-110 transition-transform duration-300">
+          <i class="fas fa-graduation-cap text-blue-700 text-2xl"></i>
+        </div>
+        <span class="text-2xl font-extrabold tracking-wide uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-blue-500 hover:opacity-90 cursor-pointer transition-opacity duration-300">
+          Campus Inspect
+        </span>
       </div>
   
       <!-- Navigation Links -->
-      <div class="hidden md:flex items-center space-x-6">
-        <a href="#" class="hover:text-gray-200" style="font-weight: bolder; font-size: 1.5rem; border: 5px solid white; border-radius: 15px; padding: 5px;">Accueil</a>
-        <a href="./bureaux/index.html" class="hover:text-gray-200">Bureaux</a>
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="#" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+          Accueil
+        </a>
+        <a href="./bureaux/index.html" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+          Bureaux
+        </a>
       </div>
   
       <!-- User Info & Icons -->
-      <div class="flex items-center space-x-4">
-        <!-- Search Icon -->
-        <!-- <i class="fas fa-search cursor-pointer text-xl" id="openSearchModal"></i> -->
-        <i class="fa-regular fa-comments cursor-pointer text-xl" id="openSearchModal"></i>
+      <div class="flex items-center space-x-6">
+        <!-- Comments Icon -->
+        <i class="fa-regular fa-comments cursor-pointer text-xl hover:text-blue-300 transition-all duration-300 transform hover:scale-110" id="openSearchModal"></i>
+  
         <!-- Notification Icon -->
-        <div class="relative" id="relative">
-          <i class="fas fa-bell cursor-pointer text-xl" id="openNotificationModal"></i>
-          <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1" id="notificationCount"></span>
-
+        <div class="relative group" id="relative">
+          <i class="fas fa-bell cursor-pointer text-xl hover:text-blue-300 transition-all duration-300 transform hover:scale-110" id="openNotificationModal"></i>
+          <span class="absolute -top-2 -right-2 bg-red-500 text-xs font-bold rounded-full px-2 py-0.5 group-hover:animate-pulse" id="notificationCount">
+            
+          </span>
         </div>
   
         <!-- User Profile -->
-        <!-- <div class="flex items-center space-x-2 profile-utilisateur">
-          <div class="profile-picture w-10 h-10 rounded-full overflow-hidden">
-            <img src="#" alt="Photo de profil" id="userPhoto" class="w-full h-full object-cover">
-          </div>
+
+          <div class="profile-picture w-10 h-10 rounded-full overflow-hidden shadow-lg transform hover:scale-110 transition-transform duration-300" id="userProfileContainer">
           
-        </div> -->
-        <!-- <div class="user-name text-sm md:text-base font-medium truncate" id="userName"></div> -->
+          </div>
+      
   
-        <!-- Toggle Button for Small Screens -->
+        <!-- Mobile Menu Toggle -->
         <div class="md:hidden">
-          <button class="menu-toggle text-xl" id="menu-toggle">
-            <i class="fas fa-bars"></i>
+          <button class="menu-toggle text-2xl">
+            <i class="fas fa-bars hover:scale-105 transition-transform duration-300"></i>
           </button>
         </div>
       </div>
     </div>
   
     <!-- Mobile Menu -->
-    <div class="hidden md:hidden flex flex-col items-start bg-blue-800 text-white p-4" id="mobileMenu">
-      <a href="#" class="hover:text-gray-300 mb-2" style="font-weight: bold; font-size: 1.4rem;">Accueil</a>
-      <a href="./bureaux/index.html" class="hover:text-gray-300 mb-2">bureaux</a>
+    <div class="hidden flex flex-col items-start bg-gradient-to-b from-blue-900 to-blue-700 text-white p-4 shadow-2xl rounded-b-xl md:hidden" id="mobileMenu">
+      <a href="#" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+        Accueil
+      </a>
+      <a href="./bureaux/index.html" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+        Bureaux
+      </a>
     </div>
   </nav>
-
+  
 
 <!-- Modal de recherche (pour rechercher un étudiant) -->
 
@@ -551,7 +563,7 @@ const storage = getStorage(app); // Utilisez getStorage pour initialiser le stoc
       <script type="module" src="./search/search.js"></script>
       <script src="./floating-button.js"></script>
       <script type="module" src="./notifications/notifications.js"></script>
-      <!-- <script src="./humbergerButton.js"></script> -->
+      <script src="./humbergerButton.js"></script>
       <script type="module" src="./studentModal/student-modal.js"></script>
       <script type="module" src="./messaging.js"></script>
       <script type="module" src="./index.js"></script>

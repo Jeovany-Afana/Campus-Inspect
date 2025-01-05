@@ -456,7 +456,7 @@ body {
 .modal {
   display: none;
   position: fixed;
-  z-index: 1;
+  z-index: 2000;
   padding-top: 100px;
   left: 0;
   top: 0;
@@ -782,3 +782,20 @@ h2 {
     background-color: rgba(0, 0, 0, 0);
   }
 }
+
+
+  /* Animation for mobile menu */
+  @keyframes fadeIn {
+    from {
+      transform: translateY(-20%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.5s ease-out;
+  }
