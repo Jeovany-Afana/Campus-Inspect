@@ -135,7 +135,7 @@ async function ajouterScanDansFirestore() {
       classe: user.classe || "Non spécifié",
       dureeSolvabilite: user.dureeSolvabilite || 0,
       a_jour: user.a_jour || false,
-      date: new Date().toISOString().split("T")[0], // Date formatée (AAAA-MM-JJ)
+      date: new Date().toISOString().split("T")[1], // Date formatée (AAAA-MM-JJ)
       timestamp: serverTimestamp(), // Horodatage généré côté serveur
     });
 
