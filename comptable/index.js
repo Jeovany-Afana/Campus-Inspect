@@ -266,7 +266,7 @@ function displayStudents(students) {
         </button>
     </td>
     <td class="action-buttons">
-        <button class="icon-btn update-derogation" onclick="addDerogation('this, ${student.id}')">
+        <button class="icon-btn update-derogation" onclick="addDerogation('${student.id}')">
             <i class="fas fa-edit"></i> 
         </button>
     </td>
