@@ -134,6 +134,8 @@ async function ajouterScanDansFirestore() {
       kairos: user.kairos || "Non défini",
       classe: user.classe || "Non spécifié",
       dureeSolvabilite: user.dureeSolvabilite || 0,
+      derogation: user.derogation || false,
+      dateDerogation: user.dateDerogation || null,
       a_jour: user.a_jour || false,
       date: new Date().toLocaleTimeString("fr-FR", { hour12: false }), // HH:MM:SS
       timestamp: serverTimestamp(), // Horodatage généré côté serveur

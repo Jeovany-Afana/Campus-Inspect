@@ -248,27 +248,33 @@ function displayStudents(students) {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td style="text-align: center;"><b>${student.kairos}</b></td>
-      <td style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.2rem; text-align:center;"><b>${student.pseudoOk.toUpperCase()}</b></td>
-      <td style="text-align: center; color:${student.dureeSolvabilite > 0 ? "green" : "red"};font-size: 1.5rem;"><b>${student.dureeSolvabilite}</b></td>
-      <td>${student.classe}</td>
-      <td class="status ${student.a_jour ? "up-to-date" : "not-up-to-date"}">
-          ${student.a_jour ? "À jour" : "Pas à jour"}
-      </td>
-      <td class="action-buttons">
-          <button class="icon-btn up-to-date" onclick="markAsUpToDate(this, '${student.id}')">
-              <i class="fas fa-check-circle"></i>
-          </button>
-      </td>
-      <td class="action-buttons">
-          <button class="icon-btn not-up-to-date" onclick="markAsNotUpToDate(this, '${student.id}')">
-              <i class="fas fa-times-circle"></i>
-          </button>
-      </td>
-      <td>
-          <img src="${student.photoURLOk}" style="max-width: 100%; height: auto;">
-      </td>
-    `;
+    <td style="text-align: center;"><b>${student.kairos}</b></td>
+    <td style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.2rem; text-align:center;"><b>${student.pseudoOk.toUpperCase()}</b></td>
+    <td style="text-align: center; color:${student.dureeSolvabilite > 0 ? "green" : "red"};font-size: 1.5rem;"><b>${student.dureeSolvabilite}</b></td>
+    <td>${student.classe}</td>
+    <td class="status ${student.a_jour ? "up-to-date" : "not-up-to-date"}">
+        ${student.a_jour ? "À jour" : "Pas à jour"}
+    </td>
+    <td class="action-buttons">
+        <button class="icon-btn up-to-date" onclick="markAsUpToDate(this, '${student.id}')">
+            <i class="fas fa-check-circle"></i>
+        </button>
+    </td>
+    <td class="action-buttons">
+        <button class="icon-btn not-up-to-date" onclick="markAsNotUpToDate(this, '${student.id}')">
+            <i class="fas fa-times-circle"></i>
+        </button>
+    </td>
+    <td class="action-buttons">
+        <button class="icon-btn update-derogation" onclick="addDerogation('this, ${student.id}')">
+            <i class="fas fa-edit"></i> 
+        </button>
+    </td>
+    <td>
+        <img src="${student.photoURLOk}" style="max-width: 100%; height: auto;">
+    </td>
+`;
+
 
     // Ajouter la nouvelle ligne dans le tableau
     tableBody.appendChild(row);
@@ -397,6 +403,58 @@ window.markAsNotUpToDate = function (button, studentId) {
       console.error("Erreur lors de la mise à jour : ", error); // Affiche une erreur en cas de problème
     });
 };
+
+
+
+
+
+window.addDerogation = function(studentId) {
+  // Ouvre le modal pour ajouter la dérogation
+  const modal = document.getElementById("derogationModalStudent");
+  const closeBtn = document.getElementById("closeDerogationModal");
+  modal.style.display = "block";
+
+  // Ferme le modal lorsque l'utilisateur clique sur le bouton de fermeture
+  closeBtn.onclick = function() {
+      modal.style.display = "none";
+  }
+
+  // Lorsque l'utilisateur clique en dehors du modal, on le ferme
+  window.onclick = function(event) {
+      if (event.target === modal) {
+          modal.style.display = "none";
+      }
+  }
+
+  // Enregistrer la dérogation
+  const saveBtn = document.getElementById("saveDerogationBtn");
+  saveBtn.onclick = function() {
+      const derogationDate = document.getElementById("derogationDateInput").value;
+    
+      if (derogationDate) {
+          // Mettre à jour Firestore pour l'étudiant
+          const docRef = doc(db, "users", studentId);
+          updateDoc(docRef, { 
+              derogation: true, // Champ booléen pour la dérogation
+              derogationDate: derogationDate // Champ date pour la durée de la dérogation
+          })
+          .then(() => {
+              console.log("Dérogation ajoutée avec succès pour l'étudiant " + studentId);
+              alert("Dérogation ajoutée avec succès!");
+              modal.style.display = "none"; // Ferme le modal après l'enregistrement
+              loadStudents(); // Recharger la liste des étudiants si nécessaire
+          })
+          .catch((error) => {
+              console.error("Erreur lors de l'ajout de la dérogation: ", error);
+              alert("Erreur lors de l'ajout de la dérogation.");
+          });
+      } else {
+          alert("Veuillez sélectionner une date de dérogation.");
+      }
+  }
+};
+
+
 
 
 
