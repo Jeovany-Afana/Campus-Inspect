@@ -185,6 +185,8 @@ async function loadStudents() {
         dureeSolvabiliteJour: student.dureeSolvabiliteJour,
         trancheRegle: student.trancheRegle,
         nombreTotalTranches: student.nombreTotalTranches,
+        derogation: student.derogation,
+        derogationDate: student.derogationDate,
 
       });
     }
@@ -248,38 +250,41 @@ function displayStudents(students) {
     const row = document.createElement("tr");
 
     row.innerHTML = `
-    <td style="text-align: center;"><b>${student.kairos}</b></td>
-    <td style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.2rem; text-align:center;"><b>${student.pseudoOk.toUpperCase()}</b></td>
-    <td style="text-align: center; color:${student.dureeSolvabilite > 0 ? "green" : "red"};font-size: 1.5rem;"><b>${student.dureeSolvabilite}</b></td>
-    <td>${student.classe}</td>
-    <td class="status ${student.a_jour ? "up-to-date" : "not-up-to-date"}">
-        ${student.a_jour ? "À jour" : "Pas à jour"}
-    </td>
-    <td class="action-buttons">
-        <button class="icon-btn up-to-date" onclick="markAsUpToDate(this, '${student.id}')">
-            <i class="fas fa-check-circle"></i>
-        </button>
-    </td>
-    <td class="action-buttons">
-        <button class="icon-btn not-up-to-date" onclick="markAsNotUpToDate(this, '${student.id}')">
-            <i class="fas fa-times-circle"></i>
-        </button>
-    </td>
-    <td class="action-buttons">
-        <button class="icon-btn update-derogation" onclick="addDerogation('${student.id}')">
-            <i class="fas fa-edit"></i> 
-        </button>
-    </td>
-    <td>
-        <img src="${student.photoURLOk}" style="max-width: 100%; height: auto;">
-    </td>
-`;
+      <td style="text-align: center;"><b>${student.kairos}</b></td>
+      <td style="font-family:Georgia, 'Times New Roman', Times, serif; font-size: 1.2rem; text-align:center;"><b>${student.pseudoOk.toUpperCase()}</b></td>
+      <td style="text-align: center; color:${student.dureeSolvabilite > 0 ? "green" : "red"};font-size: 1.5rem;"><b>${student.dureeSolvabilite}</b></td>
+      <td>${student.classe}</td>
+      <td class="status ${student.a_jour ? "up-to-date" : "not-up-to-date"}">
+          ${student.a_jour ? "À jour" : "Pas à jour"}
+      </td>
+      <td class="action-buttons">
+          <button class="icon-btn up-to-date" onclick="markAsUpToDate(this, '${student.id}')">
+              <i class="fas fa-check-circle"></i>
+          </button>
+      </td>
+      <td class="action-buttons">
+          <button class="icon-btn not-up-to-date" onclick="markAsNotUpToDate(this, '${student.id}')">
+              <i class="fas fa-times-circle"></i>
+          </button>
+      </td>
+    <td class="action-buttons" style="${student.derogation ? 'background-color: white; color: #007bff;' : 'background-color: white; color: #007bff; border-radius: 5px; padding: 5px;'}">
+  <button class="icon-btn update-derogation" onclick="addDerogation('${student.id}')">
+      <i class="fas ${student.derogation ? 'fa-check-circle' : 'fa-plus-circle'}"></i>
+  </button> <br>
+  ${student.derogation ? `<div style="margin-top: 5px; font-size: 0.8rem;">${student.derogationDate}</div>` : ''}
+</td>
 
+
+      <td>
+          <img src="${student.photoURLOk}" style="max-width: 100%; height: auto;">
+      </td>
+    `;
 
     // Ajouter la nouvelle ligne dans le tableau
     tableBody.appendChild(row);
   });
 }
+
 
 // Fonction pour écouter les changements en temps réel
 function listenToStudents() {

@@ -248,33 +248,6 @@ tr:hover {
 
 
 
-.icon-btn.update-derogation {
-    color: #007bff; /* Texte blanc */
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.icon-btn.update-derogation i {
-    margin-right: 5px; /* Espace entre l'icône et le texte */
-}
-
-.icon-btn.update-derogation:hover {
-    background-color: #0056b3; /* Couleur bleue plus foncée au survol */
-    transform: scale(1.05); /* Légère augmentation de la taille lors du survol */
-}
-
-.icon-btn.update-derogation:active {
-    background-color: #003f7f; /* Couleur bleue encore plus foncée quand le bouton est cliqué */
-    transform: scale(0.98); /* Légère réduction de la taille au clic */
-}
-
 
 
 /* Style du modal personnalisé */
@@ -349,5 +322,17 @@ tr:hover {
   .modal-btn:active {
     background-color: #003f7f;
     transform: scale(0.98);
+  }
+  
+
+
+  .derogation-true {
+    background-color: #0056b3;
+    color: white;
+  }
+  
+  .derogation-false {
+    background-color: transparent;
+    color: #0056b3;
   }
   

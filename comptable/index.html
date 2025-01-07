@@ -9,42 +9,63 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../floating-button.css">
     <link rel="icon" href="../icons/logo.PNG">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
 
-    <nav class="navbar">
-        <div class="container-fluid">
-          <div class="logo">
-            <h1>CAMPUS <span>INSPECT</span></h1>
-          </div>
-          <button class="navbar-toggler" id="navbar-toggler" type="button">
-            <span class="navbar-toggler-icon">&#9776;</span>
-          </button>
-          <div class="navbar-collapse" id="navbar-collapse">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="../index.html">Accueil</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="../classes/index.html">Classes</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="../bureaux/index.html">Bureaux</a>
-              </li>
-             
-            </ul>
-          </div>
-          <!-- Bloc de profil utilisateur -->
-          <div class="user-profile" style="display: none;">
-            <div class="profile-picture">
-              <img src="#" alt="Photo de profil" id="userPhoto">
-              <span class="status-indicator"></span>
-            </div>
-            <div class="user-name" id="userName"></div>
-          </div>
+  <nav class="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-900 text-white shadow-lg fixed w-full top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center px-6 py-4">
+      <!-- Logo -->
+      <div class="flex items-center space-x-3">
+        <div class="bg-white rounded-full p-2 shadow-md transform hover:scale-110 transition-transform duration-300">
+          <i class="fas fa-graduation-cap text-blue-700 text-2xl"></i>
         </div>
-      </nav>
+        <span class="text-2xl font-extrabold tracking-wide uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-blue-500 hover:opacity-90 cursor-pointer transition-opacity duration-300">
+          Campus Inspect
+        </span>
+      </div>
+  
+      <!-- Navigation Links -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="#" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+          Accueil
+        </a>
+        <a href="./bureaux/index.html" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+          Bureaux
+        </a>
+      </div>
+  
+      <!-- User Info & Icons -->
+      <div class="flex items-center space-x-6">
+      
+        <!-- User Profile -->
+
+          <div class="profile-picture w-10 h-10 rounded-full overflow-hidden shadow-lg transform hover:scale-110 transition-transform duration-300" id="userProfileContainer">
+          
+          </div>
+      
+  
+        <!-- Mobile Menu Toggle -->
+        <div class="md:hidden">
+          <button class="menu-toggle text-2xl">
+            <i class="fas fa-bars hover:scale-105 transition-transform duration-300"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Mobile Menu -->
+    <div class="hidden flex flex-col items-start bg-gradient-to-b from-blue-900 to-blue-700 text-white p-4 shadow-2xl rounded-b-xl md:hidden" id="mobileMenu">
+      <a href="#" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+        Accueil
+      </a>
+      <a href="./bureaux/index.html" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+        Bureaux
+      </a>
+    </div>
+  </nav>
+  
       <button id="refreshButton" class="btn">Actualiser</button>
 
 <!-- Loading spinner -->
@@ -107,10 +128,10 @@
         <thead>
           <tr>
             <th>
-              <input style="width: content;" type="text" class="inputField" id="studentSearchKairos" placeholder="Rechercher un étudiant par son kairos">
+              <input style="width: content; color: black;" type="text" class="inputField" id="studentSearchKairos" placeholder="Rechercher un étudiant par son kairos">
             </th>
             <th>
-              <input style="width: content;" type="text" class="inputField" id="studentSearch" placeholder="Rechercher un étudiant par nom">
+              <input style="width: content; color: black;" type="text" class="inputField" id="studentSearch" placeholder="Rechercher un étudiant par nom">
             </th>
             
             <th style="display: flex; justify-content: center; align-items: center;"> 
