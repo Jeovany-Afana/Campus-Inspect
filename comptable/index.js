@@ -56,7 +56,7 @@ async function getUserData(uid) {
     querySnapshot.forEach((doc) => {
       const userData = doc.data();
 
-      document.getElementById("userName").innerHTML = userData.pseudoOk;
+     
       document
         .getElementById("userPhoto")
         .setAttribute("src", userData.photoURLOk);
