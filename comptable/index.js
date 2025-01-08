@@ -16,11 +16,12 @@ import {
   signOut,
   onAuthStateChanged,
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+import {fetchStudentData} from "./calculNombreEtudiant.js";
 // Assurez-vous que Firebase est déjà initialisé dans votre fichier HTML
 const db = getFirestore(); // Assurez-vous que cela soit défini après l'initialisation de Firebase
 const auth = getAuth();
 const buttonsActions = document.querySelectorAll(".home-button-container");
-const userProfil = document.querySelector(".user-profile"); //Photo de profile de l'utilisateur(Qui va s'afficher si l'utilisateur est connecté)
 const logoutButton = document.getElementById("logoutButton"); //On sélectionne le bouton de déconnexion
 const aujourdHui = new Date();
 const jourDuMois = aujourdHui.getDate();
@@ -137,14 +138,12 @@ onAuthStateChanged(auth, (user) => {
     buttonsActions.forEach(function (element) {
       element.style.display = "none";
     });
-    userProfil.style.display = "none"; //On cache la photo si l'utilisateur n'est pas connecté
+  
     logoutButton.style.display = "none"; //Si l'utilisateur est pas connecté on éfface le bouton de déconnexion
   }
 });
 
-document.getElementById("refreshButton").addEventListener("click", function () {
-  location.reload();
-});
+
 
 /// Fonction pour récupérer les données et mettre à jour le tableau
 async function loadStudents() {
@@ -154,7 +153,9 @@ async function loadStudents() {
   const q = query(collection(db, "users"), where("role", "==", "etudiant"));
   const querySnapshot = await getDocs(q);
 
-  document.getElementById("numberOfStudent").innerHTML = `Nombre d'étudiants : ${querySnapshot.size}`;
+  //document.getElementById("numberOfStudent").innerHTML = `Nombre d'étudiants : ${querySnapshot.size}`;
+
+  await fetchStudentData();
 
   // Créer un tableau pour stocker les étudiants
   let studentsArray = [];

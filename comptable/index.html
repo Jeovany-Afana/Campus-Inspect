@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../floating-button.css">
     <link rel="icon" href="../icons/logo.PNG">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -65,8 +67,60 @@
       </a>
     </div>
   </nav>
+  <br><br><br><br>
+     
+  <div class="min-h-screen flex flex-col items-center">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl px-4">
+      <!-- Total Étudiants -->
+      <div class="bg-blue-500 text-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+        <div class="text-4xl mb-2">
+          <i class="fas fa-users"></i>
+        </div>
+        <h3 class="text-xl font-semibold">Total Étudiants</h3>
+        <p class="text-3xl font-bold mt-4" id="totalStudents"></p>
+        <p class="mt-2 text-sm">Nombre total d'étudiants inscrits</p>
+      </div>
   
-      <button id="refreshButton" class="btn">Actualiser</button>
+      <!-- Étudiants à Jour -->
+      <div class="bg-green-500 text-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+        <div class="text-4xl mb-2">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h3 class="text-xl font-semibold">Étudiants à Jour</h3>
+        <p class="text-3xl font-bold mt-4" id="studentsAjour"></p>
+        <p class="mt-2 text-sm">Étudiants ayant payé leurs frais</p>
+      </div>
+  
+      <!-- Étudiants Pas à Jour -->
+      <div class="bg-red-500 text-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+        <div class="text-4xl mb-2">
+          <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <h3 class="text-xl font-semibold">Étudiants Pas à Jour</h3>
+        <p class="text-3xl font-bold mt-4" id="studentsNotAjour"></p>
+        <p class="mt-2 text-sm">Étudiants en retard de paiement</p>
+      </div>
+  
+      <!-- Étudiants avec Dérogations -->
+      <div class="bg-yellow-500 text-white p-6 rounded-lg shadow-lg flex flex-col items-center">
+        <div class="text-4xl mb-2">
+          <i class="fas fa-clock"></i>
+        </div>
+        <h3 class="text-xl font-semibold">Dérogations</h3>
+        <p class="text-3xl font-bold mt-4" id="studentsDerogation"></p>
+        <p class="mt-2 text-sm">Étudiants avec autorisation spéciale</p>
+      </div>
+    </div>
+  
+    <!-- Conteneur des graphiques -->
+    <div class="charts-container flex flex-wrap justify-center gap-6 w-full max-w-6xl px-4 mt-8">
+      <canvas id="barChart" class="w-full sm:w-1/2 lg:w-1/3"></canvas>
+      <canvas id="lineChart" class="w-full sm:w-1/2 lg:w-1/3"></canvas>
+    </div>
+  </div>
+  
+
+
 
 <!-- Loading spinner -->
 
@@ -76,7 +130,6 @@
     <p class="loading-message">Veuillez patienter...</p>
   </div>
 </div>
->
          <!-- Input de type Search et Select -->
 
 
@@ -119,9 +172,7 @@
 
       <div class="form-group">
            </div>
-    
-      <h1 class="responsive-title">Liste des étudiants</h1>
-      <h3 class="responsive-title" id="numberOfStudent"></h3>
+  
 
        
     <table>
@@ -248,6 +299,7 @@ const storage = getStorage(app); // Utilisez getStorage pour initialiser le stoc
     </script>
    
 
+   <script type="module" src="./calculNombreEtudiant.js"></script>
    <script src="../floating-button.js"></script>
     <script src="../humbergerButton.js"></script>
     <script type="module" src="./index.js"></script>

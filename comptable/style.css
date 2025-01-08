@@ -334,5 +334,24 @@ tr:hover {
   .derogation-false {
     background-color: transparent;
     color: #0056b3;
+    color: rgb(27, 195, 27);
   }
   
+
+  /* Conteneur pour aligner les graphiques horizontalement */
+  .charts-container {
+    margin-top: -200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Espacement entre les graphiques */
+  }
+
+  /* Style des canvases */
+  canvas {
+    width: 540px !important;
+    height: 300px !important;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
