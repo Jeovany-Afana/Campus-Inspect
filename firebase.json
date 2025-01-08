@@ -14,9 +14,5 @@
         "npm --prefix \"$RESOURCE_DIR\" run lint"
       ]
     }
-  ],
-  "hosting": {
-    "site": "campus-inspect",
-    "public": "public"
-  }
+  ]
 }
