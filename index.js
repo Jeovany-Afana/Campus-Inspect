@@ -430,4 +430,3 @@ async function afficherProfilUtilisateur(userData) {
     console.error("Utilisateur non connecté ou photo de profil manquante.");
   }
 }
-

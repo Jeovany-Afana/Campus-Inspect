@@ -477,16 +477,20 @@ window.addDerogation = function(studentId) {
 //   // Parcourt chaque document (étudiant) et ajoute les nouveaux champs
 //   for (const docSnap of querySnapshot.docs) {
 //     const studentRef = doc(db, "users", docSnap.id);
-    
-//     try {
-//       // Met à jour chaque étudiant pour ajouter les nouveaux champs avec les valeurs par défaut
-//       await updateDoc(studentRef, {
-//       present: 0,
-//       });
-//       console.log(`Champs ajoutés pour l'étudiant ${docSnap.id}`);
-//     } catch (error) {
-//       console.error(`Erreur lors de l'ajout des champs pour l'étudiant ${docSnap.id}:`, error);
+
+//     if(docSnap.data().dureeSolvabilite > 0 && docSnap.data().dureeSolvabilite){
+//       try {
+//         // Met à jour chaque étudiant pour ajouter les nouveaux champs avec les valeurs par défaut
+//         await updateDoc(studentRef, {
+//         a_jour: true,
+//         });
+//         console.log(`Valeur mise à jour pour ${docSnap.id}`);
+//       } catch (error) {
+//         console.error(`Erreur lors de la mise à jour du champs pour l'étudiant  ${docSnap.id}:`, error);
+//       }
 //     }
+    
+    
 //   }
 // }
 
