@@ -376,5 +376,3 @@ async function showModal(message, color) {
 }
 
 
-await showModal("Juste un essai", "success")
-
