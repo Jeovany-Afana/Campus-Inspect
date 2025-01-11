@@ -183,25 +183,25 @@ function addClubCard(name, description, image, clubId, icon) {
     container.appendChild(clubCard);
 }
 
-// Fonction pour naviguer à gauche (défilement fluide)
-document.getElementById('prevBtn').addEventListener('click', () => {
-    const container = document.getElementById('clubs-container');
-    currentIndex--;
-    if (currentIndex < 0) {
-        currentIndex = container.children.length - 1; // Retour au dernier élément
-    }
-    container.style.transform = `translateX(-${currentIndex * 320}px)`;  // Chaque carte a une largeur d'environ 320px
-});
+// // Fonction pour naviguer à gauche (défilement fluide)
+// document.getElementById('prevBtn').addEventListener('click', () => {
+//     const container = document.getElementById('clubs-container');
+//     currentIndex--;
+//     if (currentIndex < 0) {
+//         currentIndex = container.children.length - 1; // Retour au dernier élément
+//     }
+//     container.style.transform = `translateX(-${currentIndex * 320}px)`;  // Chaque carte a une largeur d'environ 320px
+// });
 
-// Fonction pour naviguer à droite (défilement fluide)
-document.getElementById('nextBtn').addEventListener('click', () => {
-    const container = document.getElementById('clubs-container');
-    currentIndex++;
-    if (currentIndex >= container.children.length) {
-        currentIndex = 0; // Retour au premier élément
-    }
-    container.style.transform = `translateX(-${currentIndex * 320}px)`;  // Chaque carte a une largeur d'environ 320px
-});
+// // Fonction pour naviguer à droite (défilement fluide)
+// document.getElementById('nextBtn').addEventListener('click', () => {
+//     const container = document.getElementById('clubs-container');
+//     currentIndex++;
+//     if (currentIndex >= container.children.length) {
+//         currentIndex = 0; // Retour au premier élément
+//     }
+//     container.style.transform = `translateX(-${currentIndex * 320}px)`;  // Chaque carte a une largeur d'environ 320px
+// });
 
 
 async function showModal(message, color) {
