@@ -21,6 +21,7 @@ import {
 import {showStudentInfo} from "./studentModal/student-modal.js";
 import { showSupportModal } from "./support/support.js";
 import { showModalSpecific } from "./updates/updateInformations.js";
+
 // Assurez-vous que Firebase est déjà initialisé dans votre fichier HTML
 const db = getFirestore(); // Assurez-vous que cela soit défini après l'initialisation de Firebase
 const auth = getAuth();

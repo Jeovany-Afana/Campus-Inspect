@@ -96,9 +96,10 @@
         <a href="./bureaux/index.html" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
           Bureaux
         </a>
-        <a href="#" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
-          Vie associative
+        <a href="./gestionClubs/index.html" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+          Vie Associative
         </a>
+      
       </div>
   
       <!-- User Info & Icons -->
@@ -138,8 +139,13 @@
       <a href="./bureaux/index.html" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
         Bureaux
       </a>
+      <a href="./gestionClubs/index.html" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+        Vie Associative
+      </a>
     </div>
   </nav>
+  
+
   
 
 <!-- Modal de recherche (pour rechercher un étudiant) -->
@@ -209,13 +215,7 @@
 
    <!-- Action Buttons -->
    <div class="flex flex-col items-center mt-32">
-    <button id="generateQRCode" class="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-secondary hover:shadow-xl transition">
-        <i class="fas fa-qrcode text-3xl"></i>
-    </button>
-     <br>
-    <button id="startScanButton" class="bg-accent text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 hover:shadow-xl transition">
-        <i class="fas fa-camera text-3xl"></i>
-    </button>
+    
 </div>
 
 
@@ -274,6 +274,35 @@
 
 
 
+<div class="backdrop-blur-lg rounded-3xl shadow-xl p-10 sm:p-12 w-full max-w-2xl">
+  <h1 class="text-3xl font-bold text-center text-purple-700 mb-8">
+    Services Disponibles
+  </h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <!-- Bouton Code QR -->
+    <button class="flex items-center justify-center space-x-4 p-6 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg" id="generateQRCode">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-500"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg>
+      <span class="text-lg font-medium">Code QR</span>
+    </button>
+
+    <!-- Bouton Scanner le code QR -->
+    <button class="flex items-center justify-center space-x-4 p-6 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg" id="startScanButton">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-line w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-500"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><path d="M7 12h10"></path></svg>
+      <span class="text-lg font-medium">Scanner le code QR</span>
+    </button>
+
+    <!-- Bouton Vie Associative -->
+    <button class="col-span-1 sm:col-span-2 flex items-center justify-center space-x-4 p-6 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white hover:from-indigo-600 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-500"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      <span class="text-lg font-medium">Vie associative</span>
+    </button>
+  </div>
+
+  <div class="mt-8 text-center text-sm text-gray-500">
+    Cliquez sur un service pour continuer
+  </div>
+</div>
 
 <!-- Inclusion de la bibliothèque jsQR depuis un CDN -->
 <script src="https://unpkg.com/jsqr"></script>
@@ -570,7 +599,7 @@ const storage = getStorage(app); // Utilisez getStorage pour initialiser le stoc
       <script type="module" src="./notifications/notifications.js"></script>
       <script src="./humbergerButton.js"></script>
       <script type="module" src="./studentModal/student-modal.js"></script>
-      <script type="module" src="./messaging.js"></script>
+      <!-- <script type="module" src="./messaging.js"></script> -->
       <script type="module" src="./index.js"></script>
      <!-- <script  type="module" src="./modale.js"></script> -->
       <script type="module" src="./updates/updateInformations.js"></script>

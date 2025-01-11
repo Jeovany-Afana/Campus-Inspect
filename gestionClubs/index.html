@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vie Associative Étudiant - Clubs Carousel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <nav class="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-900 text-white shadow-lg fixed w-full top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center px-6 py-4">
+      <!-- Logo -->
+      <div class="flex items-center space-x-3">
+        <div class="bg-white rounded-full p-2 shadow-md transform hover:scale-110 transition-transform duration-300">
+          <i class="fa-solid fa-eye text-blue-700 text-2xl"></i>
+        </div>
+        <span class="text-2xl font-extrabold tracking-wide uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-blue-500 hover:opacity-90 cursor-pointer transition-opacity duration-300">
+          Campus Inspect 
+        </span>
+      </div>
+  
+      <!-- Navigation Links -->
+      <div class="hidden md:flex items-center space-x-8">
+        <a href="./index.html" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+          Accueil
+        </a>
+        <a href="./bureaux/index.html" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+          Bureaux
+        </a>
+        <a href="#" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+          Vie Associative
+        </a>
+      
+      </div>
+  
+    
+  
+        <!-- User Profile -->
+
+          <div class="profile-picture w-10 h-10 rounded-full overflow-hidden shadow-lg transform hover:scale-110 transition-transform duration-300" id="userProfileContainer">
+          
+          </div>
+      
+  
+        <!-- Mobile Menu Toggle -->
+        <div class="md:hidden">
+          <button class="menu-toggle text-2xl">
+            <i class="fas fa-bars hover:scale-105 transition-transform duration-300"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Mobile Menu -->
+    <div class="hidden flex flex-col items-start bg-gradient-to-b from-blue-900 to-blue-700 text-white p-4 shadow-2xl rounded-b-xl md:hidden" id="mobileMenu">
+      <a href="../index.html" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+        Accueil
+      </a>
+      <a href="./bureaux/index.html" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+        Bureaux
+      </a>
+      <a href="./bureaux/index.html" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+        Vie Associative
+      </a>
+    </div>
+  </nav>
+  <br>
+  <section id="clubs" class="container mx-auto py-16 px-6">
+    <h2 class="text-4xl font-extrabold text-center text-indigo-600 mb-12">Découvrez Nos Clubs</h2>
+    <div class="relative">
+        <!-- Carrousel -->
+        <div id="clubs-container" class="flex space-x-4 overflow-x-auto scrollbar-hide transition-all ease-in-out duration-500">
+            <!-- Les cartes vont être ajoutées ici dynamiquement -->
+        </div>
+        <!-- Flèches de navigation -->
+        <button class="absolute top-1/2 left-0 transform -translate-y-1/2 p-4 text-white bg-indigo-600 rounded-full hover:bg-indigo-700" id="prevBtn">
+            &#8592;
+        </button>
+        <button class="absolute top-1/2 right-0 transform -translate-y-1/2 p-4 text-white bg-indigo-600 rounded-full hover:bg-indigo-700" id="nextBtn">
+            &#8594;
+        </button>
+    </div>
+</section>
+
+
+<!-- Modale pour afficher les erreurs/succès -->
+<div id="error-modal" class="error-modal">
+    <div class="modal-content">
+      <div id="icon-container" class="icon-container">
+        <i id="icon" class="error-icon">!</i>
+      </div>
+      <p id="modal-message" class="modal-text">Message d'erreur</p>
+      <button id="ok-button" class="ok-btn">OK</button>
+    </div>
+  </div>
+  
+
+<!-- Loading spinner -->
+
+<div id="loadingSpinner" class="spinner" style="display: none;"></div>
+
+    
+
+    <footer class="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 text-white py-10">
+      <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
+        
+        <!-- About Section -->
+        <div class="space-y-4">
+          <h2 class="text-2xl font-bold">Jeovany Afana</h2>
+          <p class="text-sm text-gray-200">Développeur passionné et créateur d'applications web modernes. N'hésitez pas à me contacter pour vos projets digitaux.</p>
+          <div class="space-y-2">
+            <p class="flex items-center"><i class="fas fa-envelope mr-2"></i> wilfrieddylan451@gmail.com</p>
+            <p class="flex items-center"><i class="fas fa-phone mr-2"></i> +221 77 493 1623</p>
+          </div>
+        </div>
+    
+        <!-- Useful Links Section -->
+        <div class="space-y-4">
+          <h2 class="text-2xl font-bold">Liens Utiles</h2>
+          <ul class="space-y-2 text-gray-200">
+            <li><a href="/index.html" class="hover:text-blue-300">Accueil</a></li>
+            <li><a href="#" class="hover:text-blue-300">À propos</a></li>
+            <li><a href="#" class="hover:text-blue-300">Services</a></li>
+            <li><a href="#" class="hover:text-blue-300">Contact</a></li>
+            <li><a href="#" class="hover:text-blue-300">Mentions légales</a></li>
+          </ul>
+        </div>
+    
+        <!-- Social Media Section -->
+        <div class="space-y-4">
+          <h2 class="text-2xl font-bold">Suivez-moi</h2>
+          <div class="flex space-x-4">
+            <a href="https://www.facebook.com/jeovany.afana.7" target="_blank" class="text-2xl hover:text-blue-300">
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://www.instagram.com/joe.afana/" target="_blank" class="text-2xl hover:text-blue-300">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://x.com/Jeovany_damso5" target="_blank" class="text-2xl hover:text-blue-300">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+    
+      </div>
+    
+      <!-- Footer Bottom Section -->
+      <div class="mt-8 border-t border-gray-400 pt-4 text-center text-sm text-gray-200">
+        <p>&copy; 2024 Jeovany Afana. Tous droits réservés.</p>
+      </div>
+    </footer>
+    
+
+   
+    <script type="module" src="./index.js"></script>
+</body>
+</html>

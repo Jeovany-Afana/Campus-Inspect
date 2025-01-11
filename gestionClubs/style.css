@@ -1,0 +1,165 @@
+.error-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease forwards;
+    z-index: 3000;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: scale(0.8);
+    animation: zoomIn 0.3s ease forwards;
+  }
+  
+  .icon-container {
+    margin: 20px 0;
+  }
+  
+  .error-icon {
+    display: inline-block;
+    font-size: 3rem;
+    font-weight: bold;
+    color: red;
+    border: 3px solid red;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+  }
+  
+  .modal-text {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .ok-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .ok-btn:hover {
+    background: darkred;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      background-color: rgba(0, 0, 0, 0);
+    }
+    to {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+  
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes zoomOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    to {
+      background-color: rgba(0, 0, 0, 0);
+    }
+  }
+  
+  
+    /* Animation for mobile menu */
+    @keyframes fadeIn {
+      from {
+        transform: translateY(-20%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+  
+    .animate-fadeIn {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    
+
+
+    
+
+/* Loading spinner */
+
+/* CSS Pour le spinner */
+.spinner {
+    border: 8px solid #f3f3f3; /* Couleur de fond */
+    border-top: 8px solid #007BFF; /* Couleur de la partie supérieure */
+    border-radius: 50%;
+    width: 50px; /* Largeur du spinner */
+    height: 50px; /* Hauteur du spinner */
+    animation: spin 1s linear infinite; /* Animation de rotation */
+    position: fixed; /* Position fixe */
+    left: 50%; /* Centré horizontalement */
+    top: 50%; /* Centré verticalement */
+    transform: translate(-50%, -50%); /* Ajustement pour le centrage */
+    z-index: 1500; /* Au-dessus des autres éléments */
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  
+  /* Responsiveness - Pour les écrans plus petits */
+  @media (max-width: 768px) {
+    .button-container {
+      gap: 15px; /* Réduit l'espacement entre les boutons */
+    }
+  
+    .button-container i {
+      font-size: 30px; /* Réduit la taille des icônes */
+      width: 50px; /* Réduit la taille des boutons */
+      height: 50px;
+    }
+  }
