@@ -357,6 +357,7 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("openSearchModal").style.display = "none";//On cache le bouton de recherche si l'utilisateur n'est pas connecté
     document.getElementById("relative").style.display = "none";
     loginButton.style.display = "block"; //On affiche le bouton connection si l'utilisateur n'est pas  connecté
+    document.getElementById("services").style.display = "none";
     // camera.style.display = "none";
     document.getElementById("startScanButton").style.display = "none";
     let compteur = 0;
@@ -431,3 +432,50 @@ async function afficherProfilUtilisateur(userData) {
     console.error("Utilisateur non connecté ou photo de profil manquante.");
   }
 }
+
+
+function redirectionClub(){
+
+   onAuthStateChanged(auth, async (user) => {
+          try{
+               // Afficher le spinner
+               const loadingSpinner = document.getElementById('loadingSpinner');
+               loadingSpinner.style.display = 'block';
+        if (user) {
+          const userIud = user.uid;
+          const usersRef = collection(db, "users");
+          const userQuery = query(usersRef, where("uid", "==", userIud));
+          const querySnapshot = await getDocs(userQuery);
+  
+          
+    
+          if (!querySnapshot.empty) {
+            const userDoc = querySnapshot.docs[0];
+            const userData = userDoc.data();
+    
+            // Vérifie l'existence de "appartientClub" et initialise si nécessaire
+            const alreadyInClub = userData.appartientClub || false;
+    
+            if (alreadyInClub) {
+              document.location.href =  "./gestionClubs/" + userData.id_club + '.html';
+              return;
+            }
+          
+            else{
+              document.location.href =  "./gestionClubs/index.html";
+            }
+            }}
+          
+          }catch(error){
+            console.error("Erreur lors de la vérification de l'appartenance au club :", error);}
+            finally{
+               // Afficher le spinner
+               const loadingSpinner = document.getElementById('loadingSpinner');
+               loadingSpinner.style.display = 'none';
+              
+            }
+          
+          })
+}
+
+document. getElementById("associationButton").addEventListener("click", redirectionClub);

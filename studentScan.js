@@ -109,25 +109,27 @@ async function ajouterScanDansFirestore() {
   }
 
   try {
-    // Référence à la collection "scans"
+    // Vérifier si l'utilisateur a rejoint un club
+    if (user.appartientClub !== true) {
+      await showModal("Vous n'avez pas encore rejoint de club.\nVous devez rejoindre un club avant de pourvoir scanner.", "warning");
+      console.log("L'utilisateur n'a pas encore rejoint un club.");
+      location.href = "./gestionClubs/index.html";
+      return;
+    }
+
+    // Vérification du scan dans la collection 'scans'
     const scansCollection = collection(db, "scans");
+    const scanQuery = query(scansCollection, where("uid", "==", user.uid));
+    const scanSnapshot = await getDocs(scanQuery);
 
-    // Requête pour vérifier si un document avec cet UID existe déjà
-    const q = query(
-      scansCollection,
-      where("uid", "==", user.uid) // On vérifie si cet UID existe
-    );
-
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      // Si on trouve un document avec cet UID
+    if (!scanSnapshot.empty) {
+      // Si un scan existe déjà
       await showModal("Votre scan a déjà été enregistré, merci !", "warning");
       console.log("Scan déjà enregistré pour cet utilisateur.");
       return;
     }
 
-    // Si aucun document trouvé, ajouter les informations dans Firestore
+    // Si l'utilisateur n'a pas encore de scan, on l'ajoute
     await addDoc(scansCollection, {
       uid: user.uid,
       pseudoOk: user.pseudoOk || "Inconnu",
@@ -142,11 +144,14 @@ async function ajouterScanDansFirestore() {
     });
 
     await showModal("Merci pour votre scan !", "success");
+    console.log("Scan ajouté pour l'utilisateur.");
+
   } catch (error) {
     await showModal("Désolé, une erreur est survenue !", "error");
     console.error("Erreur lors de l'ajout dans Firestore :", error);
   }
 }
+
 
 
   
