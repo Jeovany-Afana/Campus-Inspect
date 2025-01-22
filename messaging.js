@@ -21,7 +21,7 @@ const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilis
 
 async function resetPasswordForDerogationStudents() {
     try {
-      const queryDate = "2025-01-10"; // Date ciblée pour la dérogation
+      const queryDate = "2025-01-15"; // Date ciblée pour la dérogation
   
       // Étape 1 : Récupérer les étudiants ayant la date de dérogation spécifiée
       const usersRef = collection(db, "users"); // Remplace "users" par le nom de ta collection
