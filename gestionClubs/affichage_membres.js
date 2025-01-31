@@ -94,21 +94,38 @@ window.markPresence = async function(userId, button) {
 // Vérifier si l'utilisateur est président et récupérer `id_club`
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    const userRef = doc(db, 'users', user.uid);
-    const userDoc = await getDoc(userRef);
+    console.log(`🔍 Utilisateur connecté : ${user.uid}`);
 
-    if (userDoc.exists()) {
-      const userData = userDoc.data();
-      isPresident = userData.president_club === true;
-      const userClubId = userData.id_club; // ID du club auquel appartient l'utilisateur connecté
+    try {
+      // Récupérer l'utilisateur en utilisant where() et son UID
+      const usersRef = collection(db, "users");
+      const userQuery = query(usersRef, where("uid", "==", user.uid));
+      const userSnapshot = await getDocs(userQuery);
 
-      if (userClubId) {
-        fetchClubMembers(userClubId);
+      if (!userSnapshot.empty) {
+        const userDoc = userSnapshot.docs[0]; // Premier document trouvé
+        const userData = userDoc.data();
+
+        // Vérifier si l'utilisateur est président
+        isPresident = !!userData.president_club; // Convertir en booléen
+        console.log(`👑 Statut de président : ${isPresident ? "Oui" : "Non"}`);
+
+        // Vérifier l'ID du club de l'utilisateur
+        const userClubId = userData.id_club;
+        if (userClubId) {
+          console.log(`🏫 ID du club de l'utilisateur : ${userClubId}`);
+          fetchClubMembers(userClubId);
+        } else {
+          console.warn("⚠ L'utilisateur n'a pas de club associé.");
+        }
       } else {
-        console.error("L'utilisateur connecté n'a pas de club associé.");
+        console.error("❌ Utilisateur non trouvé dans Firestore.");
       }
-    } else {
-      console.error("Utilisateur non trouvé dans Firestore.");
+    } catch (error) {
+      console.error("❌ Erreur lors de la récupération de l'utilisateur :", error);
     }
+  } else {
+    console.warn("⚠ Aucun utilisateur connecté.");
   }
 });
+
