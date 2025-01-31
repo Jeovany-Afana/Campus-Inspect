@@ -1,14 +1,8 @@
-import { 
-  initializeApp 
-} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; 
-
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
 import { 
   getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc 
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
-
-import { 
-  getAuth, onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA",
@@ -25,68 +19,56 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-let isPresident = false;  // Variable pour vérifier si l'utilisateur est président
+let isPresident = false;  // Vérifie si l'utilisateur est président
 
 // Fonction pour récupérer les membres du club
-async function fetchClubMembers() {
-  const clubId = document.getElementById('club-members').dataset.clubId;
+async function fetchClubMembers(userClubId) {
   const membersList = document.getElementById('members-list');
   membersList.innerHTML = '';  // Réinitialisation de la liste pour éviter les doublons
 
   try {
-    // Étape 1 : Récupérer le document du club en utilisant l'ID
-    const clubRef = doc(db, 'clubs', clubId);
-    const clubDoc = await getDoc(clubRef);
+    // Étape 1 : Requête Firestore pour récupérer les utilisateurs ayant le même `id_club`
+    const usersRef = collection(db, 'users');
+    const clubMembersQuery = query(usersRef, where("id_club", "==", userClubId));
+    const userSnapshot = await getDocs(clubMembersQuery);
 
-    if (!clubDoc.exists()) {
+    if (userSnapshot.empty) {
       membersList.innerHTML = `<p class="text-gray-500">Aucun membre trouvé pour ce club.</p>`;
       return;
     }
 
-    const clubData = clubDoc.data();
-    const memberUIDs = clubData.membres || [];
+    document.getElementById("nombreMembres").innerHTML = `(${userSnapshot.size})`;
 
-    if (memberUIDs.length === 0) {
-      membersList.innerHTML = `<p class="text-gray-500">Aucun membre trouvé pour ce club.</p>`;
-      return;
-    }
+    // Étape 2 : Afficher chaque membre
+    userSnapshot.forEach((doc) => {
+      const userData = doc.data();
+      const userId = doc.id;
 
-    document.getElementById("nombreMembres").innerHTML += ` (${memberUIDs.length})`;
+      // Vérifier si l'étudiant est déjà marqué présent
+      const isPresent = userData.presence_club || false;
 
-    for (const uid of memberUIDs) {
-      const usersRef = collection(db, 'users');
-      const userQuery = query(usersRef, where("uid", "==", uid));
-      const userSnapshot = await getDocs(userQuery);
-
-      if (!userSnapshot.empty) {
-        const userData = userSnapshot.docs[0].data();
-        const userId = userSnapshot.docs[0].id; // ID du document utilisateur
-
-        // Vérifier si l'étudiant est déjà marqué présent
-        const isPresent = userData.presence_club || false;
-
-        // Créer la carte du membre avec le bouton si l'utilisateur connecté est président
-        const memberCard = `
-          <div class="flex items-center space-x-4 border-b pb-2" data-user-id="${userId}">
-            <img src="${userData.photoURLOk || 'https://via.placeholder.com/48'}" alt="Avatar" class="w-12 h-12 rounded-full">
-            <div>
-              <h3 class="text-lg font-semibold text-gray-800">${userData.pseudoOk || 'Nom inconnu'} | <span style="font-weight:100;">${userData.classe}</span></h3>
-              <p class="text-sm text-gray-500">${userData.role.toUpperCase() || 'Membre'}</p>
-            </div>
-            ${isPresident ? `
-              <button 
-                class="px-3 py-1 text-white ${isPresent ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'} rounded-md" 
-                ${isPresent ? 'disabled' : ''} 
-                onclick="markPresence('${userId}', this)">
-                ${isPresent ? 'Déjà Présent' : 'Marquer Présent'}
-              </button>
-            ` : ''}
+      // Créer la carte du membre avec le bouton si l'utilisateur connecté est président
+      const memberCard = `
+        <div class="flex items-center space-x-4 border-b pb-2" data-user-id="${userId}">
+          <img src="${userData.photoURLOk || 'https://via.placeholder.com/48'}" alt="Avatar" class="w-12 h-12 rounded-full">
+          <div>
+            <h3 class="text-lg font-semibold text-gray-800">${userData.pseudoOk || 'Nom inconnu'} | <span style="font-weight:100;">${userData.classe}</span></h3>
+            <p class="text-sm text-gray-500">${userData.role.toUpperCase() || 'Membre'}</p>
           </div>
-        `;
+          ${isPresident ? `
+            <button 
+              class="px-3 py-1 text-white ${isPresent ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'} rounded-md" 
+              ${isPresent ? 'disabled' : ''} 
+              onclick="markPresence('${userId}', this)">
+              ${isPresent ? 'Déjà Présent' : 'Marquer Présent'}
+            </button>
+          ` : ''}
+        </div>
+      `;
 
-        membersList.insertAdjacentHTML('beforeend', memberCard);
-      }
-    }
+      membersList.insertAdjacentHTML('beforeend', memberCard);
+    });
+
   } catch (error) {
     console.error("Erreur lors de la récupération des membres :", error);
     membersList.innerHTML = `<p class="text-red-500">Erreur lors de la récupération des membres.</p>`;
@@ -109,16 +91,24 @@ window.markPresence = async function(userId, button) {
   }
 }
 
-// Vérifier si l'utilisateur est président avant d'afficher les boutons
+// Vérifier si l'utilisateur est président et récupérer `id_club`
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     const userRef = doc(db, 'users', user.uid);
     const userDoc = await getDoc(userRef);
 
     if (userDoc.exists()) {
-      isPresident = userDoc.data().president_club === true;
+      const userData = userDoc.data();
+      isPresident = userData.president_club === true;
+      const userClubId = userData.id_club; // ID du club auquel appartient l'utilisateur connecté
+
+      if (userClubId) {
+        fetchClubMembers(userClubId);
+      } else {
+        console.error("L'utilisateur connecté n'a pas de club associé.");
+      }
+    } else {
+      console.error("Utilisateur non trouvé dans Firestore.");
     }
-    
-    fetchClubMembers();
   }
 });

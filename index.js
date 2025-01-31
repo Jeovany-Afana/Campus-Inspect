@@ -455,8 +455,9 @@ function redirectionClub(){
     
             // Vérifie l'existence de "appartientClub" et initialise si nécessaire
             const alreadyInClub = userData.appartientClub || false;
+            const id_du_club = userData.id_club || null;
     
-            if (alreadyInClub) {
+            if (alreadyInClub && id_du_club) {
               document.location.href =  "./gestionClubs/" + userData.id_club + '.html';
               return;
             }
