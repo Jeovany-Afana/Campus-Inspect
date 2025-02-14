@@ -186,6 +186,7 @@ async function showChangeClubModal() {
   
   document.getElementById("changeClubButton").addEventListener("click", async () => {
     await showChangeClubModal();
+    
   });
 
   async function showConfirmModal(message, color) {
