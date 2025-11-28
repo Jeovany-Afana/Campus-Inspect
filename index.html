@@ -318,6 +318,57 @@
   </div>
 </div>
 
+  <!-- Filtres étudiant : année académique + classe -->
+<!-- Bandeau discret : paramètres étudiant (année + classe) -->
+<div id="studentFilters" class="hidden w-full max-w-3xl px-4 mt-4">
+  <div class="bg-blue-50/90 border border-blue-200 rounded-2xl px-4 py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs sm:text-sm shadow-sm">
+
+    <!-- Zone avec les selects -->
+    <div id="studentFiltersControls" class="flex flex-wrap items-center gap-2">
+      <span class="font-semibold text-blue-700 flex items-center gap-1">
+        <i class="fa-solid fa-graduation-cap text-[11px]"></i>
+        Année & classe :
+      </span>
+
+      <!-- Sélecteur d'année académique -->
+      <select
+        id="student-academic-year"
+        class="border border-blue-200 rounded-full px-3 py-1 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+      >
+        <option value="" disabled selected>Année académique</option>
+        <!-- Options ajoutées dynamiquement depuis Firestore -->
+      </select>
+
+      <!-- Sélecteur de classe -->
+      <select id="student-class" class="border border-blue-200 rounded-full px-3 py-1 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+        <option value="" hidden disabled selected>Classe</option>
+        <option value="L1 INFORMATIQUE">L1 INFORMATIQUE</option>
+        <option value="L1 GESTION">L1 GESTION</option>
+        <option value="L1 DROIT">L1 DROIT</option>
+        <option value="L2 DROIT">L2 DROIT</option>
+        <option value="L3 DROIT">L3 DROIT</option>
+        <option value="L2 INFORMATIQUE">L2 INFORMATIQUE</option>
+        <option value="L2 GESTION ">L2 GESTION </option>
+        <option value="BTL1">BTL1</option>
+        <option value="BTL2">BTL2</option>
+        <option value="BTL3">BTL3</option>
+        <option value="MARKETING">MARKETING</option>
+        <option value="GENIE LOGICIEL">GENIE LOGICIEL</option>
+        <option value="RESSOURCES HUMAINES">RESSOURCES HUMAINES</option>
+        <option value="RSS">RSS</option>
+        <option value="QHSE">QHSE</option>
+      </select>
+    </div>
+
+    <!-- Petit texte d’info / verrouillage -->
+    <p id="studentFiltersInfo" class="text-[11px] text-gray-600 sm:text-right leading-snug">
+      Vous pouvez définir une seule fois votre année académique et votre classe.
+    </p>
+  </div>
+</div>
+
+
+
 <!-- Inclusion de la bibliothèque jsQR depuis un CDN -->
 <script src="https://unpkg.com/jsqr"></script>
 

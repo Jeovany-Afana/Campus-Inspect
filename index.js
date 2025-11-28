@@ -11,7 +11,10 @@ import {
   addDoc,
   getDocs,
   updateDoc,
+  arrayUnion, // ✅ pour ajouter une année dans le tableau sans doublons
 } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+
 import {
   getAuth,
   signOut,
@@ -29,10 +32,22 @@ const logoutButton = document.getElementById("logoutButton"); //On sélectionne 
 const loginButton = document.getElementById("loginButton");
 // const camera = document.getElementById("scan-container");
 
+// Bloc de filtres étudiant (année académique + classe)
+// Bloc de filtres étudiant (année académique + classe)
+const studentFiltersSection  = document.getElementById("studentFilters");
+const studentYearSelect      = document.getElementById("student-academic-year");
+const studentClassSelect     = document.getElementById("student-class");
+const studentFiltersInfo     = document.getElementById("studentFiltersInfo");
+const studentFiltersControls = document.getElementById("studentFiltersControls");
+
+
+
 const modal = document.getElementById("myModal");
 const closeModalSpan = document.querySelector(".close");
 const saveTimeBtn = document.getElementById("saveTime");
 export let donneeUtilisateur; //Données de l'utilisateur connecté
+let currentUserDocId = null; // ✅ ID du document Firestore de l'utilisateur connecté
+
 
 
 // Fermer la modale
@@ -46,6 +61,237 @@ window.addEventListener("click", (event) => {
     modal.style.display = "none";
   }
 });
+
+
+// Charger les années académiques dans le select (collection "annee_academique")
+async function loadAcademicYearsIntoSelect() {
+  if (!studentYearSelect) return;
+
+  // Réinitialiser le select
+  studentYearSelect.innerHTML =
+    '<option value="" disabled selected>Choisissez une année académique</option>';
+
+  try {
+    const snapshot = await getDocs(collection(db, "annee_academique"));
+    snapshot.forEach((docSnap) => {
+      const id = docSnap.id; // ex: "2024-2025"
+
+      const option = document.createElement("option");
+      option.value = id;
+      option.textContent = id;
+      studentYearSelect.appendChild(option);
+    });
+  } catch (err) {
+    console.error("Erreur lors du chargement des années académiques :", err);
+  }
+}
+
+
+// Initialiser les filtres (année + classe) pour l'étudiant connecté
+// Initialiser les filtres (année + classe) pour l'étudiant connecté
+// Initialiser les filtres (année + classe) pour l'étudiant connecté
+// Initialiser les filtres (année + classe) pour l'étudiant connecté
+function initStudentFilters(userData) {
+  if (!studentFiltersSection || !studentYearSelect || !studentClassSelect) return;
+
+  // Afficher le bandeau
+  studentFiltersSection.classList.remove("hidden");
+
+  // 🔒 Vérifier si déjà verrouillé côté Firestore
+  let isYearLocked  = userData.annee_academique_locked === true;
+  let isClassLocked = userData.classe_locked === true;
+
+  // Désactiver les selects si déjà verrouillés
+  if (isYearLocked) {
+    studentYearSelect.disabled = true;
+  }
+  if (isClassLocked) {
+    studentClassSelect.disabled = true;
+  }
+
+  // Charger les années académiques et pré-sélectionner si possible
+  loadAcademicYearsIntoSelect().then(() => {
+    // 1) Priorité : valeur déjà choisie sur cet appareil
+    const localYear  = localStorage.getItem("student_academic_year");
+    const localClass = localStorage.getItem("student_class");
+
+    // 2) Sinon : dernière année du tableau annee_academique_id
+    let yearToSelect = localYear;
+    if (
+      !yearToSelect &&
+      Array.isArray(userData.annee_academique_id) &&
+      userData.annee_academique_id.length > 0
+    ) {
+      yearToSelect =
+        userData.annee_academique_id[userData.annee_academique_id.length - 1];
+    }
+
+    if (yearToSelect) {
+      studentYearSelect.value = yearToSelect;
+    }
+
+    // Classe : soit celle déjà choisie, soit celle du profil
+    const classToSelect = localClass || userData.classe;
+    if (classToSelect) {
+      studentClassSelect.value = classToSelect;
+    }
+
+    // Mettre à jour le petit texte d'info
+    updateStudentFiltersInfo({
+      year: yearToSelect,
+      classe: classToSelect,
+      isYearLocked,
+      isClassLocked,
+    });
+  });
+
+  // 🎯 Gestion du changement d'année (si pas encore verrouillée)
+  if (!isYearLocked) {
+    studentYearSelect.addEventListener("change", async () => {
+      const year = studentYearSelect.value;
+      localStorage.setItem("student_academic_year", year);
+      console.log("Année académique sélectionnée :", year);
+
+      // Sauvegarde + verrouillage côté Firestore (fonction déjà créée)
+      await saveStudentFiltersToFirestore(year, null);
+      isYearLocked = true;
+      studentYearSelect.disabled = true;
+
+      const classe =
+        studentClassSelect.value || userData.classe || null;
+
+      updateStudentFiltersInfo({
+        year,
+        classe,
+        isYearLocked,
+        isClassLocked,
+      });
+    });
+  }
+
+  // 🎯 Gestion du changement de classe (si pas encore verrouillée)
+  if (!isClassLocked) {
+    studentClassSelect.addEventListener("change", async () => {
+      const classe = studentClassSelect.value;
+      localStorage.setItem("student_class", classe);
+      console.log("Classe sélectionnée :", classe);
+
+      // Sauvegarde + verrouillage côté Firestore (fonction déjà créée)
+      await saveStudentFiltersToFirestore(null, classe);
+      isClassLocked = true;
+      studentClassSelect.disabled = true;
+
+      const year =
+        studentYearSelect.value ||
+        (Array.isArray(userData.annee_academique_id) &&
+        userData.annee_academique_id.length > 0
+          ? userData.annee_academique_id[userData.annee_academique_id.length - 1]
+          : null);
+
+      updateStudentFiltersInfo({
+        year,
+        classe,
+        isYearLocked,
+        isClassLocked,
+      });
+    });
+  }
+}
+
+// Met à jour le petit texte d'information + le côté "verrouillé"
+function updateStudentFiltersInfo({ year, classe, isYearLocked, isClassLocked }) {
+  if (!studentFiltersInfo) return;
+
+  const parts = [];
+  if (year) parts.push(`Année : ${year}`);
+  if (classe) parts.push(`Classe : ${classe}`);
+
+  const mainText =
+    parts.length > 0
+      ? parts.join(" · ")
+      : "Aucune année / classe sélectionnée pour le moment.";
+
+  let lockText = "";
+
+  if (isYearLocked && isClassLocked) {
+    lockText =
+      "Ces informations ont été validées. Pour les modifier, veuillez contacter l'administration de la plateforme.";
+  } else if (isYearLocked) {
+    lockText =
+      "Votre année académique a été validée. Pour la modifier, contactez l'administration.";
+  } else if (isClassLocked) {
+    lockText =
+      "Votre classe a été validée. Pour la modifier, contactez l'administration.";
+  } else {
+    lockText =
+      "Vous pouvez définir une seule fois votre année académique et votre classe.";
+  }
+
+  // Texte final affiché dans le bandeau
+  studentFiltersInfo.textContent = `${mainText} · ${lockText}`;
+
+  // 🫥 Rendre les selects visuellement plus discrets si tout est verrouillé
+  if (studentFiltersControls) {
+    if (isYearLocked && isClassLocked) {
+      studentFiltersControls.classList.add("opacity-60");
+    } else {
+      studentFiltersControls.classList.remove("opacity-60");
+    }
+  }
+}
+
+
+
+// ✅ Sauvegarder les choix de l'étudiant dans Firestore
+// ✅ Sauvegarder les choix de l'étudiant dans Firestore
+async function saveStudentFiltersToFirestore(year, classe) {
+  if (!currentUserDocId) {
+    console.warn("Impossible de sauvegarder : aucun userDocId défini.");
+    return;
+  }
+
+  try {
+    const userRef = doc(db, "users", currentUserDocId);
+    const updateData = {};
+
+    // 🔒 Empêcher plusieurs changements (on lit l'état courant en mémoire)
+    const yearLocked  = donneeUtilisateur?.annee_academique_locked === true;
+    const classLocked = donneeUtilisateur?.classe_locked === true;
+
+    // Année académique : on autorise UNE SEULE écriture depuis cette page
+    if (year && !yearLocked) {
+      updateData.annee_academique_id = arrayUnion(year);
+      updateData.annee_academique_locked = true;      // 🔒 on verrouille côté Firestore
+      donneeUtilisateur.annee_academique_locked = true; // on met à jour la copie locale
+    }
+
+    // Classe : pareil, une seule écriture
+    if (classe && !classLocked) {
+      updateData.classe = classe;
+      updateData.classe_locked = true;               // 🔒 on verrouille côté Firestore
+      donneeUtilisateur.classe_locked = true;        // on met à jour la copie locale
+    }
+
+    // Si tout est déjà verrouillé, on ne fait rien
+    if (Object.keys(updateData).length === 0) {
+      console.log("Rien à mettre à jour : les choix sont déjà verrouillés.");
+      return;
+    }
+
+    await updateDoc(userRef, updateData);
+    console.log("Profil mis à jour dans Firestore :", updateData);
+  } catch (err) {
+    console.error(
+      "Erreur lors de la mise à jour Firestore des filtres étudiant :",
+      err
+    );
+  }
+}
+
+
+
+
+
 
 async function getElements() {
   const querySnapshot = await getDocs(collection(db, "classes"));
@@ -192,161 +438,132 @@ getElements();
 export async function getUserData(uid) {
   // Crée une requête pour rechercher l'utilisateur par son uid
   const q = query(collection(db, "users"), where("uid", "==", uid));
-
   const querySnapshot = await getDocs(q);
 
   if (!querySnapshot.empty) {
-    querySnapshot.forEach((doc) => {
-      const userData = doc.data();
-      donneeUtilisateur = userData; //On récupère les données de l'utilisateur connecté actuellement(L'étudiant)
+    // ✅ On récupère UNIQUEMENT le premier document (normalement il n'y en a qu'un)
+    const userDoc = querySnapshot.docs[0];
+    const userData = userDoc.data();
 
-      
-      afficherProfilUtilisateur(userData);
-      loginButton.style.display = "none"; //On éfface le bouton connection si l'utilisateur est déjà connecté
+    donneeUtilisateur = userData;           // Données de l'utilisateur connecté
+    currentUserDocId = userDoc.id;          // ✅ ID du document Firestore de cet utilisateur
 
-      if (userData.role === "responsable") {
-        //
-        document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
-        // camera.style.display = "block";
-      
-        getElements().then(() => {
-          const switchButtons = document.querySelectorAll(".switch-container");
-          switchButtons.forEach((switchButton) => {
-            switchButton.style.display = "block";
-          }, 1000);
-        });
-      } else if (userData.role === "etudiant") {
-        //Si l'utilisateur connecté est un étudiant
+    afficherProfilUtilisateur(userData);
+    loginButton.style.display = "none"; //On éfface le bouton connection si l'utilisateur est déjà connecté
 
-        document.getElementById("openSearchModal").style.display = "block"; //On affiche le bouton pour la recherche des étudiants
-        document.getElementById("relative").style.display = "block"; //On affiche le bouton pour les notifications
-        document.querySelector(".fab-menu").innerHTML += 
-        `
-         
-    <button class="fab-menu-item" id="updateInformationsModal"><i class="fa-solid fa-gears"></i></button>
-     <button class="fab-menu-item" id="openSupportModal">
-      <i class="fa-solid fa-headset"></i>
-      <span>JOE</span>
-    </button>
-    <button class="fab-menu-item"><i class="fa-regular fa-message"></i></button>
-    <button class="fab-menu-item"><i class="fa-regular fa-file"></i></button>
-     <button id="logoutButton" class="fab-menu-item" style="background-color: rgb(237, 56, 56);">
-      <i class="fa-solid fa-power-off"></i>
-    </button>
-        
-        `;
-
-        document.getElementById("logoutButton").addEventListener("click", () => {
-          let deconnexion = confirm("Voulez-vous vraiment vous déconnecter ?");
-
-          if (deconnexion) {
-          
-            try{
-              // Afficher le spinner
-              const loadingSpinner = document.getElementById('loadingSpinner');
-              loadingSpinner.style.display = 'block';
-
-              signOut(auth)
-                .then(() => {
-                  // Déconnexion réussie
-                  console.log("Déconnexion réussie");
-                  window.location.href = "./login/index.html"; // Redirige vers la page de connexion
-                })
-                .catch((error) => {
-                  // Une erreur est survenue lors de la déconnexion
-                  console.error("Erreur lors de la déconnexion:", error);
-                });
-          
-            }catch(error){
-              console.log(error);
-            }finally{
-            // Cacher le spinner
-              // Masquer le spinner
-              const loadingSpinner = document.getElementById('loadingSpinner');
-              loadingSpinner.style.display = 'none';
-            }
-
-          }
-        });
-        
-        
-        document.getElementById('openSupportModal').addEventListener('click', showSupportModal);
-        document.getElementById('updateInformationsModal').addEventListener('click', showModalSpecific);
-        // document.querySelector("#notification > p").innerHTML = "Découvrez les nouvelles fonctionnalités : le bouton de déconnexion a été déplacé dans le menu flottant pour une meilleure navigation !"
-
-        // Lorsque l'utilisateur entre dans l'appli (par exemple au chargement de la page)
-        // window.onload = function() {
-
-  
-        //   // Afficher la notification après un délai de 1 seconde (simule un changement dans l'application)
-        //   // setTimeout(() => {
-        //   //   document.getElementById('notification').classList.toggle('show');
-        //   // }, 2000); // Ajuste le délai selon tes besoins
-
-        //   // Fermer la notification lorsque l'utilisateur clique sur le bouton X
-        //   document.getElementById('closeNotification').addEventListener('click', () => {
-        //     document.getElementById('notification').classList.toggle('show');
-        //     document.getElementById("notification").style.display = "none";
-        //   });
-      
-        // }
-
-
-
-
-        document.getElementById("generateQRCode").style.display = "block"; //On affiche le bouton pour le QRCode si c'est un étudiant qui est connecté
-        // camera.style.display = "block";
-        document.getElementById("startScanButton").style.display = "block";
-        getElements().then(() => {
-          // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
-
-          const switchButtons = document.querySelectorAll(".switch-container");
-          switchButtons.forEach((switchButton) => {
-            switchButton.style.display = "none"; //On cache les switchs pour changer l'état des classes
-          }, 1000);
-        });
-      } else if (
-        userData.role === "directeur" ||
-        userData.role === "administration" ||
-        userData.role === "comptable"
-      ) {
-        document.getElementById("generateQRCode").style.display = "none"; //Si c'est un membre de l'administration qui est connecté on cache le buton pour le QRCode
-        document.getElementById("startScanButton").style.display = "none";
-
+    if (userData.role === "responsable") {
+      document.getElementById("generateQRCode").style.display = "block";
+      getElements().then(() => {
         const switchButtons = document.querySelectorAll(".switch-container");
         switchButtons.forEach((switchButton) => {
           switchButton.style.display = "block";
         }, 1000);
-      } else {
-        document.getElementById("openSearchModal").style.display = "none";
-        document.getElementById("relative").style.display = "none";
-        getElements().then(() => {
-          const switchButtons = document.querySelectorAll(".switch-container");
-          switchButtons.forEach((switchButton) => {
-            switchButton.style.display = "none";
-          }, 1000);
-        });
-      }
+      });
 
-      if (userData.role === "comptable") {
-        document.getElementById("generateQRCode").style.display = "none"; //Si c'est un membre de l'administration qui est connecté on cache le buton pour le QRCode
+    } else if (userData.role === "etudiant") {
+      // Si l'utilisateur connecté est un étudiant
+      document.getElementById("openSearchModal").style.display = "block";
+      document.getElementById("relative").style.display = "block";
 
-        getElements().then(() => {
-          // Appeler getElements ici pour être sûr que les classes sont ajoutées avant de manipuler switchButton
+      document.querySelector(".fab-menu").innerHTML +=
+      `
+        <button class="fab-menu-item" id="updateInformationsModal">
+          <i class="fa-solid fa-gears"></i>
+        </button>
+        <button class="fab-menu-item" id="openSupportModal">
+          <i class="fa-solid fa-headset"></i>
+          <span>JOE</span>
+        </button>
+        <button class="fab-menu-item"><i class="fa-regular fa-message"></i></button>
+        <button class="fab-menu-item"><i class="fa-regular fa-file"></i></button>
+        <button id="logoutButton" class="fab-menu-item" style="background-color: rgb(237, 56, 56);">
+          <i class="fa-solid fa-power-off"></i>
+        </button>
+      `;
 
-          const switchButtons = document.querySelectorAll(".switch-container");
-          switchButtons.forEach((switchButton) => {
-            switchButton.style.display = "block";
-          }, 1000);
-        });
-      }
+      document.getElementById("logoutButton").addEventListener("click", () => {
+        let deconnexion = confirm("Voulez-vous vraiment vous déconnecter ?");
 
-      // Utilise les données de l'utilisateur selon tes besoins
-    });
+        if (deconnexion) {
+          try {
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            loadingSpinner.style.display = 'block';
+
+            signOut(auth)
+              .then(() => {
+                console.log("Déconnexion réussie");
+                window.location.href = "./login/index.html";
+              })
+              .catch((error) => {
+                console.error("Erreur lors de la déconnexion:", error);
+              });
+
+          } catch (error) {
+            console.log(error);
+          } finally {
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            loadingSpinner.style.display = 'none';
+          }
+        }
+      });
+
+      document.getElementById('openSupportModal').addEventListener('click', showSupportModal);
+      document.getElementById('updateInformationsModal').addEventListener('click', showModalSpecific);
+
+      document.getElementById("generateQRCode").style.display = "block";
+      document.getElementById("startScanButton").style.display = "block";
+
+      getElements().then(() => {
+        const switchButtons = document.querySelectorAll(".switch-container");
+        switchButtons.forEach((switchButton) => {
+          switchButton.style.display = "none";
+        }, 1000);
+      });
+
+      // 🔹 Initialiser les selects Année académique + Classe pour l'étudiant
+      initStudentFilters(userData);
+
+    } else if (
+      userData.role === "directeur" ||
+      userData.role === "administration" ||
+      userData.role === "comptable"
+    ) {
+      document.getElementById("generateQRCode").style.display = "none";
+      document.getElementById("startScanButton").style.display = "none";
+
+      const switchButtons = document.querySelectorAll(".switch-container");
+      switchButtons.forEach((switchButton) => {
+        switchButton.style.display = "block";
+      }, 1000);
+
+    } else {
+      document.getElementById("openSearchModal").style.display = "none";
+      document.getElementById("relative").style.display = "none";
+      getElements().then(() => {
+        const switchButtons = document.querySelectorAll(".switch-container");
+        switchButtons.forEach((switchButton) => {
+          switchButton.style.display = "none";
+        }, 1000);
+      });
+    }
+
+    // Cas particulier comptable (tu l'avais déjà à part)
+    if (userData.role === "comptable") {
+      document.getElementById("generateQRCode").style.display = "none";
+
+      getElements().then(() => {
+        const switchButtons = document.querySelectorAll(".switch-container");
+        switchButtons.forEach((switchButton) => {
+          switchButton.style.display = "block";
+        }, 1000);
+      });
+    }
+
   } else {
     console.log("Aucune donnée trouvée pour cet utilisateur");
   }
 }
+
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
@@ -436,8 +653,8 @@ async function afficherProfilUtilisateur(userData) {
 
 function redirectionClub(){
 
-   onAuthStateChanged(auth, async (user) => {
-          try{
+  onAuthStateChanged(auth, async (user) => {
+    try{
                // Afficher le spinner
                const loadingSpinner = document.getElementById('loadingSpinner');
                loadingSpinner.style.display = 'block';

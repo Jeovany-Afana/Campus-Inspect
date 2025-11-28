@@ -139,17 +139,24 @@ form.addEventListener("submit", (e) => {
   const confirmPassOk = document.getElementById('confirm').value;
   const kairosOk = document.getElementById('kairos').value;
   const fileInput = document.getElementById('fileInput');
-  const file = fileInput.files[0]; // On récupère la photo
+  const file = fileInput.files[0];
   const classe = document.getElementById('classe');
+  const anneeAcademiqueSelect = document.getElementById('annee-academique');
 
-  // Vérifier que tous les champs sont correctement remplis et que le mot de passe est confirmé
-
-  if (!emailOk || !passwordOk || !confirmPassOk || !pseudoOk || !kairosOk || passwordOk !== confirmPassOk || classe.value == "") {
-    showModal("Veuillez remplir tous les champs et vérifier que le mot de passe est correctement confirmé.");
+  // Vérifier les champs
+  if (
+    !emailOk ||
+    !passwordOk ||
+    !confirmPassOk ||
+    !pseudoOk ||
+    !kairosOk ||
+    passwordOk !== confirmPassOk ||
+    classe.value === "" ||
+    !anneeAcademiqueSelect.value
+  ) {
+    showModal("Veuillez remplir tous les champs, choisir une année académique et vérifier que le mot de passe est correctement confirmé.");
     return;
-    
   }
-
 
   // Vérifier si un fichier a été sélectionné
   if (!file) {
@@ -168,21 +175,24 @@ form.addEventListener("submit", (e) => {
     emailOk: emailOk,
     kairosOk: kairosOk,
     passwordOk: passwordOk,
-    classe:classe.value,};
+    classe: classe.value,
+    anneeAcademiqueId: anneeAcademiqueSelect.value, // ✅ on passe l'année choisie
+  };
+
   // Enregistrer l'utilisateur dans Firebase
   registerUser(emailOk, passwordOk, userInfo, file);
 
-  // Réinitialiser les champs du formulaire après l'inscription
+  // Reset formulaire
   inputs.forEach((input) => (input.value = ""));
   progressBar.classList = "";
 
-  // Réinitialiser les variables
   pseudo = null;
   email = null;
   password = null;
   confirmPass = null;
   kairos = null;
 });
+
 
 export async function showModal(message, color) {
   const modal = document.getElementById("error-modal");

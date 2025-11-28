@@ -25,6 +25,38 @@ const provider = new GoogleAuthProvider();
 const googleButton = document.getElementById("google-sign-in-btn");
 const statusMessage = document.getElementById('statusMessage'); // Sélectionner le div pour afficher le message
 
+// 🔥 Charger dynamiquement les années académiques depuis Firestore
+async function loadAcademicYears() {
+  try {
+    const snapshot = await getDocs(collection(db, "annee_academique"));
+    const mainSelect = document.getElementById("annee-academique");
+    const modalSelect = document.getElementById("user-annee-academique");
+
+    snapshot.forEach((docSnap) => {
+      const id = docSnap.id; // ex: "2024-2025"
+
+      if (mainSelect) {
+        const option = document.createElement("option");
+        option.value = id;
+        option.textContent = id;
+        mainSelect.appendChild(option);
+      }
+
+      if (modalSelect) {
+        const option2 = document.createElement("option");
+        option2.value = id;
+        option2.textContent = id;
+        modalSelect.appendChild(option2);
+      }
+    });
+  } catch (error) {
+    console.error("Erreur lors du chargement des années académiques :", error);
+  }
+}
+
+// Appel au chargement de la page
+loadAcademicYears();
+
 
 
 // Connexion avec Google
@@ -95,14 +127,21 @@ export function openAdditionalInfoModal(user) {
   const modal = document.getElementById("additional-info-modal");
   const emailInput = document.getElementById("user-email");
   const nameInput = document.getElementById("user-name");
-  
+  const yearSelect = document.getElementById("user-annee-academique");
+
   // Pré-remplir les champs avec les informations de Google
-  emailInput.value = user.email || ""; // Email de Google
-  nameInput.value = user.displayName || ""; // Nom complet de Google
-  
+  emailInput.value = user.email || "";
+  nameInput.value = user.displayName || "";
+
+  // Remettre le select d'année sur la première option
+  if (yearSelect) {
+    yearSelect.selectedIndex = 0;
+  }
+
   // Afficher le modale
   modal.style.display = "flex";
 }
+
   
 
 // Ajouter un écouteur pour fermer le modale via le bouton "×"
@@ -122,31 +161,32 @@ export async function saveAdditionalInfo(user) {
   const emailInput = document.getElementById("user-email").value.trim();
   const classInput = document.getElementById("user-class").value.trim();
   const kairosInput = document.getElementById("user-kairos").value.trim();
-  
+  const anneeInput = document.getElementById("user-annee-academique").value.trim();
+
   // Validation des champs
-  if (!nameInput || !classInput || !kairosInput) {
-    alert("Tous les champs sont obligatoires !");
+  if (!nameInput || !classInput || !kairosInput || !anneeInput) {
+    alert("Tous les champs sont obligatoires !");
     return;
   }
-  
+
   try {
-    // Ajouter les données à Firestore (Assurez-vous que Firebase est configuré)
     const userDocRef = doc(db, "users", user.uid);
-  
+
     await setDoc(userDocRef, {
-      uid: user.uid, // ID unique de l'utilisateur Firebase
+      uid: user.uid,
       pseudoOk: nameInput,
       emailOk: emailInput,
       classe: classInput,
       kairos: kairosInput,
-      dureeSolvabilite:0,
+      dureeSolvabilite: 0,
       role: "etudiant",
       photoURLOk: user.photoURL,
       passwordOk: "",
       a_jour: false,
-      createdAt: new Date(), // Date d'enregistrement
+      annee_academique_id: [anneeInput], // ✅ tableau avec l'année choisie
+      createdAt: new Date(),
     });
-  
+
     await showModal("Votre inscription a été enregistrée avec succès !", "success");
     closeModal();
     window.location.href = "../login/index.html";
@@ -155,6 +195,7 @@ export async function saveAdditionalInfo(user) {
     await showModal("Erreur lors de l'enregistrement. Veuillez réessayer.", "error");
   }
 }
+
   
 // Gestionnaire de soumission du formulaire dans le modale
 document.getElementById("additional-info-form").addEventListener("submit", (e) => {
@@ -190,17 +231,19 @@ export async function registerUser(email, password, userInfo, file) {
       
     // 3. Stocker les informations de l'utilisateur dans Firestore, y compris l'URL de la photo
     const userData = {
-      uid: uid, // Ajouter l'UID ici
+      uid: uid,
       pseudoOk: userInfo.pseudoOk,
       emailOk: email,
       passwordOk: password,
       role: "etudiant",
-      classe:userInfo.classe,
-      dureeSolvabilite:0,
+      classe: userInfo.classe,
+      dureeSolvabilite: 0,
       kairos: userInfo.kairosOk,
-      a_jour:false, //Attribut de type booleen qui va permettre de savoir si l'étudiant est à jour ou pas
+      a_jour: false,
       photoURLOk: downloadURL,
+      annee_academique_id: userInfo.anneeAcademiqueId ? [userInfo.anneeAcademiqueId] : [], // ✅ tableau avec l'année choisie
     };
+
 
     // 4. Ajouter l'étudiant dans la collection "users" de Firestore
     await addDoc(collection(db, "users"), userData);
