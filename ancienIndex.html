@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Inspect</title>
+  <link rel="stylesheet" href="./style.css">
+  <!-- <link rel="stylesheet" href="./scannQR.css"> -->
+  <link rel="stylesheet" href="./floating-button.css">
+  <link rel="stylesheet" href="./modale.css">
+  <link rel="stylesheet" href="./studentModal/student-modal.css">
+  <link rel="stylesheet" href="./support/support.css">
+  <link rel="stylesheet" href="./updates/updateInformations.css">
+  <link rel="stylesheet" href="./search/search.css">
+  <link rel="stylesheet" href="./notifications/notifications.css">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/png" href="./icons/logo.PNG">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3947847620809013"
+          crossorigin="anonymous"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          animation: {
+            fadeIn: 'fadeIn 0.5s ease-in-out',
+            scaleIn: 'scaleIn 0.3s ease-in-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            scaleIn: {
+              '0%': { transform: 'scale(0.8)' },
+              '100%': { transform: 'scale(1)' },
+            },
+          },
+        },
+      },
+    };
+
+
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2563EB',
+            secondary: '#1E40AF',
+            accent: '#4ADE80',
+          },
+          animation: {
+            slideIn: 'slideIn 0.5s ease-in-out',
+            fadeIn: 'fadeIn 0.3s ease-out',
+          },
+          keyframes: {
+            slideIn: {
+              '0%': { transform: 'translateY(20px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+          },
+        },
+      },
+    };
+
+
+
+  </script>
+</head>
+<body class="bg-gray-50 bg-gray-50 flex flex-col items-center justify-center min-h-screen text-gray-800">
+
+
+<nav class="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-900 text-white shadow-lg fixed w-full top-0 z-50">
+  <div class="container mx-auto flex justify-between items-center px-6 py-4">
+    <!-- Logo -->
+    <div class="flex items-center space-x-3">
+      <div class="bg-white rounded-full p-2 shadow-md transform hover:scale-110 transition-transform duration-300">
+        <i class="fa-solid fa-eye text-blue-700 text-2xl"></i>
+      </div>
+      <span class="text-2xl font-extrabold tracking-wide uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-blue-500 hover:opacity-90 cursor-pointer transition-opacity duration-300">
+          Campus Inspect
+        </span>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="hidden md:flex items-center space-x-8">
+      <a href="#" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+        Accueil
+      </a>
+      <a href="./bureaux/index.html" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+        Bureaux
+      </a>
+
+
+    </div>
+
+    <!-- User Info & Icons -->
+    <div class="flex items-center space-x-6">
+      <!-- Comments Icon -->
+      <i class="fa-regular fa-comments cursor-pointer text-xl hover:text-blue-300 transition-all duration-300 transform hover:scale-110" id="openSearchModal"></i>
+
+      <!-- Notification Icon -->
+      <div class="relative group" id="relative">
+        <i class="fas fa-bell cursor-pointer text-xl hover:text-blue-300 transition-all duration-300 transform hover:scale-110" id="openNotificationModal"></i>
+        <span class="absolute -top-2 -right-2 bg-red-500 text-xs font-bold rounded-full px-2 py-0.5 group-hover:animate-pulse" id="notificationCount">
+
+          </span>
+      </div>
+
+      <!-- User Profile -->
+
+      <div class="profile-picture w-10 h-10 rounded-full overflow-hidden shadow-lg transform hover:scale-110 transition-transform duration-300" id="userProfileContainer">
+
+      </div>
+
+
+      <!-- Mobile Menu Toggle -->
+      <div class="md:hidden">
+        <button class="menu-toggle text-2xl">
+          <i class="fas fa-bars hover:scale-105 transition-transform duration-300"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="hidden flex flex-col items-start bg-gradient-to-b from-blue-900 to-blue-700 text-white p-4 shadow-2xl rounded-b-xl md:hidden" id="mobileMenu">
+    <a href="#" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+      Accueil
+    </a>
+    <a href="./bureaux/index.html" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+      Bureaux
+    </a>
+
+  </div>
+</nav>
+
+
+
+
+<!-- Modal de recherche (pour rechercher un étudiant) -->
+
+<div class="modal-overlay">
+  <!-- Contenu de votre modal -->
+
+  <div class="searchModal" id="searchModal">
+    <!-- Modal Header -->
+    <div class="header">
+      <h2>Rechercher un étudiant</h2>
+      <span class="close" id="closeSearchModal">&times;</span>
+    </div>
+
+    <!-- Search Input -->
+    <div class="search">
+      <input type="text" placeholder="Rechercher un étudiant" id="searchInput">
+    </div>
+
+    <!-- Results Section -->
+    <div class="results" id="resultsContainer">
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal pour les notifications de l'étudiant-->
+<div class="student-notification-overlay"></div>
+<div class="student-notification-modal" id="studentNotificationModal">
+  <div class="modal-header">
+    <h2 style="font-size: 1.7rem; font-weight: bold; color: white;"> Notifications <i class="fas fa-bell cursor-pointer text-xl"></i></h2>
+    <span class="close-btn" id="closeStudentNotificationModal">&times;</span>
+  </div>
+  <div class="modal-messages" id="studentMessageContainer">
+  </div>
+</div>
+
+
+
+<!-- Modal pour l'envoie d'un message -->
+<div class="modal-overlay-message"></div>
+<div class="modale-message" id="messageModal">
+  <!-- Modal Header -->
+  <div class="header">
+    <h2>Envoyer un message</h2>
+  </div>
+
+  <!-- Profile Section -->
+  <div class="profile">
+    <img id="modalStudentPhoto" src="#" alt="Profile Picture">
+    <div class="details">
+      <h3 id="modalStudentName"></h3>
+      <p id="modalStudentClass"></p>
+    </div>
+  </div>
+
+  <!-- Message Section -->
+  <textarea placeholder="Tapez votre message"></textarea>
+
+  <!-- Actions Section -->
+  <div class="actions">
+    <button class="cancel" id="cancelBtn">Quitter</button>
+    <button class="send">Envoyer</button>
+  </div>
+</div>
+
+
+<!-- Action Buttons -->
+<div class="flex flex-col items-center mt-32">
+
+</div>
+
+
+<!-- QR Code Overlay (Container) -->
+<div class="overlay hidden fixed inset-0 bg-gray-900 bg-opacity-80 z-50 flex flex-col items-center justify-center text-white animate-fadeIn" id="overlay">
+  <!-- QR Code Content -->
+  <div id="qrcode-container" class="bg-white text-black p-6 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-semibold text-center mb-4">QR Code de l'étudiant</h2>
+    <div id="qrcode" class="flex justify-center mb-4">
+
+    </div>
+    <button class="button close-button bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition" id="closeQRCode">Fermer</button>
+  </div>
+</div>
+
+<!-- Video Overlay for QR Scanning -->
+<div id="videoOverlay" class="hidden fixed inset-0 bg-gray-900 bg-opacity-80 z-50 flex flex-col items-center justify-center text-white animate-fadeIn">
+  <!-- Scan Message -->
+  <div id="scanMessage" class="text-xl font-semibold bg-primary bg-opacity-80 px-4 py-2 rounded-md shadow-md mb-4">
+    Scannez le code QR
+  </div>
+
+  <!-- Close Button -->
+  <button id="closeButton" class="absolute top-4 right-4 bg-red-500 w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+    X
+  </button>
+
+  <!-- Video Preview -->
+  <div class="w-4/5 max-w-lg">
+    <video id="preview" class="w-full border-4 border-accent rounded-lg shadow-md"></video>
+  </div>
+
+  <!-- QR Code Content -->
+  <div id="qrCodeContent" class="mt-6 p-4 bg-gray-800 rounded-lg shadow-md hidden">
+    <h2 class="text-xl font-semibold mb-2">QR Code Scanné :</h2>
+    <p id="qrContentText" class="text-lg font-medium text-accent"></p>
+  </div>
+</div>
+
+<!-- QR Code Result Frame -->
+<div id="qrFrame" class="hidden mt-10 border-4 border-dashed border-primary p-6 bg-gray-100 rounded-lg shadow-md">
+  <div class="flex justify-between items-center mb-4">
+    <h3 class="text-xl font-semibold text-primary">QR Code Généré :</h3>
+    <!-- Close Button for QR Code -->
+    <button id="closeQRButton" class="bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition">
+      Fermer
+    </button>
+  </div>
+  <div id="generatedQR" class="mt-4 p-4 bg-white rounded shadow-md flex items-center justify-center">
+    <!-- QR Code Content will be injected here -->
+    <span class="text-gray-500">QR Code Placeholder</span>
+  </div>
+</div>
+
+
+
+<div id="userClubSection" class="flex flex-col items-center justify-between p-4 bg-blue-100 rounded-lg shadow-md space-y-4" >
+  <div class="flex items-center space-x-3">
+    <h3 class="text-xl font-semibold text-blue-600">Club Actuel:</h3>
+    <p id="userClub" class="text-lg font-medium text-gray-800" style="font-weight: bold;" ></p> <!-- Contenu dynamique -->
+  </div>
+  <button
+          id="changeClubButton"
+          class="px-6 py-2 bg-blue-500 text-white rounded-md
+         hover:bg-blue-600 focus:outline-none
+         disabled:bg-blue-300 disabled:cursor-not-allowed"
+
+  >
+    Changer de club
+  </button>
+</div>
+
+
+
+
+<div class=" rounded-3xl p-10 sm:p-12 w-full max-w-2xl" id="services">
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <!-- Bouton Code QR -->
+    <button class="flex items-center justify-center space-x-4 p-6 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg" id="generateQRCode">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-500"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg>
+      <span class="text-lg font-medium">Code QR</span>
+    </button>
+
+    <!-- Bouton Scanner le code QR -->
+    <button class="flex items-center justify-center space-x-4 p-6 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg" id="startScanButton">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-line w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-500"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><path d="M7 12h10"></path></svg>
+      <span class="text-lg font-medium">Scanner le code QR</span>
+    </button>
+
+    <!-- Bouton Vie Associative -->
+
+    <button class="col-span-1 sm:col-span-2 flex items-center justify-center space-x-4 p-6 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white hover:from-indigo-600 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg" id="associationButton">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-500"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+      <span class="text-lg font-medium">Vie associative</span>
+    </button>
+
+    <!-- Bouton Changer de club -->
+
+  </div>
+
+  <div class="mt-8 text-center text-sm text-gray-500">
+    Cliquez sur un service pour continuer
+  </div>
+</div>
+
+<!-- Filtres étudiant : année académique + classe -->
+<!-- Bandeau discret : paramètres étudiant (année + classe) -->
+<div id="studentFilters" class="hidden w-full max-w-3xl px-4 mt-4">
+  <div class="bg-blue-50/90 border border-blue-200 rounded-2xl px-4 py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs sm:text-sm shadow-sm">
+
+    <!-- Zone avec les selects -->
+    <div id="studentFiltersControls" class="flex flex-wrap items-center gap-2">
+      <span class="font-semibold text-blue-700 flex items-center gap-1">
+        <i class="fa-solid fa-graduation-cap text-[11px]"></i>
+        Année & classe :
+      </span>
+
+      <!-- Sélecteur d'année académique -->
+      <select
+              id="student-academic-year"
+              class="border border-blue-200 rounded-full px-3 py-1 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+      >
+        <option value="" disabled selected>Année académique</option>
+        <!-- Options ajoutées dynamiquement depuis Firestore -->
+      </select>
+
+      <!-- Sélecteur de classe -->
+      <select id="student-class" class="border border-blue-200 rounded-full px-3 py-1 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+        <option value="" hidden disabled selected>Classe</option>
+        <option value="L1 INFORMATIQUE">L1 INFORMATIQUE</option>
+        <option value="L1 GESTION">L1 GESTION</option>
+        <option value="L1 DROIT">L1 DROIT</option>
+        <option value="L2 DROIT">L2 DROIT</option>
+        <option value="L3 DROIT">L3 DROIT</option>
+        <option value="L2 INFORMATIQUE">L2 INFORMATIQUE</option>
+        <option value="L2 GESTION ">L2 GESTION </option>
+        <option value="BTL1">BTL1</option>
+        <option value="BTL2">BTL2</option>
+        <option value="BTL3">BTL3</option>
+        <option value="MARKETING">MARKETING</option>
+        <option value="GENIE LOGICIEL">GENIE LOGICIEL</option>
+        <option value="RESSOURCES HUMAINES">RESSOURCES HUMAINES</option>
+        <option value="RSS">RSS</option>
+        <option value="QHSE">QHSE</option>
+      </select>
+    </div>
+
+    <!-- Petit texte d’info / verrouillage -->
+    <p id="studentFiltersInfo" class="text-[11px] text-gray-600 sm:text-right leading-snug">
+      Vous pouvez définir une seule fois votre année académique et votre classe.
+    </p>
+  </div>
+</div>
+
+
+
+<!-- Inclusion de la bibliothèque jsQR depuis un CDN -->
+<script src="https://unpkg.com/jsqr"></script>
+
+
+
+
+
+
+
+<!-- Bouton flottant -->
+
+<!-- Le bouton flottant -->
+<div class="fabButton">
+  <button id="mainFab" class="fab-main"><i class="fa-solid fa-plus"></i></button>
+
+  <!-- Menu flottant -->
+  <div class="fab-menu" id="fabMenu">
+
+    <button id="loginButton" class="fab-menu-item" style="background-color: rgb(9, 175, 9);" onclick="window.location.href='./login/index.html'">
+      <i class="fa-solid fa-power-off"></i>
+    </button>
+  </div>
+</div>
+
+
+<!-- Modale pour afficher les informations de l'étudiant connecté -->
+<!-- Modale pour afficher les informations de l'étudiant -->
+<div class="user-profile-modale" id="user-profile-modale">
+  <div class="header">
+    <!-- Bouton de fermeture -->
+    <button id="close-modal-btn" class="close-btn">✖</button>
+  </div>
+  <div style="border: 4px solid #3a86ff;">
+    <div class="profile-image">
+      <img src="" alt="Profile Picture" id="student-photo">
+    </div>
+
+    <h2 id="studentName"></h2>
+    <p id="studentClasse"></p>
+    <p id="kairosNumber"></p>
+    <p id="studentEmail"></p>
+    <div class="social-icons">
+      <a href="#" title="LinkedIn">🔗</a>
+      <a href="#" title="GitHub">🐙</a>
+      <a href="#" title="Email">📧</a>
+    </div>
+    <button class="message-btn" id="accountStatus"></button>
+  </div>
+</div>
+
+
+
+
+<!-- Modal de sélection du club -->
+<!-- Modal de sélection du club -->
+<div id="changeClubModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden z-50">
+  <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 space-y-4">
+    <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Sélectionner un nouveau club</h3>
+
+    <ul id="clubList" class="space-y-2 max-h-64 overflow-y-auto"> <!-- Liste des clubs scrollable -->
+      <!-- Liste des clubs -->
+    </ul>
+
+    <button id="cancelChangeBtn" class="w-full px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none mt-4">Annuler</button>
+  </div>
+</div>
+
+<!-- Modal de confirmation -->
+<div id="confirmModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden z-50">
+  <div class="bg-white rounded-lg shadow-xl w-96 p-6 space-y-6 transform transition-all duration-300 scale-95 hover:scale-100">
+    <p id="confirmationMessage" class="text-gray-800 text-lg text-center font-semibold"></p>
+    <div class="flex justify-between">
+      <button id="confirmBtn" class="w-32 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 focus:outline-none">Confirmer</button>
+      <button id="cancelConfirmBtn" class="w-32 px-6 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition duration-300 focus:outline-none">Annuler</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Loading spinner -->
+
+<div id="loadingSpinner" class="spinner" style="display: none;"></div>
+
+
+<!-- Contacter le support (Joe) -->
+<!-- Modal de support -->
+<div class="support-modal" id="supportModal">
+  <div class="support-modal-content">
+    <span class="close-support-modal" id="closeSupportModal">&times;</span>
+    <div class="support-header">
+      <i class="fa-solid fa-headset support-icon"></i>
+      <h2>Un problème ? Contactez Joe</h2>
+    </div>
+    <form id="supportForm">
+      <textarea id="supportComment" placeholder="Expliquez brièvement votre problème..." required></textarea>
+      <button type="submit" class="send-button">Envoyer le commentaire</button>
+    </form>
+    <div class="support-actions">
+      <a href="https://wa.me/221774931623" target="_blank" class="support-button whatsapp-button">
+        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+      </a>
+      <a href="tel:+221774931623" class="support-button call-button">
+        <i class="fa fa-phone"></i> Appeler
+      </a>
+      <a href="mailto:wilfrieddylan451@gmail.com" class="support-button email-button">
+        <i class="fa fa-envelope"></i> Email
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal pour permettre à l'étudiant de mettre à jour son profil -->
+<div id="updateUserModal" class="modal-specific">
+  <div class="modal-specific-content">
+    <span id="closeUpdateUserModal" class="modal-specific-close">&times;</span>
+    <h2>Modifier vos informations</h2>
+    <div>
+      <label for="updateUserName">Nom complet :</label>
+      <input type="text" id="updateUserName" placeholder="Votre nom complet" />
+      <button id="updateNameButton">Mettre à jour le nom</button>
+    </div>
+    <div>
+      <label for="updateKairos">Numéro Kairos</label>
+      <input type="text" id="updateKairos" placeholder="Votre numéro Kairos" />
+      <button id="updateKairosButton">Mettre à jour le numéro Kairos</button>
+    </div>
+    <div>
+      <label for="updateUserEmail">Adresse e-mail :</label>
+      <input type="email" id="updateUserEmail" placeholder="Votre adresse e-mail" />
+      <button id="updateEmailButton">Mettre à jour l'e-mail</button>
+    </div>
+    <div>
+      <label for="updateUserPhoto">Photo de profil :</label>
+      <input type="file" id="updateUserPhoto" accept="image/*" />
+      <button id="updatePhotoButton">Mettre à jour la photo</button>
+    </div>
+    <div class="custom-actions">
+      <button type="button" id="customResetPasswordButton">Réinitialiser le mot de passe</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modale pour afficher les erreurs/succès -->
+<div id="error-modal" class="error-modal">
+  <div class="modal-content">
+    <div id="icon-container" class="icon-container">
+      <i id="icon" class="error-icon">!</i>
+    </div>
+    <p id="modal-message" class="modal-text">Message d'erreur</p>
+    <button id="ok-button" class="ok-btn">OK</button>
+  </div>
+</div>
+
+
+
+
+<!-- Modal permettant aux étudiants de voter un candidat en ligne -->
+
+
+
+<!-- Bouton pour ouvrir le modal -->
+
+<!-- Modal -->
+<!-- <div id="voteModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <h2>Système de Vote</h2>
+
+    <div class="candidates">
+      Carte pour le candidat 1
+      <div class="candidate-card">
+        <img src="./Al_amine.jpg" alt="Candidat 1" class="candidate-photo">
+        <h3>Al Amine NDIEGUENE</h3>
+        <p>CHANGEMENT</p>
+        <button class="vote-btn" id="candidat1" data-candidate="1" >Voter</button>
+      </div>
+
+      Carte pour le candidat 2
+      <div class="candidate-card">
+        <img src="./ben.jpg" alt="Candidat 2" class="candidate-photo">
+        <h3>Ben </h3>
+        <p>UNITED For Succes</p>
+        <button class="vote-btn" id="candidat2" data-candidate="2">Voter</button>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+<!-- Fin du modal permettant aux étudiants de voter un candidat en ligne -->
+
+
+
+
+
+<!-- Nouvelle Modale -->
+<!-- <div class="custom-modal" id="updateModal">
+  <div class="custom-modal-content">
+    <button class="custom-close-modal" id="closeUpdateModal">&times;</button>
+    <h2>Nouvelle mise à jour</h2>
+    <p>Bienvenue dans la nouvelle version de l'application ! Voici un aperçu des fonctionnalités des boutons ajoutés :</p>
+    <ul>
+      <li><b>Profil</b> : Accédez à vos informations personnelles et modifiez-les si nécessaire.</li>
+      <li><b>Assistance</b> : Contactez notre support pour toute question ou problème.</li>
+      <li><b>Déconnexion</b> : Quittez votre compte de manière sécurisée.</li>
+    </ul>
+    <p>Nous espérons que cette mise à jour améliorera votre expérience !</p>
+  </div>
+</div> -->
+
+
+
+<!-- Contenu du fichier principal -->
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Salle Occupée</h2>
+    <label for="end-time" class="modal-label">Sélectionnez l'heure de libération :</label>
+    <input type="time" id="end-time" class="modal-input">
+    <button id="saveTime" class="btn-confirm">Confirmer</button>
+  </div>
+</div>
+<div id="class-list"></div>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-section about">
+      <h2 class="footer-title">Jeovany Afana</h2>
+      <p>Développeur passionné et créateur d'applications web modernes. N'hésitez pas à me contacter pour vos projets digitaux.</p>
+      <div class="contact">
+        <br>
+        <p><i class="fas fa-envelope"></i> wilfrieddylan451@gmail.com</p><br><br>
+        <p><i class="fas fa-phone"></i> +221 77 493 1623</p>
+      </div>
+    </div>
+    <div class="footer-section links">
+      <h2 class="footer-title">Liens utiles</h2>
+      <ul>
+        <li><a href="/index.html">Accueil</a></li>
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Mentions légales</a></li>
+      </ul>
+    </div>
+    <div class="footer-section social">
+      <h2 class="footer-title">Suivez-moi</h2>
+      <div class="social-icons">
+        <a href="https://www.facebook.com/jeovany.afana.7" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/joe.afana/" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/Jeovany_damso5" target="_blank"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024 Jeovany Afana. Tous droits réservés.</p>
+  </div>
+</footer>
+
+<!-- Inclusion de la bibliothèque jsQR depuis un CDN -->
+
+<script type="module">
+  // Importer les fonctions nécessaires depuis les SDK de Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js"; // Pour utiliser Storage
+  // Configuration de votre application Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA", // Clé API de votre projet
+    authDomain: "inspecteur-de-classes.firebaseapp.com", // Domaine d'authentification
+    projectId: "inspecteur-de-classes", // ID de votre projet
+    storageBucket: "inspecteur-de-classes.appspot.com", // Bucket de stockage pour les fichiers
+    messagingSenderId: "572661846292", // ID de l'expéditeur de messages
+    appId: "1:572661846292:web:aeb0374db2d414fef9f201", // ID de votre application
+    measurementId: "G-NVN5GERDV6" // ID de mesure pour les analyses
+  };
+
+  // Initialiser Firebase avec la configuration fournie
+  const app = initializeApp(firebaseConfig);
+
+  // Initialiser Firestore (base de données de Firebase)
+  const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilisé
+  // Initialiser Firebase Storage (pour stocker des fichiers)
+  const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
+
+
+</script>
+<script src="https://unpkg.com/jsqr"></script>
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<script type="module" src="./studentScan.js"></script>
+<script type="module" src="./qrCode.js"></script>
+<script type="module" src="./search/search.js"></script>
+<script src="./floating-button.js"></script>
+<script type="module" src="./notifications/notifications.js"></script>
+<script src="./humbergerButton.js"></script>
+<script type="module" src="./studentModal/student-modal.js"></script>
+<!-- <script type="module" src="./messaging.js"></script> -->
+<script type="module" src="./index.js"></script>
+<!-- <script  type="module" src="./modale.js"></script> -->
+<script type="module" src="./updates/updateInformations.js"></script>
+<script type="module" src="./support/support.js"></script>
+<script type="module" src="./clubs/changeClub.js"></script>
+</body>
+</html>
