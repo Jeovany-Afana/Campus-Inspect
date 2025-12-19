@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./floating-button.css">
     <link rel="stylesheet" href="./modale.css">
+    <link rel="stylesheet" href="./overlay.css">
     <link rel="stylesheet" href="./studentModal/student-modal.css">
     <link rel="stylesheet" href="./support/support.css">
     <link rel="stylesheet" href="./updates/updateInformations.css">
@@ -158,6 +159,203 @@
     </script>
 </head>
 <body class="bg-gray-50 min-h-screen font-sans" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%234f46e5\" fill-opacity=\"0.03\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+
+<!-- =========================
+     PRE-VOTE OVERLAY (FULLSCREEN)
+     À coller juste après <body ...>
+========================= -->
+<!-- ===== PRE-VOTE OVERLAY v2 (FULLSCREEN / NO SCROLL) ===== -->
+<div id="preVoteOverlay" class="pvo" role="dialog" aria-modal="true" aria-label="Vote pas encore ouvert">
+    <!-- Confetti canvas -->
+    <canvas id="pvoConfetti" class="pvo-confetti" aria-hidden="true"></canvas>
+
+    <!-- Animated background layers -->
+    <div class="pvo-bg" aria-hidden="true">
+        <div class="pvo-aurora pvo-aurora-1"></div>
+        <div class="pvo-aurora pvo-aurora-2"></div>
+        <div class="pvo-aurora pvo-aurora-3"></div>
+
+        <div class="pvo-stars"></div>
+        <div class="pvo-grid"></div>
+        <div class="pvo-scan"></div>
+        <div class="pvo-noise"></div>
+    </div>
+
+    <div id="pvoWrap" class="pvo-wrap">
+        <!-- Spotlight (updated by JS with CSS vars) -->
+        <div class="pvo-spotlight" aria-hidden="true"></div>
+
+        <header class="pvo-header">
+            <div class="pvo-brand">
+                <img class="pvo-logo" src="./icons/logo.PNG" alt="Campus Vote" />
+                <div class="pvo-brandText">
+                    <div class="pvo-brandTitle">Campus Vote</div>
+                    <div class="pvo-brandSub">Élections étudiantes • Vote en ligne</div>
+                </div>
+            </div>
+
+            <div class="pvo-chip" title="Vote non ouvert">
+                <span class="pvo-chipDot"></span>
+                <span id="pvoStatusLabel">Vote pas encore ouvert</span>
+            </div>
+        </header>
+
+        <main class="pvo-main">
+            <section class="pvo-hero">
+                <div class="pvo-kicker">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <span id="pvoKickerText">Rendez-vous demain</span>
+                </div>
+
+                <h1 class="pvo-title">
+                    <span class="pvo-titleGlow">Le vote ouvre à</span>
+                    <span class="pvo-highlight">..h</span>
+                    <span class="pvo-titleGlow">et ferme à</span>
+                    <span class="pvo-highlight pvo-highlightAlt">16h</span>
+                </h1>
+
+                <p class="pvo-desc">
+                    Prépare ton compte et reviens demain pour voter.
+                    <span class="pvo-descStrong">Ton vote comptera.</span>
+                </p>
+
+                <div class="pvo-badges">
+          <span class="pvo-badge">
+            <i class="fa-solid fa-shield-halved"></i> Vote sécurisé
+          </span>
+                    <span class="pvo-badge">
+            <i class="fa-solid fa-bolt"></i> Résultats en temps réel
+          </span>
+                </div>
+            </section>
+
+            <section class="pvo-countdown" aria-label="Compte à rebours avant l'ouverture">
+                <div class="pvo-countHead">
+                    <div class="pvo-countTitle">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                        <span>Ouverture dans</span>
+                    </div>
+                    <div id="pvoTargetText" class="pvo-targetText"></div>
+                </div>
+
+                <div class="pvo-timer" role="timer" aria-live="polite">
+                    <!-- DAYS -->
+                    <div class="pvo-unit" data-unit="days">
+                        <div class="pvo-numStack" id="stackDays">
+                            <span class="pvo-num pvo-numCurrent" id="pvoDays">00</span>
+                        </div>
+                        <div class="pvo-lbl">Jours</div>
+                    </div>
+
+                    <!-- HOURS -->
+                    <div class="pvo-unit" data-unit="hours">
+                        <div class="pvo-numStack" id="stackHours">
+                            <span class="pvo-num pvo-numCurrent" id="pvoHours">00</span>
+                        </div>
+                        <div class="pvo-lbl">Heures</div>
+                    </div>
+
+                    <!-- MINUTES -->
+                    <div class="pvo-unit" data-unit="minutes">
+                        <div class="pvo-numStack" id="stackMinutes">
+                            <span class="pvo-num pvo-numCurrent" id="pvoMinutes">00</span>
+                        </div>
+                        <div class="pvo-lbl">Minutes</div>
+                    </div>
+
+                    <!-- SECONDS -->
+                    <div class="pvo-unit" data-unit="seconds">
+                        <div class="pvo-numStack" id="stackSeconds">
+                            <span class="pvo-num pvo-numCurrent" id="pvoSeconds">00</span>
+                        </div>
+                        <div class="pvo-lbl">Secondes</div>
+                    </div>
+                </div>
+
+                <div class="pvo-note">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>
+            Dès que l’administration met l’élection en <b>open</b>, l’overlay disparaît automatiquement.
+          </span>
+                </div>
+            </section>
+
+            <section class="pvo-cands" aria-label="Les candidats">
+                <div class="pvo-candsHead">
+                    <div class="pvo-candsTitle">
+                        <i class="fa-solid fa-user-group"></i>
+                        <span>Les candidats</span>
+                    </div>
+                    <div class="pvo-miniPulse" aria-hidden="true"></div>
+                </div>
+
+                <div class="pvo-cards">
+                    <!-- CANDIDAT 1 -->
+                    <article class="pvo-card" id="pvoCand1">
+                        <div class="pvo-avatarWrap">
+                            <div class="pvo-shimmer"></div>
+                            <img class="pvo-avatar" id="pvoCand1Img" alt="Candidat 1" />
+                            <div class="pvo-ring"></div>
+                        </div>
+                        <div class="pvo-cardBody">
+                            <div class="pvo-name" id="pvoCand1Name">Chargement…</div>
+                            <div class="pvo-subline" id="pvoCand1Party">—</div>
+                        </div>
+                    </article>
+
+                    <!-- VS badge -->
+                    <div class="pvo-vs" aria-hidden="true">VS</div>
+
+                    <!-- CANDIDAT 2 -->
+                    <article class="pvo-card" id="pvoCand2">
+                        <div class="pvo-avatarWrap">
+                            <div class="pvo-shimmer"></div>
+                            <img class="pvo-avatar" id="pvoCand2Img" alt="Candidat 2" />
+                            <div class="pvo-ring"></div>
+                        </div>
+                        <div class="pvo-cardBody">
+                            <div class="pvo-name" id="pvoCand2Name">Chargement…</div>
+                            <div class="pvo-subline" id="pvoCand2Party">—</div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer class="pvo-footer">
+            <a class="pvo-btn pvo-btnPrimary" href="./login/index.html">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span>Se connecter / Vérifier mon compte</span>
+            </a>
+
+            <button class="pvo-btn pvo-btnGhost" id="pvoCopyTime" type="button">
+                <i class="fa-solid fa-calendar-check"></i>
+                <span>Copier l’horaire</span>
+            </button>
+
+            <div class="pvo-marquee" aria-hidden="true">
+                <div class="pvo-marqueeInner">
+                    <span>🔥 Vote demain 11h–16h • Prépare ton compte • Campus Vote •</span>
+                    <span>🔥 Vote demain 11h–16h • Prépare ton compte • Campus Vote •</span>
+                </div>
+            </div>
+
+            <div class="pvo-footNote">
+                <span class="pvo-footGlow">À demain 🔥</span>
+                <span class="pvo-footSep">•</span>
+                <span id="pvoFooterTime">Vote 11h–16h</span>
+            </div>
+
+            <div id="pvoToast" class="pvo-toast" aria-live="polite"></div>
+        </footer>
+    </div>
+</div>
+
+<noscript>
+    <div style="position:fixed;inset:0;z-index:999999;background:#0b1020;color:#fff;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;">
+        Active JavaScript pour voir le compte à rebours et l’ouverture automatique du vote.
+    </div>
+</noscript>
 
 <!-- Bandeau Élections -->
 <div id="electionBanner" class="hidden">
@@ -1193,6 +1391,7 @@
 <!-- Scripts existants -->
 <script src="https://unpkg.com/jsqr"></script>
 <script src="./floating-button.js"></script>
+<script type="module" src="./overlay.js"></script>
 <script type="module" src="./studentModal/student-modal.js"></script>
 <script type="module" src="./index.js"></script>
 </body>
