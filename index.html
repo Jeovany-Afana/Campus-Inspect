@@ -100,6 +100,33 @@
             right: 30px;
             z-index: 40;
         }
+
+        /* Ajoutez dans votre style existant */
+        .spinner-status {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Styles pour les différents statuts */
+        .status-success {
+            color: #10B981;
+        }
+
+        .status-warning {
+            color: #F59E0B;
+        }
+
+        .status-error {
+            color: #EF4444;
+        }
+
+        .status-info {
+            color: #3B82F6;
+        }
     </style>
 
     <script>
@@ -584,6 +611,34 @@
         setupEventListeners();
     });
 
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+        initMobileMenu();
+        checkElectionStatus();
+        loadAcademicYears();
+        setupEventListeners();
+
+        // Initialiser le menu flottant par défaut (pour non-connectés)
+        setupDefaultFloatingButton();
+    });
+
+    function setupDefaultFloatingButton() {
+        // Si l'utilisateur n'est pas encore connecté, montrer le bouton de connexion
+        const fabMenu = document.querySelector(".fab-menu");
+        if (fabMenu && !auth.currentUser) {
+            fabMenu.innerHTML = `
+            <button class="fab-menu-item" id="loginFabButton" style="background-color: #4F46E5;">
+                <i class="fa-solid fa-sign-in-alt"></i>
+                <span>SE CONNECTER</span>
+            </button>
+        `;
+
+            document.getElementById("loginFabButton").addEventListener("click", () => {
+                window.location.href = "./login/index.html";
+            });
+        }
+    }
+
     // Menu mobile
     function initMobileMenu() {
         const toggle = document.getElementById('mobileMenuToggle');
@@ -700,23 +755,75 @@
     }
 
     // Gestion de l'authentification
-    // Gestion de l'authentification
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             currentUser = user;
             await loadUserData(user.uid);
-            // Appeler la fonction via window si elle existe, sinon ne rien faire
+            // Appeler la fonction via window si elle existe
             if (window.updateUIForUser) {
                 window.updateUIForUser();
             }
         } else {
-            // Utilisateur non connecté
+            // Utilisateur NON connecté
+            console.log("Utilisateur non connecté");
+
+            // Cacher les sections spécifiques aux utilisateurs
             document.getElementById('studentFiltersSection').classList.add('hidden');
             document.getElementById('mainVoteButton').classList.add('hidden');
             document.getElementById('mainVoteButtonFloating').classList.add('hidden');
+            document.getElementById('candidatesSection').classList.add('hidden');
+
+            // Mettre à jour le statut de vote
+            updateVoteStatusForNonLoggedUser();
+
+            // Afficher le bouton de connexion dans le menu flottant
+            setupFloatingButtonForNonLoggedUser();
         }
     });
 
+    // Fonction pour mettre à jour l'UI pour les non-connectés
+    function updateVoteStatusForNonLoggedUser() {
+        const statusText = document.getElementById('voteStatusText');
+        const statusIcon = document.getElementById('voteStatusIcon');
+
+        statusText.textContent = "Veuillez vous connecter pour voter";
+        statusIcon.innerHTML = '<i class="fas fa-sign-in-alt text-blue-500"></i>';
+
+        // Afficher le bouton "Voir les candidats" même pour non-connectés
+        const viewCandidatesBtn = document.getElementById('viewCandidatesButton');
+        if (viewCandidatesBtn) {
+            viewCandidatesBtn.classList.remove('hidden');
+            viewCandidatesBtn.onclick = () => {
+                document.getElementById('candidatesSection').scrollIntoView({ behavior: 'smooth' });
+            };
+        }
+    }
+
+    // Configurer le menu flottant pour les non-connectés
+    function setupFloatingButtonForNonLoggedUser() {
+        const fabMenu = document.querySelector(".fab-menu");
+        if (!fabMenu) return;
+
+        // Vider le menu
+        fabMenu.innerHTML = '';
+
+        // Ajouter le bouton de connexion
+        const loginFabItem = document.createElement("button");
+        loginFabItem.className = "fab-menu-item";
+        loginFabItem.style.backgroundColor = "#4F46E5";
+        loginFabItem.innerHTML = `
+        <i class="fa-solid fa-sign-in-alt"></i>
+        <span>SE CONNECTER</span>
+    `;
+
+        loginFabItem.addEventListener("click", () => {
+            window.location.href = "./login/index.html";
+        });
+
+        fabMenu.appendChild(loginFabItem);
+    }
+
+    // Charger les données utilisateur
     // Charger les données utilisateur
     async function loadUserData(uid) {
         try {
@@ -738,11 +845,35 @@
                     await checkVotingEligibility(userData);
                 }
 
-                // Charger les candidats
+                // Charger les candidats (pour tous les utilisateurs)
                 await loadCandidates();
+            } else {
+                // Utilisateur Firebase existe mais pas dans la collection users
+                console.warn("Utilisateur sans profil trouvé");
+
+                // Charger quand même les candidats
+                await loadCandidates();
+
+                // Mettre à jour l'UI
+                const statusText = document.getElementById('voteStatusText');
+                const statusIcon = document.getElementById('voteStatusIcon');
+
+                statusText.textContent = "Profil incomplet - Contactez l'administration";
+                statusIcon.innerHTML = '<i class="fas fa-exclamation-triangle text-red-500"></i>';
+
+                // Afficher le bouton "Voir les candidats"
+                const viewCandidatesBtn = document.getElementById('viewCandidatesButton');
+                if (viewCandidatesBtn) {
+                    viewCandidatesBtn.classList.remove('hidden');
+                    viewCandidatesBtn.onclick = () => {
+                        document.getElementById('candidatesSection').scrollIntoView({ behavior: 'smooth' });
+                    };
+                }
             }
         } catch (error) {
             console.error("Erreur chargement utilisateur:", error);
+            // En cas d'erreur, charger quand même les candidats
+            await loadCandidates();
         }
     }
 
@@ -895,6 +1026,7 @@
     }
 
     // Charger les candidats
+    // Charger les candidats (accessible même sans connexion)
     async function loadCandidates() {
         try {
             const c1Ref = doc(db, "elections", "active", "candidates", "c1");
@@ -912,6 +1044,17 @@
             displayCandidates(candidates);
         } catch (error) {
             console.error("Erreur chargement candidats:", error);
+            // Afficher un message d'erreur dans l'interface
+            const container = document.getElementById('candidatesContainer');
+            if (container) {
+                container.innerHTML = `
+                <div class="col-span-2 text-center py-12">
+                    <i class="fas fa-exclamation-triangle text-4xl text-amber-400 mb-4"></i>
+                    <p class="text-gray-500">Impossible de charger les candidats</p>
+                    <p class="text-sm text-gray-400 mt-2">Veuillez réessayer plus tard</p>
+                </div>
+            `;
+            }
         }
     }
 
@@ -1039,6 +1182,8 @@
             }
         });
     }
+
+
 
     // Exposer les fonctions globales
     window.checkVotingEligibility = checkVotingEligibility;

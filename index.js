@@ -537,108 +537,251 @@ export async function getUserData(uid) {
   const querySnapshot = await getDocs(q);
 
   if (!querySnapshot.empty) {
-    // ✅ On récupère UNIQUEMENT le premier document (normalement il n'y en a qu'un)
+    // ✅ On récupère UNIQUEMENT le premier document
     const userDoc = querySnapshot.docs[0];
     const userData = userDoc.data();
 
-    donneeUtilisateur = userData;           // Données de l'utilisateur connecté
-    currentUserDocId = userDoc.id;          // ✅ ID du document Firestore de cet utilisateur
+    donneeUtilisateur = userData;
+    currentUserDocId = userDoc.id;
 
     afficherProfilUtilisateur(userData);
 
-    // Cacher le bouton login s'il existe dans le nouveau design
+    // Cacher le bouton login s'il existe
     if (loginButton) {
       loginButton.style.display = "none";
     }
 
+    // Rôle spécifique : responsable
     if (userData.role === "responsable") {
-      // Logique pour responsable (à adapter si nécessaire)
-      const generateQRCode = document.getElementById("generateQRCode");
-      if (generateQRCode) generateQRCode.style.display = "block";
+      console.log(`Responsable ${userData.nom} connecté`);
+      setupUIForResponsable(userData);
 
+      // Rôle spécifique : étudiant
     } else if (userData.role === "etudiant") {
-      // Si l'utilisateur connecté est un étudiant
+      console.log(`Étudiant ${userData.nom} connecté`);
+      setupUIForEtudiant(userData);
 
-      // Ajouter les éléments au menu flottant
-      const fabMenu = document.querySelector(".fab-menu");
-      if (fabMenu) {
-        fabMenu.innerHTML += `
-          <button class="fab-menu-item" id="updateInformationsModal">
-            <i class="fa-solid fa-gears"></i>
-          </button>
-          <button class="fab-menu-item" id="openSupportModal">
-            <i class="fa-solid fa-headset"></i>
-            <span>JOE</span>
-          </button>
-          <button class="fab-menu-item"><i class="fa-regular fa-message"></i></button>
-          <button class="fab-menu-item"><i class="fa-regular fa-file"></i></button>
-          <button id="logoutButton" class="fab-menu-item" style="background-color: rgb(237, 56, 56);">
-            <i class="fa-solid fa-power-off"></i>
-          </button>
-        `;
-
-        // Gérer la déconnexion
-        document.getElementById("logoutButton").addEventListener("click", () => {
-          let deconnexion = confirm("Voulez-vous vraiment vous déconnecter ?");
-
-          if (deconnexion) {
-            try {
-              const loadingSpinner = document.getElementById('loadingSpinner');
-              if (loadingSpinner) loadingSpinner.style.display = 'block';
-
-              signOut(auth)
-                .then(() => {
-                  console.log("Déconnexion réussie");
-                  window.location.href = "./login/index.html";
-                })
-                .catch((error) => {
-                  console.error("Erreur lors de la déconnexion:", error);
-                });
-
-            } catch (error) {
-              console.log(error);
-            } finally {
-              const loadingSpinner = document.getElementById('loadingSpinner');
-              if (loadingSpinner) loadingSpinner.style.display = 'none';
-            }
-          }
-        });
-      }
-
-      // 🔹 Initialiser les selects Année académique + Classe pour l'étudiant
-      initStudentFilters(userData);
-
-      // 🔹 Vérifier l'éligibilité au vote
-      setTimeout(async () => {
-        const voteEligibility = await checkVotingEligibility(userData, currentUserDocId);
-
-        if (voteEligibility.eligible) {
-          // Afficher le bouton de vote
-          showVoteButton(voteEligibility);
-
-          // Afficher une notification discrète
-          showToast(`Vous pouvez voter au bureau ${voteEligibility.bureauName}`, 'info');
-        } else if (voteEligibility.hasVoted) {
-          // L'étudiant a déjà voté
-          updateUIAfterVote();
-          showToast('Vous avez déjà voté', 'info');
-        } else {
-          // L'étudiant n'est pas éligible
-          console.log('Étudiant non éligible:', voteEligibility.reason);
-        }
-      }, 1000);
-
+      // Autres rôles (directeur, administration, comptable)
     } else if (
-      userData.role === "directeur" ||
+        userData.role === "directeur" ||
         userData.role === "administration" ||
         userData.role === "comptable"
     ) {
-      // Logique pour autres rôles
       console.log(`Utilisateur ${userData.role} connecté`);
+      setupUIForOtherRoles(userData);
+
+      // Rôle inconnu
+    } else {
+      console.log(`Rôle inconnu: ${userData.role}`);
+      setupUIForUnknownRole(userData);
     }
 
   } else {
     console.log("Aucune donnée trouvée pour cet utilisateur");
+    // Même si l'utilisateur Firebase est connecté, il n'a pas de document dans "users"
+    setupUIForUserWithoutProfile();
+  }
+}
+
+// Fonctions spécifiques pour chaque rôle
+function setupUIForEtudiant(userData) {
+  // Ajouter les éléments au menu flottant
+  const fabMenu = document.querySelector(".fab-menu");
+  if (fabMenu) {
+    fabMenu.innerHTML = `
+            <button class="fab-menu-item" id="updateInformationsModal">
+                <i class="fa-solid fa-gears"></i>
+            </button>
+            <button class="fab-menu-item" id="openSupportModal">
+                <i class="fa-solid fa-headset"></i>
+                <span>JOE</span>
+            </button>
+            <button class="fab-menu-item"><i class="fa-regular fa-message"></i></button>
+            <button class="fab-menu-item"><i class="fa-regular fa-file"></i></button>
+            <button id="logoutButton" class="fab-menu-item" style="background-color: rgb(237, 56, 56);">
+                <i class="fa-solid fa-power-off"></i>
+            </button>
+        `;
+
+    // Gérer la déconnexion
+    document.getElementById("logoutButton").addEventListener("click", () => {
+      let deconnexion = confirm("Voulez-vous vraiment vous déconnecter ?");
+
+      if (deconnexion) {
+        try {
+          const loadingSpinner = document.getElementById('loadingSpinner');
+          if (loadingSpinner) loadingSpinner.style.display = 'block';
+
+          signOut(auth)
+              .then(() => {
+                console.log("Déconnexion réussie");
+                window.location.href = "./login/index.html";
+              })
+              .catch((error) => {
+                console.error("Erreur lors de la déconnexion:", error);
+              });
+
+        } catch (error) {
+          console.log(error);
+        } finally {
+          const loadingSpinner = document.getElementById('loadingSpinner');
+          if (loadingSpinner) loadingSpinner.style.display = 'none';
+        }
+      }
+    });
+  }
+
+  // 🔹 Initialiser les selects Année académique + Classe pour l'étudiant
+  initStudentFilters(userData);
+
+  // 🔹 Vérifier l'éligibilité au vote
+  setTimeout(async () => {
+    const voteEligibility = await checkVotingEligibility(userData, currentUserDocId);
+
+    if (voteEligibility.eligible) {
+      // Afficher le bouton de vote
+      showVoteButton(voteEligibility);
+
+      // Afficher une notification discrète
+      showToast(`Vous pouvez voter au bureau ${voteEligibility.bureauName}`, 'info');
+    } else if (voteEligibility.hasVoted) {
+      // L'étudiant a déjà voté
+      updateUIAfterVote();
+      showToast('Vous avez déjà voté', 'info');
+    } else {
+      // L'étudiant n'est pas éligible
+      console.log('Étudiant non éligible:', voteEligibility.reason);
+      updateVoteStatusForNonEligible(voteEligibility.reason);
+    }
+  }, 1000);
+}
+
+function setupUIForResponsable(userData) {
+  // Mettre à jour le statut de vote pour les responsables
+  const statusText = document.getElementById('voteStatusText');
+  const statusIcon = document.getElementById('voteStatusIcon');
+
+  statusText.textContent = "Rôle : Responsable de bureau";
+  statusIcon.innerHTML = '<i class="fas fa-user-shield text-purple-500"></i>';
+
+  // Cacher les boutons de vote
+  document.getElementById('mainVoteButton').classList.add('hidden');
+  document.getElementById('mainVoteButtonFloating').classList.add('hidden');
+
+  // Afficher le bouton "Voir les candidats"
+  const viewCandidatesBtn = document.getElementById('viewCandidatesButton');
+  if (viewCandidatesBtn) {
+    viewCandidatesBtn.classList.remove('hidden');
+    viewCandidatesBtn.onclick = () => {
+      document.getElementById('candidatesSection').scrollIntoView({ behavior: 'smooth' });
+    };
+  }
+
+  // Menu flottant spécifique pour responsable
+  const fabMenu = document.querySelector(".fab-menu");
+  if (fabMenu) {
+    fabMenu.innerHTML = `
+            <button class="fab-menu-item" onclick="window.location.href='./bureaux/index.html'">
+                <i class="fa-solid fa-landmark"></i>
+                <span>BUREAU</span>
+            </button>
+            <button id="logoutButton" class="fab-menu-item" style="background-color: rgb(237, 56, 56);">
+                <i class="fa-solid fa-power-off"></i>
+            </button>
+        `;
+
+    document.getElementById("logoutButton").addEventListener("click", handleLogout);
+  }
+}
+
+function setupUIForOtherRoles(userData) {
+  // Mettre à jour le statut de vote pour les autres rôles
+  const statusText = document.getElementById('voteStatusText');
+  const statusIcon = document.getElementById('voteStatusIcon');
+
+  statusText.textContent = `Rôle : ${userData.role}`;
+  statusIcon.innerHTML = '<i class="fas fa-user-tie text-gray-500"></i>';
+
+  // Cacher les boutons de vote
+  document.getElementById('mainVoteButton').classList.add('hidden');
+  document.getElementById('mainVoteButtonFloating').classList.add('hidden');
+
+  // Afficher le bouton "Voir les candidats"
+  const viewCandidatesBtn = document.getElementById('viewCandidatesButton');
+  if (viewCandidatesBtn) {
+    viewCandidatesBtn.classList.remove('hidden');
+    viewCandidatesBtn.onclick = () => {
+      document.getElementById('candidatesSection').scrollIntoView({ behavior: 'smooth' });
+    };
+  }
+
+  // Menu flottant générique
+  const fabMenu = document.querySelector(".fab-menu");
+  if (fabMenu) {
+    fabMenu.innerHTML = `
+            <button id="logoutButton" class="fab-menu-item" style="background-color: rgb(237, 56, 56);">
+                <i class="fa-solid fa-power-off"></i>
+            </button>
+        `;
+
+    document.getElementById("logoutButton").addEventListener("click", handleLogout);
+  }
+}
+
+function setupUIForUnknownRole(userData) {
+  const statusText = document.getElementById('voteStatusText');
+  const statusIcon = document.getElementById('voteStatusIcon');
+
+  statusText.textContent = "Rôle non défini - Contactez l'administration";
+  statusIcon.innerHTML = '<i class="fas fa-question-circle text-amber-500"></i>';
+
+  showToast("Votre rôle nécessite une configuration", "warning");
+}
+
+function setupUIForUserWithoutProfile() {
+  const statusText = document.getElementById('voteStatusText');
+  const statusIcon = document.getElementById('voteStatusIcon');
+
+  statusText.textContent = "Profil incomplet - Contactez l'administration";
+  statusIcon.innerHTML = '<i class="fas fa-exclamation-triangle text-red-500"></i>';
+
+  showToast("Votre profil nécessite une configuration", "error");
+}
+
+function updateVoteStatusForNonEligible(reason) {
+  const statusText = document.getElementById('voteStatusText');
+  const statusIcon = document.getElementById('voteStatusIcon');
+
+  statusText.textContent = reason || "Vous n'êtes pas éligible pour voter";
+  statusIcon.innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
+}
+
+// Fonction de déconnexion générique
+function handleLogout() {
+  let deconnexion = confirm("Voulez-vous vraiment vous déconnecter ?");
+
+  if (deconnexion) {
+    try {
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      if (loadingSpinner) loadingSpinner.style.display = 'block';
+
+      signOut(auth)
+          .then(() => {
+            console.log("Déconnexion réussie");
+            window.location.href = "./login/index.html";
+          })
+          .catch((error) => {
+            console.error("Erreur lors de la déconnexion:", error);
+            showToast("Erreur lors de la déconnexion", "error");
+          });
+
+    } catch (error) {
+      console.log(error);
+      showToast("Erreur lors de la déconnexion", "error");
+    } finally {
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      if (loadingSpinner) loadingSpinner.style.display = 'none';
+    }
   }
 }
 
