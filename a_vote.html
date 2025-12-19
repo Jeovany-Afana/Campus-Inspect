@@ -1,53 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./a_vote.css">
-    <link rel="stylesheet" href="../logo.css">
-    <title>Scann</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ajouter 2025-2026 aux étudiants</title>
+    <style>
+        body { font-family: system-ui, Arial; padding: 24px; max-width: 900px; margin: auto; }
+        button { padding: 12px 16px; border: 0; border-radius: 10px; cursor: pointer; font-weight: 700; }
+        .primary { background: #2563eb; color: #fff; }
+        .primary:disabled { opacity: .6; cursor: not-allowed; }
+        pre { background: #0b1220; color: #e5e7eb; padding: 14px; border-radius: 10px; overflow: auto; }
+        .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .badge { background: #eef2ff; color: #1e40af; padding: 6px 10px; border-radius: 999px; font-weight: 700; }
+    </style>
 </head>
 <body>
-    
-  
-    </div>
-    <caption>
-        <div class="logo">
-            <h1>CAMPUS <span>INSPECT</span></h1>
-        </div>
-    </caption>
+<h1>Maj Firestore — Étudiants</h1>
+<p>
+    Objectif : ajouter <span class="badge">2025-2026</span> dans <code>annee_academique_id</code>
+    pour tous les utilisateurs dont <code>role = "etudiant"</code>, sans supprimer l’existant.
+</p>
 
-    <div class="cards-container">
-        <!-- Carte 1 -->
-        <div class="card">
-            <img src="./Al_amine.jpg" alt="Photo du candidat" class="candidate-photo">
-            <h2 class="candidate-name">Al Amine</h2>
-            <p class="candidate-votes">Votes : <span id="voteCandidat1">0</span></p>
-        </div>
-        <!-- Carte 2 -->
-        <div class="card">
-            <img src="./ben.jpg" alt="Photo du candidat" class="candidate-photo">
-            <h2 class="candidate-name">Ben</h2>
-            <p class="candidate-votes">Votes : <span id="voteCandidat2">0</span></p>
-        </div>
-    </div>
+<div class="row">
+    <button id="runBtn" class="primary">Ajouter 2025-2026 aux étudiants</button>
+    <span id="status"></span>
+</div>
 
-    <!-- <table>
-        <thead>
-            <tr>
-                <th>Kairos</th>
-                <th>Nom & Prénom</th>
-                <th>Classe</th>
-                <th>Status</th>
-                <th>Date</th>
-            </tr>
+<h3>Logs</h3>
+<pre id="logs"></pre>
 
-        </thead>
-        <tbody id="table-body">
-          
-        </tbody>
-    </table> -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+    import {
+        getFirestore,
+        collection,
+        getDocs,
+        query,
+        where,
+        doc,
+        writeBatch,
+        arrayUnion,
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
-  <script type="module" src="./a_vote.js"></script>
+    // ✅ Mets ta config Firebase ici
+    const firebaseConfig = {
+        apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA",
+        authDomain: "inspecteur-de-classes.firebaseapp.com",
+        projectId: "inspecteur-de-classes",
+        storageBucket: "inspecteur-de-classes.appspot.com",
+        messagingSenderId: "572661846292",
+        appId: "1:572661846292:web:aeb0374db2d414fef9f201",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const TARGET_YEAR = "2025-2026";
+
+    const runBtn = document.getElementById("runBtn");
+    const logsEl = document.getElementById("logs");
+    const statusEl = document.getElementById("status");
+
+    function log(msg) {
+        logsEl.textContent += msg + "\n";
+        logsEl.scrollTop = logsEl.scrollHeight;
+    }
+
+    function setStatus(text) {
+        statusEl.textContent = text;
+    }
+
+    runBtn.addEventListener("click", async () => {
+        runBtn.disabled = true;
+        logsEl.textContent = "";
+        setStatus("Traitement...");
+
+        try {
+            // ✅ Filtrer uniquement les étudiants côté Firestore
+            const q = query(collection(db, "users"), where("role", "==", "etudiant"));
+            const snap = await getDocs(q);
+
+            if (snap.empty) {
+                log("Aucun étudiant trouvé.");
+                setStatus("Terminé (0).");
+                runBtn.disabled = false;
+                return;
+            }
+
+            log(`Étudiants trouvés : ${snap.size}`);
+
+            // ⚠️ Firestore batch = max 500 écritures par batch
+            let batch = writeBatch(db);
+            let ops = 0;
+
+            let updatedCount = 0;
+
+            for (const userDoc of snap.docs) {
+                const data = userDoc.data();
+                const ref = doc(db, "users", userDoc.id);
+
+                // On utilise arrayUnion => ajoute seulement si absent
+                batch.update(ref, {
+                    annee_academique_id: arrayUnion(TARGET_YEAR),
+                });
+
+                ops++;
+                updatedCount++;
+
+                // Commit tous les 450-500 pour être safe
+                if (ops >= 450) {
+                    await batch.commit();
+                    log(`✅ Batch commit (${ops} updates)`);
+                    batch = writeBatch(db);
+                    ops = 0;
+                }
+            }
+
+            if (ops > 0) {
+                await batch.commit();
+                log(`✅ Batch commit final (${ops} updates)`);
+            }
+
+            log(`🎉 Mise à jour terminée. Documents concernés : ${updatedCount}`);
+            setStatus(`Terminé ✅ (${updatedCount} étudiants)`);
+        } catch (err) {
+            console.error(err);
+            log("❌ Erreur: " + (err?.message || err));
+            setStatus("Erreur ❌ (voir logs)");
+        } finally {
+            runBtn.disabled = false;
+        }
+    });
+</script>
 </body>
 </html>

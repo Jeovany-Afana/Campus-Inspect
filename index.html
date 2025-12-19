@@ -786,7 +786,7 @@
         const statusIcon = document.getElementById('voteStatusIcon');
 
         statusText.textContent = "Veuillez vous connecter pour voter";
-        statusIcon.innerHTML = '<i class="fas fa-sign-in-alt text-blue-500"></i>';
+        statusIcon.innerHTML = `<i class="fas fa-sign-in-alt text-blue-500" style="cursor: pointer;" onclick="window.location.href='login/index.html'"></i>`;
 
         // Afficher le bouton "Voir les candidats" même pour non-connectés
         const viewCandidatesBtn = document.getElementById('viewCandidatesButton');
