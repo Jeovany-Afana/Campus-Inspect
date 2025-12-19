@@ -1001,3 +1001,4 @@ async function afficherProfilUtilisateur(userData) {
 window.checkVotingEligibility = checkVotingEligibility;
 window.openVotingModal = openVotingModal;
 window.showToast = showToast;
+window.updateUIForUser = updateUIForUser; // <-- AJOUTEZ CETTE LIGNE
