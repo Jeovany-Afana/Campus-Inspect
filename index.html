@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./floating-button.css">
     <link rel="stylesheet" href="./modale.css">
+    <link rel="stylesheet" href="./overlay.css">
     <link rel="stylesheet" href="./studentModal/student-modal.css">
     <link rel="stylesheet" href="./support/support.css">
     <link rel="stylesheet" href="./updates/updateInformations.css">
@@ -159,6 +160,81 @@
 </head>
 <body class="bg-gray-50 min-h-screen font-sans" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%234f46e5\" fill-opacity=\"0.03\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
 
+<!-- ===== SIMPLE PRE-VOTE OVERLAY (MOBILE FIRST) ===== -->
+<div id="pvoSimple" class="pvoS" role="dialog" aria-modal="true" aria-label="Vote pas encore ouvert" style="display:none">
+    <canvas id="pvoConfetti" class="pvoS-confetti" aria-hidden="true"></canvas>
+
+    <div class="pvoS-card">
+        <div class="pvoS-top">
+            <div class="pvoS-badge"><span class="dot"></span><span id="pvoSStatus">Vote pas encore ouvert</span></div>
+            <h1 class="pvoS-title">🗳️ Campus Vote</h1>
+            <p class="pvoS-sub">
+                Reviens à l’heure exacte pour voter. <b>Ton choix compte.</b> 🔥
+            </p>
+        </div>
+
+        <section class="pvoS-count" aria-label="Compte à rebours">
+            <div class="pvoS-count-head">
+                <span class="pvoS-count-label">Ouverture dans :</span>
+                <span class="pvoS-count-target" id="pvoSTarget">—</span>
+            </div>
+
+            <div class="pvoS-boxes" role="timer" aria-live="polite">
+                <div class="pvoS-box">
+                    <div class="num" id="pvoSD">00</div>
+                    <div class="unit">jours</div>
+                </div>
+                <div class="pvoS-box">
+                    <div class="num" id="pvoSH">00</div>
+                    <div class="unit">heures</div>
+                </div>
+                <div class="pvoS-box">
+                    <div class="num" id="pvoSM">00</div>
+                    <div class="unit">min</div>
+                </div>
+                <div class="pvoS-box">
+                    <div class="num" id="pvoSS">00</div>
+                    <div class="unit">sec</div>
+                </div>
+            </div>
+
+            <div class="pvoS-foot" id="pvoSFoot">💡 Connecte-toi avant l’ouverture pour voter en 10 secondes.</div>
+        </section>
+
+        <section class="pvoS-cands" aria-label="Candidats">
+            <article class="pvoS-cand">
+                <div class="pvoS-candTop">
+                    <div class="avatar">
+                        <img id="cand1Img" alt="Candidat 1" />
+                    </div>
+                    <div class="meta">
+                        <div class="name" id="cand1Name">Chargement…</div>
+                        <div class="tag">Candidat #1</div>
+                    </div>
+                </div>
+                <div class="slogan" id="cand1Slogan">—</div>
+            </article>
+
+            <article class="pvoS-cand">
+                <div class="pvoS-candTop">
+                    <div class="avatar">
+                        <img id="cand2Img" alt="Candidat 2" />
+                    </div>
+                    <div class="meta">
+                        <div class="name" id="cand2Name">Chargement…</div>
+                        <div class="tag">Candidat #2</div>
+                    </div>
+                </div>
+                <div class="slogan" id="cand2Slogan">—</div>
+            </article>
+        </section>
+
+        <div class="pvoS-actions">
+            <a class="btn primary" id="pvoSLoginBtn" href="./login/index.html">Je vérifie mon compte</a>
+            <button class="btn ghost" id="pvoSCopyBtn" type="button">Copier l’horaire</button>
+        </div>
+    </div>
+</div>
 
 <noscript>
     <div style="position:fixed;inset:0;z-index:999999;background:#0b1020;color:#fff;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;">
@@ -1200,6 +1276,7 @@
 <!-- Scripts existants -->
 <script src="https://unpkg.com/jsqr"></script>
 <script src="./floating-button.js"></script>
+<script type="module" src="./overlay.js"></script>
 <script type="module" src="./studentModal/student-modal.js"></script>
 <script type="module" src="./index.js"></script>
 </body>
