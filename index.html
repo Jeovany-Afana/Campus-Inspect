@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Vote - Élections Étudiantes</title>
+    <title>Campus Inspect</title>
     <link rel="stylesheet" href="./style.css">
+    <!-- <link rel="stylesheet" href="./scannQR.css"> -->
     <link rel="stylesheet" href="./floating-button.css">
     <link rel="stylesheet" href="./modale.css">
-    <link rel="stylesheet" href="./overlay.css">
     <link rel="stylesheet" href="./studentModal/student-modal.css">
     <link rel="stylesheet" href="./support/support.css">
     <link rel="stylesheet" href="./updates/updateInformations.css">
@@ -18,1266 +18,666 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="./icons/logo.PNG">
 
-    <style>
-        /* Animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-            50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
-        }
-
-        @keyframes scaleIn {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Classes d'animation */
-        .animate-float { animation: float 3s ease-in-out infinite; }
-        .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
-        .animate-scaleIn { animation: scaleIn 0.5s ease-out; }
-        .animate-slideInRight { animation: slideInRight 0.6s ease-out; }
-        .animate-fadeIn { animation: fadeIn 0.8s ease-out; }
-
-        /* Styles personnalisés */
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .election-gradient {
-            background: linear-gradient(135deg, #002ebd 0%, #f5a71c 100%);
-        }
-
-        .vote-gradient {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        }
-
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .candidate-selected {
-            border-color: #10b981 !important;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
-        }
-
-        .countdown-number {
-            font-feature-settings: "tnum";
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* État d'élection */
-        .election-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 10;
-        }
-
-        /* Bouton de vote principal */
-        .main-vote-btn {
-            position: fixed;
-            bottom: 120px;
-            right: 30px;
-            z-index: 40;
-        }
-
-        /* Ajoutez dans votre style existant */
-        .spinner-status {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Styles pour les différents statuts */
-        .status-success {
-            color: #10B981;
-        }
-
-        .status-warning {
-            color: #F59E0B;
-        }
-
-        .status-error {
-            color: #EF4444;
-        }
-
-        .status-info {
-            color: #3B82F6;
-        }
-    </style>
-
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3947847620809013"
+            crossorigin="anonymous"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        election: {
-                            primary: '#4F46E5',
-                            secondary: '#7C3AED',
-                            accent: '#10B981',
-                            dark: '#1E1B4B'
-                        }
-                    },
                     animation: {
-                        'float': 'float 3s ease-in-out infinite',
-                        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
-                        'scaleIn': 'scaleIn 0.5s ease-out',
-                        'slideInRight': 'slideInRight 0.6s ease-out',
-                        'fadeIn': 'fadeIn 0.8s ease-out',
-                        'bounce-slow': 'bounce 2s infinite'
+                        fadeIn: 'fadeIn 0.5s ease-in-out',
+                        scaleIn: 'scaleIn 0.3s ease-in-out',
                     },
-                    backgroundImage: {
-                        'election-pattern': "url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%234f46e5\" fill-opacity=\"0.05\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')",
-                    }
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.8)' },
+                            '100%': { transform: 'scale(1)' },
+                        },
+                    },
                 },
             },
         };
+
+
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563EB',
+                        secondary: '#1E40AF',
+                        accent: '#4ADE80',
+                    },
+                    animation: {
+                        slideIn: 'slideIn 0.5s ease-in-out',
+                        fadeIn: 'fadeIn 0.3s ease-out',
+                    },
+                    keyframes: {
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                    },
+                },
+            },
+        };
+
+
+
     </script>
 </head>
-<body class="bg-gray-50 min-h-screen font-sans" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%234f46e5\" fill-opacity=\"0.03\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');">
+<body class="bg-gray-50 bg-gray-50 flex flex-col items-center justify-center min-h-screen text-gray-800">
 
-<!-- ===== SIMPLE PRE-VOTE OVERLAY (MOBILE FIRST) ===== -->
-<div id="pvoSimple" class="pvoS" role="dialog" aria-modal="true" aria-label="Vote pas encore ouvert" style="display:none">
-    <canvas id="pvoConfetti" class="pvoS-confetti" aria-hidden="true"></canvas>
 
-    <div class="pvoS-card">
-        <div class="pvoS-top">
-            <div class="pvoS-badge"><span class="dot"></span><span id="pvoSStatus">Vote pas encore ouvert</span></div>
-            <h1 class="pvoS-title">🗳️ Campus Vote</h1>
-            <p class="pvoS-sub">
-                Reviens à l’heure exacte pour voter. <b>Ton choix compte.</b> 🔥
-            </p>
+<nav class="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-900 text-white shadow-lg fixed w-full top-0 z-50">
+    <div class="container mx-auto flex justify-between items-center px-6 py-4">
+        <!-- Logo -->
+        <div class="flex items-center space-x-3">
+            <div class="bg-white rounded-full p-2 shadow-md transform hover:scale-110 transition-transform duration-300">
+                <i class="fa-solid fa-eye text-blue-700 text-2xl"></i>
+            </div>
+            <span class="text-2xl font-extrabold tracking-wide uppercase bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-blue-500 hover:opacity-90 cursor-pointer transition-opacity duration-300">
+          Campus Inspect
+        </span>
         </div>
 
-        <section class="pvoS-count" aria-label="Compte à rebours">
-            <div class="pvoS-count-head">
-                <span class="pvoS-count-label">Ouverture dans :</span>
-                <span class="pvoS-count-target" id="pvoSTarget">—</span>
-            </div>
+        <!-- Navigation Links -->
+        <div class="hidden md:flex items-center space-x-8">
+            <a href="#" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+                Accueil
+            </a>
+            <a href="./bureaux/index.html" class="text-lg font-semibold bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-5 py-2 rounded-full shadow-md transition-all duration-300 transform hover:scale-105">
+                Bureaux
+            </a>
 
-            <div class="pvoS-boxes" role="timer" aria-live="polite">
-                <div class="pvoS-box">
-                    <div class="num" id="pvoSD">00</div>
-                    <div class="unit">jours</div>
-                </div>
-                <div class="pvoS-box">
-                    <div class="num" id="pvoSH">00</div>
-                    <div class="unit">heures</div>
-                </div>
-                <div class="pvoS-box">
-                    <div class="num" id="pvoSM">00</div>
-                    <div class="unit">min</div>
-                </div>
-                <div class="pvoS-box">
-                    <div class="num" id="pvoSS">00</div>
-                    <div class="unit">sec</div>
-                </div>
-            </div>
 
-            <div class="pvoS-foot" id="pvoSFoot">💡 Connecte-toi avant l’ouverture pour voter en 10 secondes.</div>
-        </section>
-
-        <section class="pvoS-cands" aria-label="Candidats">
-            <article class="pvoS-cand">
-                <div class="pvoS-candTop">
-                    <div class="avatar">
-                        <img id="cand1Img" alt="Candidat 1" />
-                    </div>
-                    <div class="meta">
-                        <div class="name" id="cand1Name">Chargement…</div>
-                        <div class="tag">Candidat #1</div>
-                    </div>
-                </div>
-                <div class="slogan" id="cand1Slogan">—</div>
-            </article>
-
-            <article class="pvoS-cand">
-                <div class="pvoS-candTop">
-                    <div class="avatar">
-                        <img id="cand2Img" alt="Candidat 2" />
-                    </div>
-                    <div class="meta">
-                        <div class="name" id="cand2Name">Chargement…</div>
-                        <div class="tag">Candidat #2</div>
-                    </div>
-                </div>
-                <div class="slogan" id="cand2Slogan">—</div>
-            </article>
-        </section>
-
-        <div class="pvoS-actions">
-            <a class="btn primary" id="pvoSLoginBtn" href="./login/index.html">Je vérifie mon compte</a>
-            <button class="btn ghost" id="pvoSCopyBtn" type="button">Copier l’horaire</button>
         </div>
-    </div>
-</div>
 
-<noscript>
-    <div style="position:fixed;inset:0;z-index:999999;background:#0b1020;color:#fff;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;">
-        Active JavaScript pour voir le compte à rebours et l’ouverture automatique du vote.
-    </div>
-</noscript>
+        <!-- User Info & Icons -->
+        <div class="flex items-center space-x-6">
+            <!-- Comments Icon -->
+            <i class="fa-regular fa-comments cursor-pointer text-xl hover:text-blue-300 transition-all duration-300 transform hover:scale-110" id="openSearchModal"></i>
 
-<!-- Bandeau Élections -->
-<div id="electionBanner" class="hidden">
-    <div class="bg-gradient-to-r from-election-primary to-election-secondary text-white">
-        <div class="container mx-auto px-4 py-3">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="flex items-center gap-3">
-                    <div class="bg-white/20 p-2 rounded-full">
-                        <i class="fas fa-vote-yea text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold text-lg">Élections Étudiantes 2024</h3>
-                        <p class="text-sm opacity-90">Votre voix compte !</p>
-                    </div>
-                </div>
+            <!-- Notification Icon -->
+            <div class="relative group" id="relative">
+                <i class="fas fa-bell cursor-pointer text-xl hover:text-blue-300 transition-all duration-300 transform hover:scale-110" id="openNotificationModal"></i>
+                <span class="absolute -top-2 -right-2 bg-red-500 text-xs font-bold rounded-full px-2 py-0.5 group-hover:animate-pulse" id="notificationCount">
 
-                <div id="electionCountdown" class="flex items-center gap-4">
-                    <div class="text-center">
-                        <div class="text-2xl font-bold countdown-number" id="countdownDays">00</div>
-                        <div class="text-xs opacity-80">Jours</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-2xl font-bold countdown-number" id="countdownHours">00</div>
-                        <div class="text-xs opacity-80">Heures</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-2xl font-bold countdown-number" id="countdownMinutes">00</div>
-                        <div class="text-xs opacity-80">Minutes</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Navigation -->
-<nav class="bg-white shadow-lg sticky top-0 z-50">
-    <div class="container mx-auto px-4 py-4">
-        <div class="flex justify-between items-center">
-            <!-- Logo -->
-            <div class="flex items-center gap-3">
-                <div class="p-2 bg-election-primary rounded-lg">
-                    <i class="fas fa-university text-white text-2xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-2xl font-bold bg-gradient-to-r from-election-primary to-election-secondary bg-clip-text text-transparent">
-                        Campus Vote
-                    </h1>
-                    <p class="text-xs text-gray-500">Plateforme de vote étudiant</p>
-                </div>
+          </span>
             </div>
 
-            <!-- Navigation Desktop -->
-            <div class="hidden md:flex items-center gap-8">
-                <a href="#" class="font-semibold text-election-primary border-b-2 border-election-primary pb-1">
-                    <i class="fas fa-home mr-2"></i>Accueil
-                </a>
-                <a href="./bureaux/index.html" class="font-semibold text-gray-600 hover:text-election-primary transition">
-                    <i class="fas fa-landmark mr-2"></i>Bureaux
-                </a>
-                <a href="#" class="font-semibold text-gray-600 hover:text-election-primary transition" id="resultsLink">
-                    <i class="fas fa-chart-bar mr-2"></i>Résultats
-                </a>
+            <!-- User Profile -->
+
+            <div class="profile-picture w-10 h-10 rounded-full overflow-hidden shadow-lg transform hover:scale-110 transition-transform duration-300" id="userProfileContainer">
+
             </div>
 
-            <!-- Actions utilisateur -->
-            <div class="flex items-center gap-4">
-                <!-- Notifications -->
-                <div class="relative">
-                    <button id="openNotificationModal" class="p-2 rounded-full hover:bg-gray-100 transition">
-                        <i class="fas fa-bell text-gray-600 text-xl"></i>
-                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" id="notificationCount">0</span>
-                    </button>
-                </div>
 
-                <!-- Profil -->
-                <div id="userProfileContainer" class="cursor-pointer">
-                    <!-- Photo de profil chargée dynamiquement -->
-                </div>
-
-                <!-- Menu mobile -->
-                <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" id="mobileMenuToggle">
-                    <i class="fas fa-bars text-2xl text-gray-600"></i>
+            <!-- Mobile Menu Toggle -->
+            <div class="md:hidden">
+                <button class="menu-toggle text-2xl">
+                    <i class="fas fa-bars hover:scale-105 transition-transform duration-300"></i>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Menu mobile -->
-    <div id="mobileMenu" class="hidden md:hidden bg-white border-t px-4 py-3">
-        <a href="#" class="block py-3 font-semibold text-election-primary">
-            <i class="fas fa-home mr-3"></i>Accueil
+    <!-- Mobile Menu -->
+    <div class="hidden flex flex-col items-start bg-gradient-to-b from-blue-900 to-blue-700 text-white p-4 shadow-2xl rounded-b-xl md:hidden" id="mobileMenu">
+        <a href="#" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+            Accueil
         </a>
-        <a href="./bureaux/index.html" class="block py-3 text-gray-600 hover:text-election-primary">
-            <i class="fas fa-landmark mr-3"></i>Bureaux
+        <a href="./bureaux/index.html" class="w-full text-lg font-medium bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 px-6 py-3 rounded-lg mb-2 transition-all duration-300 transform hover:scale-105">
+            Bureaux
         </a>
-        <a href="#" class="block py-3 text-gray-600 hover:text-election-primary" id="resultsLinkMobile">
-            <i class="fas fa-chart-bar mr-3"></i>Résultats
-        </a>
+
     </div>
 </nav>
 
-<!-- Contenu principal -->
-<main class="container mx-auto px-4 py-8">
-    <!-- Section Hero -->
-    <div class="mb-12 animate-fadeIn">
-        <div class="election-gradient rounded-3xl overflow-hidden shadow-2xl">
-            <div class="relative p-8 md:p-12 text-white">
-                <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>
-                <div class="relative z-10 max-w-2xl">
-                    <div class="inline-flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full mb-6">
-                        <i class="fas fa-bullhorn"></i>
-                        <span class="font-semibold">Élections en cours</span>
-                    </div>
-                    <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                        Votre voix,
-                        <span class="bg-white/20 px-2 rounded-lg">votre avenir</span>
-                    </h1>
-                    <p class="text-xl mb-8 opacity-90">
-                        Participez aux élections étudiantes et choisissez vos représentants.
-                        Chaque vote compte pour bâtir le campus de demain.
-                    </p>
 
-                    <!-- État du vote -->
-                    <div id="voteStatus" class="glass-effect rounded-xl p-6 mb-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="font-bold text-xl mb-2">Votre statut de vote</h3>
-                                <p id="voteStatusText" class="opacity-90">Chargement...</p>
-                            </div>
-                            <div id="voteStatusIcon" class="text-3xl">
-                                <i class="fas fa-spinner animate-spin"></i>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Boutons d'action -->
-                    <div class="flex flex-wrap gap-4">
-                        <button id="mainVoteButton" class="bg-white text-election-primary font-bold px-8 py-4 rounded-xl hover:scale-105 transition-transform hidden">
-                            <i class="fas fa-vote-yea mr-2"></i>
-                            Voter maintenant
-                        </button>
-                        <button id="viewCandidatesButton" class="bg-white/20 text-white font-bold px-8 py-4 rounded-xl hover:bg-white/30 transition hidden">
-                            <i class="fas fa-users mr-2"></i>
-                            Voir les candidats
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Section Filtres Étudiant -->
-    <div id="studentFiltersSection" class="hidden mb-8 animate-slideInRight">
-        <div class="bg-white rounded-2xl shadow-lg p-6">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="p-3 bg-election-primary/10 rounded-xl">
-                    <i class="fas fa-graduation-cap text-election-primary text-xl"></i>
-                </div>
-                <div>
-                    <h2 class="text-xl font-bold text-gray-800">Vos informations académiques</h2>
-                    <p class="text-gray-600">Définissez votre année et votre classe</p>
-                </div>
-            </div>
+<!-- Modal de recherche (pour rechercher un étudiant) -->
 
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- Année académique -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-calendar-alt mr-2"></i>
-                        Année académique
-                    </label>
-                    <select id="student-academic-year"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-election-primary focus:border-transparent transition">
-                        <option value="" disabled selected>Choisissez votre année</option>
-                    </select>
-                    <p id="yearLockStatus" class="text-xs text-gray-500 mt-2 hidden">
-                        <i class="fas fa-lock mr-1"></i> Verrouillé
-                    </p>
-                </div>
+<div class="modal-overlay">
+    <!-- Contenu de votre modal -->
 
-                <!-- Classe -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        <i class="fas fa-users-class mr-2"></i>
-                        Classe
-                    </label>
-                    <select id="student-class"
-                            class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-election-primary focus:border-transparent transition">
-                        <option value="" hidden disabled selected>Sélectionnez votre classe</option>
-                        <option value="L1 INFORMATIQUE">L1 INFORMATIQUE</option>
-                        <option value="L1 GESTION">L1 GESTION</option>
-                        <option value="L1 DROIT">L1 DROIT</option>
-                        <option value="L2 DROIT">L2 DROIT</option>
-                        <option value="L3 DROIT">L3 DROIT</option>
-                        <option value="L2 INFORMATIQUE">L2 INFORMATIQUE</option>
-                        <option value="L2 GESTION">L2 GESTION</option>
-                        <option value="BTL1">BTL1</option>
-                        <option value="BTL2">BTL2</option>
-                        <option value="BTL3">BTL3</option>
-                        <option value="MARKETING">MARKETING</option>
-                        <option value="GENIE LOGICIEL">GENIE LOGICIEL</option>
-                        <option value="RESSOURCES HUMAINES">RESSOURCES HUMAINES</option>
-                        <option value="RSS">RSS</option>
-                        <option value="QHSE">QHSE</option>
-                    </select>
-                    <p id="classLockStatus" class="text-xs text-gray-500 mt-2 hidden">
-                        <i class="fas fa-lock mr-1"></i> Verrouillé
-                    </p>
-                </div>
-            </div>
-
-            <div class="mt-6 p-4 bg-blue-50 rounded-xl">
-                <div class="flex items-start gap-3">
-                    <i class="fas fa-info-circle text-blue-500 mt-1"></i>
-                    <div>
-                        <p class="text-sm text-blue-800">
-                            Ces informations sont <span class="font-semibold">définitives</span> après enregistrement.
-                            Contactez l'administration pour toute modification.
-                        </p>
-                        <p id="currentSelection" class="text-xs text-blue-600 mt-2"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section Candidats -->
-    <div id="candidatesSection" class="hidden mb-12">
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h2 class="text-3xl font-bold text-gray-800">Les Candidats</h2>
-                <p class="text-gray-600">Découvrez les programmes et profils</p>
-            </div>
-            <div class="flex items-center gap-2 text-election-primary">
-                <i class="fas fa-user-tie text-2xl"></i>
-                <span class="font-bold" id="candidatesCount">2</span>
-            </div>
+    <div class="searchModal" id="searchModal">
+        <!-- Modal Header -->
+        <div class="header">
+            <h2>Rechercher un étudiant</h2>
+            <span class="close" id="closeSearchModal">&times;</span>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8" id="candidatesContainer">
-            <!-- Les candidats seront chargés ici -->
+        <!-- Search Input -->
+        <div class="search">
+            <input type="text" placeholder="Rechercher un étudiant" id="searchInput">
         </div>
-    </div>
 
-    <!-- Section Statistiques -->
-    <div id="statsSection" class="hidden mb-12">
-        <div class="bg-white rounded-2xl shadow-lg p-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Participation en temps réel</h2>
-            <div class="grid md:grid-cols-4 gap-6">
-                <div class="text-center p-6 bg-blue-50 rounded-xl">
-                    <div class="text-4xl font-bold text-election-primary mb-2" id="totalVotes">0</div>
-                    <p class="text-gray-600">Votes exprimés</p>
-                </div>
-                <div class="text-center p-6 bg-green-50 rounded-xl">
-                    <div class="text-4xl font-bold text-green-600 mb-2" id="votedYes">0</div>
-                    <p class="text-gray-600">Bulletins valides</p>
-                </div>
-                <div class="text-center p-6 bg-amber-50 rounded-xl">
-                    <div class="text-4xl font-bold text-amber-600 mb-2" id="votedNo">0</div>
-                    <p class="text-gray-600">Bulletins nuls</p>
-                </div>
-                <div class="text-center p-6 bg-purple-50 rounded-xl">
-                    <div class="text-4xl font-bold text-purple-600 mb-2" id="participationRate">0%</div>
-                    <p class="text-gray-600">Taux de participation</p>
-                </div>
-            </div>
+        <!-- Results Section -->
+        <div class="results" id="resultsContainer">
         </div>
-    </div>
-
-    <!-- Section Informations importantes -->
-    <div class="mb-12">
-        <div class="bg-gradient-to-r from-election-dark to-gray-900 text-white rounded-2xl p-8">
-            <div class="flex items-center gap-4 mb-6">
-                <i class="fas fa-exclamation-circle text-3xl"></i>
-                <h2 class="text-2xl font-bold">Informations importantes</h2>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-white/10 p-6 rounded-xl">
-                    <i class="fas fa-user-check text-2xl mb-4"></i>
-                    <h3 class="font-bold text-lg mb-2">Éligibilité</h3>
-                    <p class="text-sm opacity-90">
-                        Seuls les étudiants inscrits dans l'année académique en cours et assignés à un bureau peuvent voter.
-                    </p>
-                </div>
-
-                <div class="bg-white/10 p-6 rounded-xl">
-                    <i class="fas fa-shield-alt text-2xl mb-4"></i>
-                    <h3 class="font-bold text-lg mb-2">Sécurité</h3>
-                    <p class="text-sm opacity-90">
-                        Votre vote est anonyme et sécurisé. Aucune modification n'est possible après validation.
-                    </p>
-                </div>
-
-                <div class="bg-white/10 p-6 rounded-xl">
-                    <i class="fas fa-clock text-2xl mb-4"></i>
-                    <h3 class="font-bold text-lg mb-2">Horaires</h3>
-                    <p class="text-sm opacity-90">
-                        Les bureaux de vote sont ouverts de 8h à 18h. Pensez à voter avant la fermeture.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
-
-<!-- Bouton de vote flottant principal -->
-<button id="mainVoteButtonFloating"
-        class="main-vote-btn vote-gradient text-white font-bold px-8 py-4 rounded-full shadow-2xl hover:scale-110 transition-transform animate-pulse-glow hidden">
-    <i class="fas fa-vote-yea mr-2"></i>
-    Voter maintenant
-</button>
-
-<!-- Menu flottant -->
-<div class="fabButton">
-    <button id="mainFab" class="fab-main bg-election-primary">
-        <i class="fas fa-plus text-white"></i>
-    </button>
-    <div class="fab-menu" id="fabMenu">
-        <!-- Les éléments du menu seront ajoutés dynamiquement -->
     </div>
 </div>
 
-<!-- Footer -->
-<footer class="bg-election-dark text-white py-12">
-    <div class="container mx-auto px-4">
-        <div class="grid md:grid-cols-3 gap-8">
-            <div>
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2 bg-white rounded-lg">
-                        <i class="fas fa-university text-election-primary text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold">Campus Vote</h3>
-                </div>
-                <p class="text-gray-300 mb-6">
-                    Plateforme de vote électronique sécurisée pour les élections étudiantes.
-                </p>
-                <div class="flex gap-4">
-                    <a href="#" class="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition">
-                        <i class="fab fa-facebook"></i>
-                    </a>
-                    <a href="#" class="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
-            </div>
 
-            <div>
-                <h4 class="text-xl font-bold mb-6">Liens rapides</h4>
-                <ul class="space-y-3">
-                    <li><a href="#" class="text-gray-300 hover:text-white transition">Accueil</a></li>
-                    <li><a href="./bureaux/index.html" class="text-gray-300 hover:text-white transition">Bureaux de vote</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition">Règlement</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white transition">FAQ</a></li>
-                </ul>
-            </div>
+<!-- Modal pour les notifications de l'étudiant-->
+<div class="student-notification-overlay"></div>
+<div class="student-notification-modal" id="studentNotificationModal">
+    <div class="modal-header">
+        <h2 style="font-size: 1.7rem; font-weight: bold; color: white;"> Notifications <i class="fas fa-bell cursor-pointer text-xl"></i></h2>
+        <span class="close-btn" id="closeStudentNotificationModal">&times;</span>
+    </div>
+    <div class="modal-messages" id="studentMessageContainer">
+    </div>
+</div>
 
-            <div>
-                <h4 class="text-xl font-bold mb-6">Contact</h4>
-                <div class="space-y-3">
-                    <p class="text-gray-300">
-                        <i class="fas fa-envelope mr-3"></i>
-                        elections@campus.edu
-                    </p>
-                    <p class="text-gray-300">
-                        <i class="fas fa-phone mr-3"></i>
-                        +221 77 123 4567
-                    </p>
-                    <p class="text-gray-300">
-                        <i class="fas fa-map-marker-alt mr-3"></i>
-                        Campus Principal, Dakar
-                    </p>
-                </div>
-            </div>
+
+
+<!-- Modal pour l'envoie d'un message -->
+<div class="modal-overlay-message"></div>
+<div class="modale-message" id="messageModal">
+    <!-- Modal Header -->
+    <div class="header">
+        <h2>Envoyer un message</h2>
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile">
+        <img id="modalStudentPhoto" src="#" alt="Profile Picture">
+        <div class="details">
+            <h3 id="modalStudentName"></h3>
+            <p id="modalStudentClass"></p>
+        </div>
+    </div>
+
+    <!-- Message Section -->
+    <textarea placeholder="Tapez votre message"></textarea>
+
+    <!-- Actions Section -->
+    <div class="actions">
+        <button class="cancel" id="cancelBtn">Quitter</button>
+        <button class="send">Envoyer</button>
+    </div>
+</div>
+
+
+<!-- Action Buttons -->
+<div class="flex flex-col items-center mt-32">
+
+</div>
+
+
+<!-- QR Code Overlay (Container) -->
+<div class="overlay hidden fixed inset-0 bg-gray-900 bg-opacity-80 z-50 flex flex-col items-center justify-center text-white animate-fadeIn" id="overlay">
+    <!-- QR Code Content -->
+    <div id="qrcode-container" class="bg-white text-black p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold text-center mb-4">QR Code de l'étudiant</h2>
+        <div id="qrcode" class="flex justify-center mb-4">
+
+        </div>
+        <button class="button close-button bg-red-500 text-white px-4 py-2 rounded-full hover:bg-red-600 transition" id="closeQRCode">Fermer</button>
+    </div>
+</div>
+
+<!-- Video Overlay for QR Scanning -->
+<div id="videoOverlay" class="hidden fixed inset-0 bg-gray-900 bg-opacity-80 z-50 flex flex-col items-center justify-center text-white animate-fadeIn">
+    <!-- Scan Message -->
+    <div id="scanMessage" class="text-xl font-semibold bg-primary bg-opacity-80 px-4 py-2 rounded-md shadow-md mb-4">
+        Scannez le code QR
+    </div>
+
+    <!-- Close Button -->
+    <button id="closeButton" class="absolute top-4 right-4 bg-red-500 w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+        X
+    </button>
+
+    <!-- Video Preview -->
+    <div class="w-4/5 max-w-lg">
+        <video id="preview" class="w-full border-4 border-accent rounded-lg shadow-md"></video>
+    </div>
+
+    <!-- QR Code Content -->
+    <div id="qrCodeContent" class="mt-6 p-4 bg-gray-800 rounded-lg shadow-md hidden">
+        <h2 class="text-xl font-semibold mb-2">QR Code Scanné :</h2>
+        <p id="qrContentText" class="text-lg font-medium text-accent"></p>
+    </div>
+</div>
+
+<!-- QR Code Result Frame -->
+<div id="qrFrame" class="hidden mt-10 border-4 border-dashed border-primary p-6 bg-gray-100 rounded-lg shadow-md">
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-semibold text-primary">QR Code Généré :</h3>
+        <!-- Close Button for QR Code -->
+        <button id="closeQRButton" class="bg-red-500 text-white px-3 py-1 rounded-full hover:bg-red-600 transition">
+            Fermer
+        </button>
+    </div>
+    <div id="generatedQR" class="mt-4 p-4 bg-white rounded shadow-md flex items-center justify-center">
+        <!-- QR Code Content will be injected here -->
+        <span class="text-gray-500">QR Code Placeholder</span>
+    </div>
+</div>
+
+
+
+<div id="userClubSection" class="flex flex-col items-center justify-between p-4 bg-blue-100 rounded-lg shadow-md space-y-4" >
+    <div class="flex items-center space-x-3">
+        <h3 class="text-xl font-semibold text-blue-600">Club Actuel:</h3>
+        <p id="userClub" class="text-lg font-medium text-gray-800" style="font-weight: bold;" ></p> <!-- Contenu dynamique -->
+    </div>
+    <button
+            id="changeClubButton"
+            class="px-6 py-2 bg-blue-500 text-white rounded-md
+         hover:bg-blue-600 focus:outline-none
+         disabled:bg-blue-300 disabled:cursor-not-allowed"
+
+    >
+        Changer de club
+    </button>
+</div>
+
+
+
+
+<div class=" rounded-3xl p-10 sm:p-12 w-full max-w-2xl" id="services">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- Bouton Code QR -->
+        <button class="flex items-center justify-center space-x-4 p-6 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg" id="generateQRCode">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-qr-code w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-500"><rect width="5" height="5" x="3" y="3" rx="1"></rect><rect width="5" height="5" x="16" y="3" rx="1"></rect><rect width="5" height="5" x="3" y="16" rx="1"></rect><path d="M21 16h-3a2 2 0 0 0-2 2v3"></path><path d="M21 21v.01"></path><path d="M12 7v3a2 2 0 0 1-2 2H7"></path><path d="M3 12h.01"></path><path d="M12 3h.01"></path><path d="M12 16v.01"></path><path d="M16 12h1"></path><path d="M21 12v.01"></path><path d="M12 21v-1"></path></svg>
+            <span class="text-lg font-medium">Code QR</span>
+        </button>
+
+        <!-- Bouton Scanner le code QR -->
+        <button class="flex items-center justify-center space-x-4 p-6 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:from-purple-600 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg" id="startScanButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-scan-line w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-500"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><path d="M7 12h10"></path></svg>
+            <span class="text-lg font-medium">Scanner le code QR</span>
+        </button>
+
+        <!-- Bouton Vie Associative -->
+
+        <button class="col-span-1 sm:col-span-2 flex items-center justify-center space-x-4 p-6 rounded-xl bg-gradient-to-r from-indigo-500 to-indigo-600 text-white hover:from-indigo-600 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg" id="associationButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users w-8 h-8 relative z-10 group-hover:scale-110 transition-transform duration-500"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span class="text-lg font-medium">Vie associative</span>
+        </button>
+
+        <!-- Bouton Changer de club -->
+
+    </div>
+
+    <div class="mt-8 text-center text-sm text-gray-500">
+        Cliquez sur un service pour continuer
+    </div>
+</div>
+
+<!-- Filtres étudiant : année académique + classe -->
+<!-- Bandeau discret : paramètres étudiant (année + classe) -->
+<div id="studentFilters" class="hidden w-full max-w-3xl px-4 mt-4">
+    <div class="bg-blue-50/90 border border-blue-200 rounded-2xl px-4 py-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs sm:text-sm shadow-sm">
+
+        <!-- Zone avec les selects -->
+        <div id="studentFiltersControls" class="flex flex-wrap items-center gap-2">
+      <span class="font-semibold text-blue-700 flex items-center gap-1">
+        <i class="fa-solid fa-graduation-cap text-[11px]"></i>
+        Année & classe :
+      </span>
+
+            <!-- Sélecteur d'année académique -->
+            <select
+                    id="student-academic-year"
+                    class="border border-blue-200 rounded-full px-3 py-1 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+            >
+                <option value="" disabled selected>Année académique</option>
+                <!-- Options ajoutées dynamiquement depuis Firestore -->
+            </select>
+
+            <!-- Sélecteur de classe -->
+            <select id="student-class" class="border border-blue-200 rounded-full px-3 py-1 text-xs bg-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <option value="" hidden disabled selected>Classe</option>
+                <option value="L1 INFORMATIQUE">L1 INFORMATIQUE</option>
+                <option value="L1 GESTION">L1 GESTION</option>
+                <option value="L1 DROIT">L1 DROIT</option>
+                <option value="L2 DROIT">L2 DROIT</option>
+                <option value="L3 DROIT">L3 DROIT</option>
+                <option value="L2 INFORMATIQUE">L2 INFORMATIQUE</option>
+                <option value="L2 GESTION ">L2 GESTION </option>
+                <option value="BTL1">BTL1</option>
+                <option value="BTL2">BTL2</option>
+                <option value="BTL3">BTL3</option>
+                <option value="MARKETING">MARKETING</option>
+                <option value="GENIE LOGICIEL">GENIE LOGICIEL</option>
+                <option value="RESSOURCES HUMAINES">RESSOURCES HUMAINES</option>
+                <option value="RSS">RSS</option>
+                <option value="QHSE">QHSE</option>
+            </select>
         </div>
 
-        <div class="border-t border-white/10 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Campus Vote. Tous droits réservés.</p>
-            <p class="text-sm mt-2">Plateforme développée pour les élections étudiantes</p>
+        <!-- Petit texte d’info / verrouillage -->
+        <p id="studentFiltersInfo" class="text-[11px] text-gray-600 sm:text-right leading-snug">
+            Vous pouvez définir une seule fois votre année académique et votre classe.
+        </p>
+    </div>
+</div>
+
+
+
+<!-- Inclusion de la bibliothèque jsQR depuis un CDN -->
+<script src="https://unpkg.com/jsqr"></script>
+
+
+
+
+
+
+
+<!-- Bouton flottant -->
+
+<!-- Le bouton flottant -->
+<div class="fabButton">
+    <button id="mainFab" class="fab-main"><i class="fa-solid fa-plus"></i></button>
+
+    <!-- Menu flottant -->
+    <div class="fab-menu" id="fabMenu">
+
+        <button id="loginButton" class="fab-menu-item" style="background-color: rgb(9, 175, 9);" onclick="window.location.href='./login/index.html'">
+            <i class="fa-solid fa-power-off"></i>
+        </button>
+    </div>
+</div>
+
+
+<!-- Modale pour afficher les informations de l'étudiant connecté -->
+<!-- Modale pour afficher les informations de l'étudiant -->
+<div class="user-profile-modale" id="user-profile-modale">
+    <div class="header">
+        <!-- Bouton de fermeture -->
+        <button id="close-modal-btn" class="close-btn">✖</button>
+    </div>
+    <div style="border: 4px solid #3a86ff;">
+        <div class="profile-image">
+            <img src="" alt="Profile Picture" id="student-photo">
         </div>
+
+        <h2 id="studentName"></h2>
+        <p id="studentClasse"></p>
+        <p id="kairosNumber"></p>
+        <p id="studentEmail"></p>
+        <div class="social-icons">
+            <a href="#" title="LinkedIn">🔗</a>
+            <a href="#" title="GitHub">🐙</a>
+            <a href="#" title="Email">📧</a>
+        </div>
+        <button class="message-btn" id="accountStatus"></button>
+    </div>
+</div>
+
+
+
+
+<!-- Modal de sélection du club -->
+<!-- Modal de sélection du club -->
+<div id="changeClubModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6 space-y-4">
+        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">Sélectionner un nouveau club</h3>
+
+        <ul id="clubList" class="space-y-2 max-h-64 overflow-y-auto"> <!-- Liste des clubs scrollable -->
+            <!-- Liste des clubs -->
+        </ul>
+
+        <button id="cancelChangeBtn" class="w-full px-6 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none mt-4">Annuler</button>
+    </div>
+</div>
+
+<!-- Modal de confirmation -->
+<div id="confirmModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="bg-white rounded-lg shadow-xl w-96 p-6 space-y-6 transform transition-all duration-300 scale-95 hover:scale-100">
+        <p id="confirmationMessage" class="text-gray-800 text-lg text-center font-semibold"></p>
+        <div class="flex justify-between">
+            <button id="confirmBtn" class="w-32 px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 focus:outline-none">Confirmer</button>
+            <button id="cancelConfirmBtn" class="w-32 px-6 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition duration-300 focus:outline-none">Annuler</button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Loading spinner -->
+
+<div id="loadingSpinner" class="spinner" style="display: none;"></div>
+
+
+<!-- Contacter le support (Joe) -->
+<!-- Modal de support -->
+<div class="support-modal" id="supportModal">
+    <div class="support-modal-content">
+        <span class="close-support-modal" id="closeSupportModal">&times;</span>
+        <div class="support-header">
+            <i class="fa-solid fa-headset support-icon"></i>
+            <h2>Un problème ? Contactez Joe</h2>
+        </div>
+        <form id="supportForm">
+            <textarea id="supportComment" placeholder="Expliquez brièvement votre problème..." required></textarea>
+            <button type="submit" class="send-button">Envoyer le commentaire</button>
+        </form>
+        <div class="support-actions">
+            <a href="https://wa.me/221774931623" target="_blank" class="support-button whatsapp-button">
+                <i class="fa-brands fa-whatsapp"></i> WhatsApp
+            </a>
+            <a href="tel:+221774931623" class="support-button call-button">
+                <i class="fa fa-phone"></i> Appeler
+            </a>
+            <a href="mailto:wilfrieddylan451@gmail.com" class="support-button email-button">
+                <i class="fa fa-envelope"></i> Email
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal pour permettre à l'étudiant de mettre à jour son profil -->
+<div id="updateUserModal" class="modal-specific">
+    <div class="modal-specific-content">
+        <span id="closeUpdateUserModal" class="modal-specific-close">&times;</span>
+        <h2>Modifier vos informations</h2>
+        <div>
+            <label for="updateUserName">Nom complet :</label>
+            <input type="text" id="updateUserName" placeholder="Votre nom complet" />
+            <button id="updateNameButton">Mettre à jour le nom</button>
+        </div>
+        <div>
+            <label for="updateKairos">Numéro Kairos</label>
+            <input type="text" id="updateKairos" placeholder="Votre numéro Kairos" />
+            <button id="updateKairosButton">Mettre à jour le numéro Kairos</button>
+        </div>
+        <div>
+            <label for="updateUserEmail">Adresse e-mail :</label>
+            <input type="email" id="updateUserEmail" placeholder="Votre adresse e-mail" />
+            <button id="updateEmailButton">Mettre à jour l'e-mail</button>
+        </div>
+        <div>
+            <label for="updateUserPhoto">Photo de profil :</label>
+            <input type="file" id="updateUserPhoto" accept="image/*" />
+            <button id="updatePhotoButton">Mettre à jour la photo</button>
+        </div>
+        <div class="custom-actions">
+            <button type="button" id="customResetPasswordButton">Réinitialiser le mot de passe</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modale pour afficher les erreurs/succès -->
+<div id="error-modal" class="error-modal">
+    <div class="modal-content">
+        <div id="icon-container" class="icon-container">
+            <i id="icon" class="error-icon">!</i>
+        </div>
+        <p id="modal-message" class="modal-text">Message d'erreur</p>
+        <button id="ok-button" class="ok-btn">OK</button>
+    </div>
+</div>
+
+
+
+
+<!-- Modal permettant aux étudiants de voter un candidat en ligne -->
+
+
+
+<!-- Bouton pour ouvrir le modal -->
+
+<!-- Modal -->
+<!-- <div id="voteModal" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <h2>Système de Vote</h2>
+
+    <div class="candidates">
+      Carte pour le candidat 1
+      <div class="candidate-card">
+        <img src="./Al_amine.jpg" alt="Candidat 1" class="candidate-photo">
+        <h3>Al Amine NDIEGUENE</h3>
+        <p>CHANGEMENT</p>
+        <button class="vote-btn" id="candidat1" data-candidate="1" >Voter</button>
+      </div>
+
+      Carte pour le candidat 2
+      <div class="candidate-card">
+        <img src="./ben.jpg" alt="Candidat 2" class="candidate-photo">
+        <h3>Ben </h3>
+        <p>UNITED For Succes</p>
+        <button class="vote-btn" id="candidat2" data-candidate="2">Voter</button>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+<!-- Fin du modal permettant aux étudiants de voter un candidat en ligne -->
+
+
+
+
+
+<!-- Nouvelle Modale -->
+<!-- <div class="custom-modal" id="updateModal">
+  <div class="custom-modal-content">
+    <button class="custom-close-modal" id="closeUpdateModal">&times;</button>
+    <h2>Nouvelle mise à jour</h2>
+    <p>Bienvenue dans la nouvelle version de l'application ! Voici un aperçu des fonctionnalités des boutons ajoutés :</p>
+    <ul>
+      <li><b>Profil</b> : Accédez à vos informations personnelles et modifiez-les si nécessaire.</li>
+      <li><b>Assistance</b> : Contactez notre support pour toute question ou problème.</li>
+      <li><b>Déconnexion</b> : Quittez votre compte de manière sécurisée.</li>
+    </ul>
+    <p>Nous espérons que cette mise à jour améliorera votre expérience !</p>
+  </div>
+</div> -->
+
+
+
+<!-- Contenu du fichier principal -->
+
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Salle Occupée</h2>
+        <label for="end-time" class="modal-label">Sélectionnez l'heure de libération :</label>
+        <input type="time" id="end-time" class="modal-input">
+        <button id="saveTime" class="btn-confirm">Confirmer</button>
+    </div>
+</div>
+<div id="class-list"></div>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section about">
+            <h2 class="footer-title">Jeovany Afana</h2>
+            <p>Développeur passionné et créateur d'applications web modernes. N'hésitez pas à me contacter pour vos projets digitaux.</p>
+            <div class="contact">
+                <br>
+                <p><i class="fas fa-envelope"></i> wilfrieddylan451@gmail.com</p><br><br>
+                <p><i class="fas fa-phone"></i> +221 77 493 1623</p>
+            </div>
+        </div>
+        <div class="footer-section links">
+            <h2 class="footer-title">Liens utiles</h2>
+            <ul>
+                <li><a href="/index.html">Accueil</a></li>
+                <li><a href="#">À propos</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Mentions légales</a></li>
+            </ul>
+        </div>
+        <div class="footer-section social">
+            <h2 class="footer-title">Suivez-moi</h2>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/jeovany.afana.7" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/joe.afana/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/Jeovany_damso5" target="_blank"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Jeovany Afana. Tous droits réservés.</p>
     </div>
 </footer>
 
-<!-- Modales existantes (gardées telles quelles mais stylisées) -->
-<div class="modal-overlay"></div>
-<div class="searchModal" id="searchModal">
-    <div class="header bg-election-primary text-white">
-        <h2><i class="fas fa-search mr-2"></i>Rechercher un étudiant</h2>
-        <span class="close" id="closeSearchModal">&times;</span>
-    </div>
-    <div class="search">
-        <input type="text" placeholder="Nom, prénom ou matricule..." id="searchInput">
-    </div>
-    <div class="results" id="resultsContainer"></div>
-</div>
+<!-- Inclusion de la bibliothèque jsQR depuis un CDN -->
 
-<!-- Modal de notifications -->
-<div class="student-notification-overlay"></div>
-<div class="student-notification-modal" id="studentNotificationModal">
-    <div class="modal-header bg-election-primary">
-        <h2><i class="fas fa-bell mr-2"></i>Notifications</h2>
-        <span class="close-btn" id="closeStudentNotificationModal">&times;</span>
-    </div>
-    <div class="modal-messages" id="studentMessageContainer"></div>
-</div>
-
-<!-- Modal de vote (sera généré dynamiquement) -->
-<div id="voteModalContainer"></div>
-
-<!-- Spinner de chargement -->
-<div id="loadingSpinner" class="spinner" style="display: none;"></div>
-
-<!-- Scripts -->
 <script type="module">
-    // Configuration Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, arrayUnion, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-    import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-functions.js";
-
+    // Importer les fonctions nécessaires depuis les SDK de Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js"; // Pour initialiser l'application Firebase
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js"; // Pour utiliser Firestore
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-storage.js"; // Pour utiliser Storage
+    // Configuration de votre application Firebase
     const firebaseConfig = {
-        apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA",
-        authDomain: "inspecteur-de-classes.firebaseapp.com",
-        projectId: "inspecteur-de-classes",
-        storageBucket: "inspecteur-de-classes.appspot.com",
-        messagingSenderId: "572661846292",
-        appId: "1:572661846292:web:aeb0374db2d414fef9f201"
+        apiKey: "AIzaSyDibbuBJ2p88T26P0BAB-o_exunK0GYFdA", // Clé API de votre projet
+        authDomain: "inspecteur-de-classes.firebaseapp.com", // Domaine d'authentification
+        projectId: "inspecteur-de-classes", // ID de votre projet
+        storageBucket: "inspecteur-de-classes.appspot.com", // Bucket de stockage pour les fichiers
+        messagingSenderId: "572661846292", // ID de l'expéditeur de messages
+        appId: "1:572661846292:web:aeb0374db2d414fef9f201", // ID de votre application
+        measurementId: "G-NVN5GERDV6" // ID de mesure pour les analyses
     };
 
+    // Initialiser Firebase avec la configuration fournie
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth();
-    const functions = getFunctions(app, "europe-west1");
-    const submitVoteCallable = httpsCallable(functions, "submitVote");
 
-    // Variables globales
-    let currentUser = null;
-    let currentUserDocId = null;
-    let electionData = null;
-    let votingEligibility = null;
+    // Initialiser Firestore (base de données de Firebase)
+    const db = getFirestore(app); // Maintenant, Firestore est prêt à être utilisé
+    // Initialiser Firebase Storage (pour stocker des fichiers)
+    const storage = getStorage(app); // Utilisez getStorage pour initialiser le stockage
 
-    // Initialisation
-    document.addEventListener('DOMContentLoaded', () => {
-        initMobileMenu();
-        checkElectionStatus();
-        loadAcademicYears();
-        setupEventListeners();
-    });
 
-    // Initialisation
-    document.addEventListener('DOMContentLoaded', () => {
-        initMobileMenu();
-        checkElectionStatus();
-        loadAcademicYears();
-        setupEventListeners();
-
-        // Initialiser le menu flottant par défaut (pour non-connectés)
-        setupDefaultFloatingButton();
-    });
-
-    function setupDefaultFloatingButton() {
-        // Si l'utilisateur n'est pas encore connecté, montrer le bouton de connexion
-        const fabMenu = document.querySelector(".fab-menu");
-        if (fabMenu && !auth.currentUser) {
-            fabMenu.innerHTML = `
-            <button class="fab-menu-item" id="loginFabButton" style="background-color: #4F46E5;">
-                <i class="fa-solid fa-sign-in-alt"></i>
-            </button>
-        `;
-
-            document.getElementById("loginFabButton").addEventListener("click", () => {
-                window.location.href = "./login/index.html";
-            });
-        }
-    }
-
-    // Menu mobile
-    function initMobileMenu() {
-        const toggle = document.getElementById('mobileMenuToggle');
-        const menu = document.getElementById('mobileMenu');
-
-        toggle?.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-    }
-
-    // Vérifier le statut des élections
-    async function checkElectionStatus() {
-        try {
-            const electionRef = doc(db, "elections", "active");
-            const electionSnap = await getDoc(electionRef);
-
-            if (electionSnap.exists()) {
-                electionData = electionSnap.data();
-                showElectionBanner(electionData);
-                startCountdown(electionData.endDate?.toDate());
-
-                // Écouter les changements de votes en temps réel
-                setupRealTimeStats();
-            }
-        } catch (error) {
-            console.error("Erreur vérification élection:", error);
-        }
-    }
-
-    // Afficher le bandeau d'élection
-    function showElectionBanner(data) {
-        const banner = document.getElementById('electionBanner');
-        if (banner && data.isActive) {
-            banner.classList.remove('hidden');
-        }
-    }
-
-    // Compte à rebours
-    function startCountdown(endDate) {
-        if (!endDate) return;
-
-        function updateCountdown() {
-            const now = new Date();
-            const diff = endDate - now;
-
-            if (diff <= 0) {
-                clearInterval(interval);
-                document.getElementById('electionCountdown').innerHTML =
-                    '<span class="text-xl font-bold">Élections terminées</span>';
-                return;
-            }
-
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-            document.getElementById('countdownDays').textContent = days.toString().padStart(2, '0');
-            document.getElementById('countdownHours').textContent = hours.toString().padStart(2, '0');
-            document.getElementById('countdownMinutes').textContent = minutes.toString().padStart(2, '0');
-        }
-
-        updateCountdown();
-        const interval = setInterval(updateCountdown, 60000);
-    }
-
-    // Statistiques en temps réel
-    function setupRealTimeStats() {
-        const votesRef = collection(db, "elections", "active", "votes");
-        onSnapshot(votesRef, (snapshot) => {
-            let total = 0;
-            let valid = 0;
-            let nullVotes = 0;
-
-            snapshot.forEach(doc => {
-                total++;
-                const data = doc.data();
-                if (data.candidateId === "null") {
-                    nullVotes++;
-                } else {
-                    valid++;
-                }
-            });
-
-            // Mettre à jour l'UI
-            document.getElementById('totalVotes').textContent = total;
-            document.getElementById('votedYes').textContent = valid;
-            document.getElementById('votedNo').textContent = nullVotes;
-
-            // Calculer le taux de participation (exemple: sur 1000 étudiants)
-            const participation = Math.round((total / 1000) * 100);
-            document.getElementById('participationRate').textContent = participation + '%';
-
-            // Afficher la section stats
-            document.getElementById('statsSection').classList.remove('hidden');
-        });
-    }
-
-    // Charger les années académiques
-    async function loadAcademicYears() {
-        const select = document.getElementById('student-academic-year');
-        if (!select) return;
-
-        try {
-            const snapshot = await getDocs(collection(db, "annee_academique"));
-            snapshot.forEach(docSnap => {
-                const option = document.createElement('option');
-                option.value = docSnap.id;
-                option.textContent = docSnap.id;
-                select.appendChild(option);
-            });
-        } catch (error) {
-            console.error("Erreur chargement années:", error);
-        }
-    }
-
-    // Gestion de l'authentification
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            currentUser = user;
-            await loadUserData(user.uid);
-            // Appeler la fonction via window si elle existe
-            if (window.updateUIForUser) {
-                window.updateUIForUser();
-            }
-        } else {
-            // Utilisateur NON connecté
-            console.log("Utilisateur non connecté");
-
-            // Cacher les sections spécifiques aux utilisateurs
-            document.getElementById('studentFiltersSection').classList.add('hidden');
-            document.getElementById('mainVoteButton').classList.add('hidden');
-            document.getElementById('mainVoteButtonFloating').classList.add('hidden');
-            document.getElementById('candidatesSection').classList.add('hidden');
-
-            // Mettre à jour le statut de vote
-            updateVoteStatusForNonLoggedUser();
-
-            // Afficher le bouton de connexion dans le menu flottant
-            setupFloatingButtonForNonLoggedUser();
-        }
-    });
-
-    // Fonction pour mettre à jour l'UI pour les non-connectés
-    function updateVoteStatusForNonLoggedUser() {
-        const statusText = document.getElementById('voteStatusText');
-        const statusIcon = document.getElementById('voteStatusIcon');
-
-        statusText.textContent = "Veuillez vous connecter pour voter";
-        statusIcon.innerHTML = `<i class="fas fa-sign-in-alt text-blue-500" style="cursor: pointer;" onclick="window.location.href='login/index.html'"></i>`;
-
-        // Afficher le bouton "Voir les candidats" même pour non-connectés
-        const viewCandidatesBtn = document.getElementById('viewCandidatesButton');
-        if (viewCandidatesBtn) {
-            viewCandidatesBtn.classList.remove('hidden');
-            viewCandidatesBtn.onclick = () => {
-                document.getElementById('candidatesSection').scrollIntoView({ behavior: 'smooth' });
-            };
-        }
-    }
-
-    // Configurer le menu flottant pour les non-connectés
-    function setupFloatingButtonForNonLoggedUser() {
-        const fabMenu = document.querySelector(".fab-menu");
-        if (!fabMenu) return;
-
-        // Vider le menu
-        fabMenu.innerHTML = '';
-
-        // Ajouter le bouton de connexion
-        const loginFabItem = document.createElement("button");
-        loginFabItem.className = "fab-menu-item";
-        loginFabItem.style.backgroundColor = "#4F46E5";
-        loginFabItem.innerHTML = `
-        <i class="fa-solid fa-sign-in-alt"></i>
-        <span></span>
-    `;
-
-        loginFabItem.addEventListener("click", () => {
-            window.location.href = "./login/index.html";
-        });
-
-        fabMenu.appendChild(loginFabItem);
-    }
-
-    // Charger les données utilisateur
-    // Charger les données utilisateur
-    async function loadUserData(uid) {
-        try {
-            const usersRef = collection(db, "users");
-            const q = query(usersRef, where("uid", "==", uid));
-            const snapshot = await getDocs(q);
-
-            if (!snapshot.empty) {
-                const userDoc = snapshot.docs[0];
-                currentUserDocId = userDoc.id;
-                const userData = userDoc.data();
-
-                // Afficher le profil
-                displayUserProfile(userData);
-
-                // Initialiser les filtres pour les étudiants
-                if (userData.role === "etudiant") {
-                    initStudentFilters(userData);
-                    await checkVotingEligibility(userData);
-                }
-
-                // Charger les candidats (pour tous les utilisateurs)
-                await loadCandidates();
-            } else {
-                // Utilisateur Firebase existe mais pas dans la collection users
-                console.warn("Utilisateur sans profil trouvé");
-
-                // Charger quand même les candidats
-                await loadCandidates();
-
-                // Mettre à jour l'UI
-                const statusText = document.getElementById('voteStatusText');
-                const statusIcon = document.getElementById('voteStatusIcon');
-
-                statusText.textContent = "Profil incomplet - Contactez l'administration";
-                statusIcon.innerHTML = '<i class="fas fa-exclamation-triangle text-red-500"></i>';
-
-                // Afficher le bouton "Voir les candidats"
-                const viewCandidatesBtn = document.getElementById('viewCandidatesButton');
-                if (viewCandidatesBtn) {
-                    viewCandidatesBtn.classList.remove('hidden');
-                    viewCandidatesBtn.onclick = () => {
-                        document.getElementById('candidatesSection').scrollIntoView({ behavior: 'smooth' });
-                    };
-                }
-            }
-        } catch (error) {
-            console.error("Erreur chargement utilisateur:", error);
-            // En cas d'erreur, charger quand même les candidats
-            await loadCandidates();
-        }
-    }
-
-    // Initialiser les filtres étudiant
-    function initStudentFilters(userData) {
-        const section = document.getElementById('studentFiltersSection');
-        section.classList.remove('hidden');
-
-        const yearSelect = document.getElementById('student-academic-year');
-        const classSelect = document.getElementById('student-class');
-        const yearLock = document.getElementById('yearLockStatus');
-        const classLock = document.getElementById('classLockStatus');
-        const currentSelection = document.getElementById('currentSelection');
-
-        // Vérifier les verrous
-        if (userData.annee_academique_locked) {
-            yearSelect.disabled = true;
-            yearLock.classList.remove('hidden');
-            if (userData.annee_academique_id?.length > 0) {
-                yearSelect.value = userData.annee_academique_id[userData.annee_academique_id.length - 1];
-            }
-        }
-
-        if (userData.classe_locked) {
-            classSelect.disabled = true;
-            classLock.classList.remove('hidden');
-            if (userData.classe) {
-                classSelect.value = userData.classe;
-            }
-        }
-
-        // Mettre à jour l'affichage
-        updateCurrentSelection();
-
-        // Événements de changement
-        yearSelect.addEventListener('change', async () => {
-            if (!userData.annee_academique_locked) {
-                await saveStudentChoice('annee_academique', yearSelect.value);
-                updateCurrentSelection();
-            }
-        });
-
-        classSelect.addEventListener('change', async () => {
-            if (!userData.classe_locked) {
-                await saveStudentChoice('classe', classSelect.value);
-                updateCurrentSelection();
-            }
-        });
-
-        function updateCurrentSelection() {
-            const year = yearSelect.value;
-            const classe = classSelect.value;
-
-            if (year || classe) {
-                let text = '';
-                if (year) text += `Année: ${year}`;
-                if (classe) text += `${year ? ' • ' : ''}Classe: ${classe}`;
-                currentSelection.textContent = text;
-            }
-        }
-    }
-
-    // Sauvegarder les choix étudiant
-    async function saveStudentChoice(field, value) {
-        if (!currentUserDocId) return;
-
-        try {
-            const userRef = doc(db, "users", currentUserDocId);
-            const updateData = {
-                [field]: field === 'annee_academique' ? arrayUnion(value) : value,
-                [`${field}_locked`]: true
-            };
-
-            await updateDoc(userRef, updateData);
-
-            // Afficher un message de succès
-            showToast('Information enregistrée avec succès !', 'success');
-
-            // Re-vérifier l'éligibilité au vote
-            if (field === 'annee_academique' || field === 'classe') {
-                await checkVotingEligibility();
-            }
-        } catch (error) {
-            console.error("Erreur sauvegarde choix:", error);
-            showToast('Erreur lors de l\'enregistrement', 'error');
-        }
-    }
-
-    // Vérifier l'éligibilité au vote
-    async function checkVotingEligibility(userData) {
-        try {
-            // Utiliser la fonction existante du index.js original
-            const eligibility = await window.checkVotingEligibility(
-                userData || currentUser,
-                currentUserDocId
-            );
-
-            votingEligibility = eligibility;
-            updateVoteStatusUI(eligibility);
-
-            return eligibility;
-        } catch (error) {
-            console.error("Erreur vérification éligibilité:", error);
-        }
-    }
-
-    // Mettre à jour l'UI du statut de vote
-    function updateVoteStatusUI(eligibility) {
-        const statusText = document.getElementById('voteStatusText');
-        const statusIcon = document.getElementById('voteStatusIcon');
-        const mainButton = document.getElementById('mainVoteButton');
-        const floatingButton = document.getElementById('mainVoteButtonFloating');
-        const viewCandidatesBtn = document.getElementById('viewCandidatesButton');
-
-        if (!eligibility) {
-            statusText.textContent = "Vérification en cours...";
-            statusIcon.innerHTML = '<i class="fas fa-spinner animate-spin"></i>';
-            return;
-        }
-
-        if (eligibility.eligible) {
-            statusText.textContent = `Vous pouvez voter au bureau: ${eligibility.bureauName}`;
-            statusIcon.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
-
-            mainButton.classList.remove('hidden');
-            floatingButton.classList.remove('hidden');
-            viewCandidatesBtn.classList.remove('hidden');
-
-            // Configurer les boutons de vote
-            const voteInfo = {
-                bureauId: eligibility.bureauId,
-                bureauName: eligibility.bureauName,
-                electionYear: eligibility.electionYear
-            };
-
-            mainButton.onclick = () => openVotingModal(voteInfo);
-            floatingButton.onclick = () => openVotingModal(voteInfo);
-            viewCandidatesBtn.onclick = () => {
-                document.getElementById('candidatesSection').scrollIntoView({ behavior: 'smooth' });
-            };
-
-        } else if (eligibility.hasVoted) {
-            statusText.textContent = "Vous avez déjà voté pour cette élection";
-            statusIcon.innerHTML = '<i class="fas fa-check-double text-green-500"></i>';
-            showToast('Merci d\'avoir participé au vote !', 'success');
-        } else {
-            statusText.textContent = eligibility.reason || "Vous n'êtes pas éligible pour voter";
-            statusIcon.innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
-        }
-    }
-
-    // Charger les candidats
-    // Charger les candidats (accessible même sans connexion)
-    async function loadCandidates() {
-        try {
-            const c1Ref = doc(db, "elections", "active", "candidates", "c1");
-            const c2Ref = doc(db, "elections", "active", "candidates", "c2");
-
-            const [c1Snap, c2Snap] = await Promise.all([
-                getDoc(c1Ref),
-                getDoc(c2Ref)
-            ]);
-
-            const candidates = [];
-            if (c1Snap.exists()) candidates.push({ id: 'c1', ...c1Snap.data() });
-            if (c2Snap.exists()) candidates.push({ id: 'c2', ...c2Snap.data() });
-
-            displayCandidates(candidates);
-        } catch (error) {
-            console.error("Erreur chargement candidats:", error);
-            // Afficher un message d'erreur dans l'interface
-            const container = document.getElementById('candidatesContainer');
-            if (container) {
-                container.innerHTML = `
-                <div class="col-span-2 text-center py-12">
-                    <i class="fas fa-exclamation-triangle text-4xl text-amber-400 mb-4"></i>
-                    <p class="text-gray-500">Impossible de charger les candidats</p>
-                    <p class="text-sm text-gray-400 mt-2">Veuillez réessayer plus tard</p>
-                </div>
-            `;
-            }
-        }
-    }
-
-    // Afficher les candidats
-    function displayCandidates(candidates) {
-        const container = document.getElementById('candidatesContainer');
-        const count = document.getElementById('candidatesCount');
-
-        if (candidates.length === 0) {
-            container.innerHTML = `
-                    <div class="col-span-2 text-center py-12">
-                        <i class="fas fa-users text-4xl text-gray-400 mb-4"></i>
-                        <p class="text-gray-500">Aucun candidat pour le moment</p>
-                    </div>
-                `;
-            return;
-        }
-
-        count.textContent = candidates.length;
-        container.innerHTML = '';
-
-        candidates.forEach(candidate => {
-            const card = document.createElement('div');
-            card.className = 'bg-white rounded-2xl shadow-lg overflow-hidden card-hover';
-            card.innerHTML = `
-                    <div class="p-8">
-                        <div class="flex items-center gap-6 mb-6">
-                            <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-election-primary">
-                                ${candidate.photoURL ?
-                `<img src="${candidate.photoURL}" alt="${candidate.name}" class="w-full h-full object-cover">` :
-                `<div class="w-full h-full bg-gray-200 flex items-center justify-center">
-                                        <i class="fas fa-user text-3xl text-gray-400"></i>
-                                    </div>`
-            }
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-bold text-gray-800">${candidate.name || 'Candidat'}</h3>
-                                <p class="text-election-primary font-semibold">${candidate.party || 'Indépendant'}</p>
-                                <p class="text-gray-600 mt-2">${candidate.slogan || ''}</p>
-                            </div>
-                        </div>
-
-                        <div class="mb-6">
-                            <h4 class="font-bold text-gray-700 mb-3">Programme</h4>
-                            <p class="text-gray-600">${candidate.program || 'Aucun programme détaillé pour le moment.'}</p>
-                        </div>
-
-                        <div class="flex items-center justify-between">
-                            <div class="text-sm text-gray-500">
-                                <i class="fas fa-graduation-cap mr-2"></i>
-                                ${candidate.faculty || 'Toutes facultés'}
-                            </div>
-                            <button class="view-candidate-btn px-6 py-2 bg-election-primary text-white rounded-lg hover:bg-election-secondary transition"
-                                    data-candidate-id="${candidate.id}">
-                                <i class="fas fa-eye mr-2"></i>
-                                Voir plus
-                            </button>
-                        </div>
-                    </div>
-                `;
-            container.appendChild(card);
-        });
-
-        // Afficher la section
-        document.getElementById('candidatesSection').classList.remove('hidden');
-    }
-
-    // Afficher le profil utilisateur
-    function displayUserProfile(userData) {
-        const container = document.getElementById('userProfileContainer');
-        if (!container) return;
-
-        container.innerHTML = `
-                <div class="flex items-center gap-3">
-                    <div class="relative">
-                        <img src="${userData.photoURLOk || 'https://via.placeholder.com/40'}"
-                             alt="Profile"
-                             class="w-10 h-10 rounded-full border-2 border-election-primary">
-                        ${userData.role === 'etudiant' ?
-            `<span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white
-                                        ${votingEligibility?.hasVoted ? 'bg-green-500' : 'bg-election-primary'}"></span>` :
-            ''}
-                    </div>
-                    <div class="hidden md:block">
-                        <p class="font-semibold text-sm">${userData.nom || 'Utilisateur'}</p>
-                        <p class="text-xs text-gray-500">${userData.role || ''}</p>
-                    </div>
-                </div>
-            `;
-    }
-
-    // Ouvrir le modal de vote
-    async function openVotingModal(voteInfo) {
-        // Utiliser la fonction existante du index.js original
-        if (window.openVotingModal) {
-            window.openVotingModal(voteInfo);
-        }
-    }
-
-    // Afficher un toast
-    function showToast(message, type = 'info') {
-        const toast = document.createElement('div');
-        toast.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg text-white font-semibold z-50 animate-slideInRight ${
-            type === 'success' ? 'bg-green-600' :
-                type === 'error' ? 'bg-red-600' : 'bg-blue-600'
-        }`;
-        toast.textContent = message;
-
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-            toast.classList.add('animate-slideOut');
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-
-    // Configurer les événements
-    function setupEventListeners() {
-        // Logout
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('#logoutButton')) {
-                signOut(auth).then(() => {
-                    window.location.href = './login/index.html';
-                });
-            }
-        });
-    }
-
-
-
-    // Exposer les fonctions globales
-    window.checkVotingEligibility = checkVotingEligibility;
-    window.openVotingModal = openVotingModal;
-    window.showToast = showToast;
 </script>
-
-<!-- Scripts existants -->
 <script src="https://unpkg.com/jsqr"></script>
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<script type="module" src="./studentScan.js"></script>
+<script type="module" src="./qrCode.js"></script>
+<script type="module" src="./search/search.js"></script>
 <script src="./floating-button.js"></script>
-<script type="module" src="./overlay.js"></script>
+<script type="module" src="./notifications/notifications.js"></script>
+<script src="./humbergerButton.js"></script>
 <script type="module" src="./studentModal/student-modal.js"></script>
+<!-- <script type="module" src="./messaging.js"></script> -->
 <script type="module" src="./index.js"></script>
+<!-- <script  type="module" src="./modale.js"></script> -->
+<script type="module" src="./updates/updateInformations.js"></script>
+<script type="module" src="./support/support.js"></script>
+<script type="module" src="./clubs/changeClub.js"></script>
 </body>
 </html>

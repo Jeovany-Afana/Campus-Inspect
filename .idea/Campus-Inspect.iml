@@ -10,5 +10,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jsqr" level="application" />
     <orderEntry type="library" name="qrcode" level="application" />
+    <orderEntry type="library" name="jsqr" level="application" />
+    <orderEntry type="library" name="qrcode" level="application" />
   </component>
 </module>
